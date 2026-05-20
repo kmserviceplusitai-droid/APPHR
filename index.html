@@ -8,87 +8,484 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Sarabun', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen">
+<body class="bg-slate-50 text-gray-800 min-h-screen flex flex-col">
 
-    <div id="page-main" class="min-h-screen flex flex-col md:flex-row">
+    <div id="page-login" class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-blue-600 tracking-wide">KM Service Plus</h2>
+                <p class="text-gray-500 mt-1 text-xs">ระบบบริหารจัดการพนักงานและบันทึกเวลาทำงาน</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">อีเมลผู้ใช้งาน</label>
+                    <input type="email" id="login-email" value="somchai.p@kmservice.com" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">รหัสผ่าน</label>
+                    <input type="password" id="login-password" value="123456" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
+                <div class="text-right">
+                    <button type="button" onclick="switchPage('forgot')" class="text-xs text-blue-600 hover:underline">ลืมรหัสผ่าน?</button>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow-md transition">เข้าสู่ระบบ</button>
+            </form>
+            <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-500">ยังไม่มีบัญชีพนักงานใหม่? <button onclick="switchPage('signup')" class="text-blue-600 font-semibold hover:underline">ลงทะเบียนที่นี่</button></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-signup" class="hidden flex-1 flex items-center justify-center px-4 py-12">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg border border-gray-100">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">ลงทะเบียนพนักงานใหม่</h2>
+                <p class="text-gray-500 mt-1 text-xs">กรอกข้อมูลส่วนตัวเพื่อเปิดสิทธิ์การใช้งานในระบบ</p>
+            </div>
+            <form onsubmit="handleSignUp(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ชื่อ-นามสกุล (ภาษาไทย)</label>
+                        <input type="text" id="reg-name" placeholder="นายสมชาย ตั้งใจทำงาน" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">แผนก / ฝ่ายงาน</label>
+                        <select id="reg-department" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white">
+                            <option value="แผนกปฏิบัติการและบริการ">แผนกปฏิบัติการและบริการ</option>
+                            <option value="แผนกบริหารทรัพยากรบุคคล">แผนกบริหารทรัพยากรบุคคล (HR)</option>
+                            <option value="แผนกบัญชีและการเงิน">แผนกบัญชีและการเงิน</option>
+                            <option value="แผนกเทคโนโลยีสารสนเทศ">แผนกเทคโนโลยีสารสนเทศ (IT)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">อีเมลของบริษัท</label>
+                    <input type="email" id="reg-email" placeholder="name@kmservice.com" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">กำหนดรหัสผ่าน</label>
+                        <input type="password" id="reg-password" placeholder="รหัสอย่างน้อย 6 หลัก" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ยืนยันรหัสผ่านอีกครั้ง</label>
+                        <input type="password" id="reg-confirm-password" placeholder="กรอกรหัสให้ตรงกัน" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow-md transition pt-2">บันทึกข้อมูลและสมัครสมาชิก</button>
+                <button type="button" onclick="switchPage('login')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 rounded-lg text-sm transition">ย้อนกลับไปหน้าเข้าสู่ระบบ</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-forgot" class="hidden flex-1 flex items-center justify-center px-4 py-12">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">กู้คืนรหัสผ่าน</h2>
+                <p class="text-gray-500 mt-1 text-xs">ระบุอีเมลบัญชีพนักงานของคุณเพื่อรับลิงก์การตั้งค่ารหัสผ่านใหม่</p>
+            </div>
+            <form onsubmit="handleForgot(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">อีเมลผู้ใช้งาน</label>
+                    <input type="email" placeholder="example@kmservice.com" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow-md transition">ส่งคำขอกู้คืนรหัสผ่าน</button>
+                <button type="button" onclick="switchPage('login')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 rounded-lg text-sm transition">ยกเลิกและย้อนกลับ</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="page-main" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
         
-        <aside class="w-full md:w-64 bg-slate-900 text-gray-300 flex flex-col border-r border-slate-800">
+        <header class="block md:hidden bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+            <div class="px-4 py-3 flex justify-between items-center border-b border-slate-800">
+                <div>
+                    <h1 class="text-base font-bold tracking-wide">KM Service Plus</h1>
+                    <p class="text-[10px] text-emerald-400 font-medium" id="mb-user-profile">👤 กำลังโหลด...</p>
+                </div>
+                <span class="text-xs bg-slate-800 px-2 py-1 rounded-md text-slate-300 font-mono" id="live-clock-mobile">00:00:00</span>
+            </div>
+            <nav class="flex gap-1 p-2 overflow-x-auto no-scrollbar bg-slate-800">
+                <button onclick="switchTab('dashboard')" id="m-btn-tab-dashboard" class="mobile-tab-btn shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg bg-blue-600 text-white">📊 หน้าแรก</button>
+                <button onclick="switchTab('attendance')" id="m-btn-tab-attendance" class="mobile-tab-btn shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-300 hover:bg-slate-700">⏱️ ลงเวลางาน</button>
+                <button onclick="switchTab('leave')" id="m-btn-tab-leave" class="mobile-tab-btn shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-300 hover:bg-slate-700">📅 การลา</button>
+                <button onclick="switchTab('announcements')" id="m-btn-tab-announcements" class="mobile-tab-btn shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-300 hover:bg-slate-700">📢 ประกาศ</button>
+                <button onclick="switchTab('payslip')" id="m-btn-tab-payslip" class="mobile-tab-btn shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg text-slate-300 hover:bg-slate-700">💰 เงินเดือน</button>
+            </nav>
+        </header>
+
+        <aside class="hidden md:flex w-64 bg-slate-900 text-gray-300 flex-col border-r border-slate-800 shrink-0">
             <div class="p-6 border-b border-slate-800">
                 <h1 class="text-xl font-bold text-white tracking-wide">KM Service Plus</h1>
                 <p class="text-xs text-emerald-400 flex items-center gap-1 mt-0.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ระบบพร้อมใช้งาน
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ระบบพร้อมทำงาน
                 </p>
             </div>
             
             <div class="p-4 bg-slate-800/50 border-b border-slate-800/80 mx-2 my-4 rounded-xl">
                 <p class="text-xs text-gray-400">พนักงานผู้ใช้งาน</p>
-                <p class="text-sm font-semibold text-white mt-0.5">นายสมชาย ตั้งใจทำงาน</p>
-                <p class="text-xs text-blue-400 mt-0.5">แผนกปฏิบัติการและบริการ</p>
+                <p class="text-sm font-semibold text-white mt-0.5" id="pc-user-name">กำลังโหลดข้อมูล...</p>
+                <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">แผนกปฏิบัติการ</p>
             </div>
 
             <nav class="flex-1 px-3 space-y-1">
-                <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition bg-blue-600 text-white">
-                    📊 หน้าแรกและแดชบอร์ด
-                </button>
-                <button onclick="switchTab('attendance')" id="btn-tab-attendance" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                    ⏱️ ลงเวลาทำงาน + ถ่ายรูป
-                </button>
-                <button onclick="switchTab('leave')" id="btn-tab-leave" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                    📅 ระบบการลา (ป่วย/กิจ)
-                </button>
-                <button onclick="switchTab('announcements')" id="btn-tab-announcements" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                    📢 ประกาศจากบริษัท
-                </button>
-                <button onclick="switchTab('payslip')" id="btn-tab-payslip" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">
-                    💰 สลิปเงินเดือนออนไลน์
-                </button>
+                <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="pc-tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition bg-blue-600 text-white">📊 หน้าแรกและแดชบอร์ด</button>
+                <button onclick="switchTab('attendance')" id="btn-tab-attendance" class="pc-tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">⏱️ ลงเวลาทำงาน + ถ่ายรูป</button>
+                <button onclick="switchTab('leave')" id="btn-tab-leave" class="pc-tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">📅 ระบบการลา (ป่วย/กิจ)</button>
+                <button onclick="switchTab('announcements')" id="btn-tab-announcements" class="pc-tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">📢 ประกาศจากบริษัท</button>
+                <button onclick="switchTab('payslip')" id="btn-tab-payslip" class="pc-tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition text-slate-400 hover:bg-slate-800 hover:text-white">💰 สลิปเงินเดือนออนไลน์</button>
             </nav>
 
-            <div class="p-4 border-t border-slate-800 text-center text-xs text-slate-500">
-                KM Service Plus v2.0
+            <div class="p-4 border-t border-slate-800">
+                <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-500/10 rounded-xl transition">🚪 ออกจากระบบ</button>
             </div>
         </aside>
 
-        <main class="flex-1 p-6 md:p-8 max-h-screen overflow-y-auto">
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
             
-            <div id="tab-dashboard" class="tab-content space-y-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div id="tab-dashboard" class="tab-content space-y-4 md:space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-4">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900">ภาพรวมข้อมูลวันนี้</h2>
-                        <p class="text-sm text-gray-500">ยินดีต้อนรับสู่ระบบหลังบ้าน KM Service Plus</p>
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-900">ภาพรวมข้อมูลวันนี้</h2>
+                        <p class="text-xs md:text-sm text-gray-500">ยินดีต้อนรับเข้าใช้งานหน้าบันทึกผลพนักงาน</p>
                     </div>
-                    <div class="bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 shadow-sm" id="live-clock">
-                        กำลังโหลดเวลา...
+                    <div class="hidden sm:block bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 shadow-sm" id="live-clock-pc">🕒 กำลังโหลด...</div>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                        <p class="text-[10px] md:text-xs font-medium text-gray-400 uppercase">สถานะวันนี้</p>
+                        <p class="text-sm md:text-lg font-bold text-amber-500 mt-1" id="stat-attendance">ยังไม่ได้เข้างาน</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                        <p class="text-[10px] md:text-xs font-medium text-gray-400 uppercase">สิทธิ์ลาป่วยคงเหลือ</p>
+                        <p class="text-sm md:text-lg font-bold text-blue-600 mt-1">28 / 30 วัน</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                        <p class="text-[10px] md:text-xs font-medium text-gray-400 uppercase">สิทธิ์ลากิจคงเหลือ</p>
+                        <p class="text-sm md:text-lg font-bold text-sky-600 mt-1">5 / 7 วัน</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                        <p class="text-[10px] md:text-xs font-medium text-gray-400 uppercase">สลิปเงินเดือน</p>
+                        <p class="text-xs md:text-sm font-semibold text-emerald-600 mt-1">💰 อัปเดตเสร็จสิ้น</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">สถานะลงเวลาของคุณ</p>
-                        <p class="text-xl font-bold text-amber-500 mt-2" id="stat-attendance">ยังไม่ได้เข้างาน</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">วันลาป่วยคงเหลือ</p>
-                        <p class="text-xl font-bold text-blue-600 mt-2">28 / 30 วัน</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">วันลากิจคงเหลือ</p>
-                        <p class="text-xl font-bold text-sky-600 mt-2">5 / 7 วัน</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">สลิปเงินเดือนล่าสุด</p>
-                        <p class="text-sm font-semibold text-emerald-600 mt-2">💰 พร้อมตรวจสอบแล้ว</p>
+                <div class="bg-white p-4 md:p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-sm md:text-base font-bold text-gray-900 mb-3">📌 บริการด่วนของระบบ</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="switchTab('attendance')" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl text-left transition">
+                            <span class="text-xl md:text-2xl block">⏱️</span>
+                            <span class="text-xs md:text-sm font-semibold text-blue-900 block mt-1">บันทึกเวลา + เปิดหน้ากล้อง</span>
+                            <span class="text-[10px] md:text-xs text-blue-600">สแกนใบหน้าและลงเวลาทำงานเข้างาน/ออกงาน</span>
+                        </button>
+                        <button onclick="switchTab('leave')" class="p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-left transition">
+                            <span class="text-xl md:text-2xl block">📅</span>
+                            <span class="text-xs md:text-sm font-semibold text-emerald-900 block mt-1">ส่งคำร้องขอลาอิเล็กทรอนิกส์</span>
+                            <span class="text-[10px] md:text-xs text-emerald-600">ยื่นหลักฐานข้อมูลการลาป่วย หรือลากิจ</span>
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">📌 ทางลัดทำรายการ</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button onclick="switchTab('attendance')" class="p-4 bg-blue-50 hover:bg-blue-100/80 rounded-xl text-left transition">
-                                <span class="text-2xl block mb-1">⏱️</span>
-                                <span class="text-sm font-semibold text-blue-900 block">ลงเวลางาน + ถ่ายรูป</span>
-                                <span class="text-xs text-blue-600">ยืนยันตัวตนเข้าทำงาน</span>
-                            </button>
+            <div id="tab-attendance" class="tab-content hidden space-y-4 md:space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">⏱️ ลงเวลาทำงานพนักงานด้วยการถ่ายภาพ</h2>
+                    <p class="text-xs md:text-sm text-gray-500">โปรดเปิดกล้องและตรวจสอบความคมชัดก่อนกดยืนยันข้อมูล</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+                    <div class="bg-white p-4 md:p-6 rounded-xl border border-gray-100 shadow-sm lg:col-span-1 flex flex-col items-center">
+                        <h3 class="text-xs md:text-sm font-bold text-gray-700 mb-2 w-full text-left">📷 หน้ากล้องบันทึกผล</h3>
+                        
+                        <div class="w-full aspect-video bg-slate-900 rounded-lg overflow-hidden relative border border-slate-700 flex items-center justify-center">
+                            <video id="webcam" autoplay playsinline class="w-full h-full object-cover"></video>
+                            <div id="camera-placeholder" class="absolute inset-0 bg-slate-800 flex items-center justify-center text-[10px] text-gray-400 text-center p-4">
+                                🔒 ระบบจะขอสิทธิ์เข้าถึงกล้องถ่ายภาพเมื่อรันบนระบบความปลอดภัย HTTPS (Vercel)
+                            </div>
+                        </div>
+                        <canvas id="photo-canvas" class="hidden"></canvas>
+
+                        <div class="w-full mt-4 space-y-3">
+                            <div class="bg-slate-50 p-2.5 rounded-lg text-[11px] md:text-xs text-gray-600">
+                                👤 <strong class="text-gray-900">พนักงาน:</strong> <span id="cam-user-name">กำลังโหลด...</span><br>
+                                🆔 <strong>รหัสสังกัด:</strong> KM-2026-004
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="captureAndRecord('เข้างาน')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg transition text-xs shadow">🛫 เข้างาน (Check-In)</button>
+                                <button onclick="captureAndRecord('ออกงาน')" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 rounded-lg transition text-xs shadow">🛬 ออกงาน (Check-Out)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                            <h3 class="text-xs md:text-sm font-bold text-gray-800">📊 บันทึกประวัติและรูปภาพยืนยันตัวตน</h3>
+                        </div>
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left text-xs md:text-sm text-gray-600 min-w-[500px]">
+                                <thead class="bg-gray-50 text-[10px] md:text-xs text-gray-500 font-semibold uppercase">
+                                    <tr>
+                                        <th class="px-3 py-2">ภาพถ่าย</th>
+                                        <th class="px-3 py-2">ชื่อพนักงาน</th>
+                                        <th class="px-3 py-2">วันที่ / เวลาบันทึก</th>
+                                        <th class="px-3 py-2">ประเภทการลง</th>
+                                        <th class="px-3 py-2">สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendance-table-body" class="divide-y divide-gray-100">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-leave" class="tab-content hidden p-6 bg-white rounded-xl shadow-sm border border-gray-100 text-sm">
+                <h3 class="text-lg font-bold mb-2">📅 ระบบส่งคำร้องขอลาหยุดงาน</h3>
+                <p class="text-gray-500">ฟังก์ชันยื่นแบบฟอร์มใบลาป่วย ลากิจ หรือพักร้อน พร้อมส่งอนุมัติส่งตรงไปที่ฝ่ายทรัพยากรบุคคลอิเล็กทรอนิกส์</p>
+            </div>
+            <div id="tab-announcements" class="tab-content hidden p-6 bg-white rounded-xl shadow-sm border border-gray-100 text-sm">
+                <h3 class="text-lg font-bold mb-2">📢 กระดานประกาศสารจากบริษัท</h3>
+                <p class="text-gray-500">รับข้อมูลข่าวสาร กิจกรรมภายในองค์กร นโยบาย และคำสั่งเร่งด่วนของบริษัท KM Service Plus อย่างเป็นทางการ</p>
+            </div>
+            <div id="tab-payslip" class="tab-content hidden p-6 bg-white rounded-xl shadow-sm border border-gray-100 text-sm">
+                <h3 class="text-lg font-bold mb-2">💰 เอกสารสลิปเงินเดือนรายเดือน (E-Payslip)</h3>
+                <p class="text-gray-500">พนักงานตรวจสอบยอดรายรับ รายจ่าย ภาษีหัก ณ ที่จ่าย และเงินสมทบกองทุนประกันสังคมประจำเดือนได้อย่างปลอดภัย</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ระบบข้อมูลพนักงานจำลองในระบบและประวัติตั้งต้น
+        let appState = {
+            employeeName: "นายสมชาย ตั้งใจทำงาน",
+            employeeDept: "แผนกปฏิบัติการและบริการ",
+            attendanceLogs: [
+                { 
+                    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=60", 
+                    name: "นายสมชาย ตั้งใจทำงาน", 
+                    datetime: "20/05/2026 - 08:30 น.", 
+                    type: "เข้างาน", 
+                    status: "ตรงเวลา" 
+                }
+            ]
+        };
+
+        let streamInstance = null;
+
+        // ฟังก์ชันสลับการแสดงผล "หน้าจอหลักใหญ่" (Login, SignUp, Forgot, Main)
+        function switchPage(pageId) {
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-signup').classList.add('hidden');
+            document.getElementById('page-forgot').classList.add('hidden');
+            document.getElementById('page-main').classList.add('hidden');
+
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            
+            // เคลียร์ระบบสตรีมกล้องหากหลุดไปหน้าล็อกอิน
+            if(pageId !== 'main') stopWebcam();
+        }
+
+        // ฟังก์ชันสลับเมนูแท็บย่อย (Dashboard, Attendance, Leave, etc.)
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // เคลียร์สถานะสไตล์ปุ่มเดิมบนคอมพิวเตอร์
+            document.querySelectorAll('.pc-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+            });
+            // เคลียร์สถานะสไตล์ปุ่มเดิมบนมือถือ
+            document.querySelectorAll('.mobile-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-slate-300', 'hover:bg-slate-700');
+            });
+
+            // เปิดแสดงเนื้อหาหน้าที่เลือก
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            // เปลี่ยนสีปุ่มที่คลิกใช้งาน (PC)
+            const activePcBtn = document.getElementById(`btn-tab-${tabId}`);
+            if (activePcBtn) {
+                activePcBtn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                activePcBtn.classList.add('bg-blue-600', 'text-white');
+            }
+            // เปลี่ยนสีปุ่มที่คลิกใช้งาน (Mobile)
+            const activeMobileBtn = document.getElementById(`m-btn-tab-${tabId}`);
+            if (activeMobileBtn) {
+                activeMobileBtn.classList.remove('text-slate-300', 'hover:bg-slate-700');
+                activeMobileBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            // จัดการคุมคำสั่งเปิด/ปิดใช้งานอุปกรณ์เว็บแคม
+            if (tabId === 'attendance') { initWebcam(); } else { stopWebcam(); }
+        }
+
+        // กระบวนการเมื่อกดยื่นส่งฟอร์มเข้าสู่ระบบ (Login)
+        function handleLogin(event) {
+            event.preventDefault();
+            // นำข้อมูลโปรไฟล์ปัจจุบันอัปเดตไปแสดงตามจุดต่างๆ ในแอปพลิเคชันหลัก
+            updateUIProfile();
+            switchPage('main');
+            switchTab('dashboard');
+        }
+
+        // กระบวนการลงทะเบียนพนักงานใหม่ (Sign Up)
+        function handleSignUp(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('reg-name').value;
+            const deptInput = document.getElementById('reg-department').value;
+            const passInput = document.getElementById('reg-password').value;
+            const confirmPass = document.getElementById('reg-confirm-password').value;
+
+            if (passInput !== confirmPass) {
+                alert("❌ รหัสผ่านทั้งสองช่องไม่ตรงกัน กรุณาตรวจสอบใหม่");
+                return;
+            }
+
+            // บันทึกตัวแปรลงหน่วยความจำชั่วคราว
+            appState.employeeName = nameInput;
+            appState.employeeDept = deptInput;
+            
+            alert(`🎉 ลงทะเบียนสำเร็จ! บัญชีของคุณได้รับการผูกกับหน่วยงาน ${deptInput} เรียบร้อยแล้ว ระบบจะพาท่านกลับสู่หน้าเข้าสู่ระบบ`);
+            switchPage('login');
+        }
+
+        // กระบวนการหน้ายื่นคำร้องลืมรหัสผ่าน
+        function handleForgot(event) {
+            event.preventDefault();
+            alert("📩 แนบลิงก์สำหรับกู้คืนสิทธิ์เข้าใช้งานรหัสผ่านใหม่ไปยังอีเมลพนักงานของท่านเสร็จสิ้น โปรดตรวจสอบในกล่องข้อความ");
+            switchPage('login');
+        }
+
+        // ฟังก์ชันออกจากระบบ
+        function handleLogout() {
+            if(confirm("คุณต้องการออกจากระบบบริการงานบุคคลใช่หรือไม่?")) {
+                switchPage('login');
+            }
+        }
+
+        // รีเฟรชอัปเดตชื่อพนักงานตามตัวแปรที่กรอกสมัคร
+        function updateUIProfile() {
+            document.getElementById('pc-user-name').textContent = appState.employeeName;
+            document.getElementById('pc-user-dept').textContent = appState.employeeDept;
+            document.getElementById('mb-user-profile').textContent = `👤 ${appState.employeeName}`;
+            document.getElementById('cam-user-name').textContent = appState.employeeName;
+        }
+
+        // การเปิดสิทธิ์ระบบกล้องวิดีโอ
+        async function initWebcam() {
+            const video = document.getElementById('webcam');
+            const placeholder = document.getElementById('camera-placeholder');
+            try {
+                streamInstance = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                video.srcObject = streamInstance;
+                placeholder.classList.add('hidden');
+            } catch (err) {
+                placeholder.textContent = "🔒 [จำลองกล้อง] ระบบดึงภาพกล้องทำงานเสร็จสิ้น (ระบบกล้องอุปกรณ์จริงจะเปิดออโต้บนลิงก์ HTTPS ของ Vercel)";
+            }
+        }
+
+        function stopWebcam() {
+            if (streamInstance) {
+                streamInstance.getTracks().forEach(track => track.stop());
+                streamInstance = null;
+            }
+        }
+
+        // ฟังก์ชันสั่งการบันทึกภาพถ่ายและล็อกประวัติ
+        function captureAndRecord(type) {
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('photo-canvas');
+            const context = canvas.getContext('2d');
+            
+            // ภาพกรณีไม่มีกล้องจริง
+            let photoDataUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100";
+
+            if (streamInstance && video.videoWidth > 0) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                photoDataUrl = canvas.toDataURL('image/jpeg');
+            }
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
+            
+            // จัดการล็อคการดึงคริสต์ศักราช (ค.ศ. 2026) เพื่อตัดปัญหา พ.ศ. ของเครื่องไคลเอนต์เพี้ยน
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const dateString = `${day}/${month}/${year}`;
+
+            let status = 'ปกติ';
+            if (type === 'เข้างาน') {
+                status = (now.getHours() >= 9) ? 'สาย' : 'ตรงเวลา';
+                document.getElementById('stat-attendance').textContent = `เข้างานแล้ว (${timeString})`;
+                document.getElementById('stat-attendance').className = "text-sm md:text-lg font-bold text-emerald-600 mt-1";
+            } else {
+                document.getElementById('stat-attendance').textContent = `ออกงานแล้ว (${timeString})`;
+                document.getElementById('stat-attendance').className = "text-sm md:text-lg font-bold text-slate-500 mt-1";
+            }
+
+            // ใส่ข้อมูลใหม่ลงไปบนหัวตารางแถวแรกสุด
+            appState.attendanceLogs.unshift({
+                photo: photoDataUrl,
+                name: appState.employeeName,
+                datetime: `${dateString} - ${timeString}`,
+                type: type,
+                status: status
+            });
+
+            renderAttendanceLogs();
+            alert(`[KM Service Plus] ยืนยันบันทึกเวลาปฏิบัติงานประเภท [${type}] และจัดเก็บพิกัดหลักฐานภาพพนักงานเสร็จสิ้น!`);
+        }
+
+        function renderAttendanceLogs() {
+            const tbody = document.getElementById('attendance-table-body');
+            tbody.innerHTML = '';
+            
+            appState.attendanceLogs.forEach(log => {
+                const statusColor = log.status === 'สาย' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800';
+                const row = `
+                    <tr class="hover:bg-slate-50 text-[11px] md:text-sm">
+                        <td class="px-3 py-2.5">
+                            <img src="${log.photo}" class="w-10 h-10 md:w-12 md:h-12 object-cover rounded-lg border border-gray-200" alt="หลักฐานภาพ">
+                        </td>
+                        <td class="px-3 py-2.5 font-medium text-gray-900">${log.name}</td>
+                        <td class="px-3 py-2.5 text-gray-600">${log.datetime}</td>
+                        <td class="px-3 py-2.5 font-semibold ${log.type === 'เข้างาน' ? 'text-emerald-600': 'text-rose-600'}">${log.type}</td>
+                        <td class="px-3 py-2.5"><span class="px-2 py-0.5 text-[10px] font-medium ${statusColor} rounded-full">${log.status}</span></td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // อัปเดตนาฬิกาให้ทำงานพร้อมกันทุกจอภาพ
+        function updateClock() {
+            const now = new Date();
+            const timeStr = "🕒 " + now.toLocaleTimeString('th-TH') + " น.";
+            
+            const clockPc = document.getElementById('live-clock-pc');
+            const clockMobile = document.getElementById('live-clock-mobile');
+            
+            if (clockPc) clockPc.textContent = timeStr;
+            if (clockMobile) clockMobile.textContent = now.toLocaleTimeString('th-TH');
+        }
+        
+        // เมื่อระบบโหลดเบื้องต้น ให้สร้างตารางประวัติทันที
+        window.onload = function() {
+            renderAttendanceLogs();
+            setInterval(updateClock, 1000);
+        };
+    </script>
+</body>
+</html>
