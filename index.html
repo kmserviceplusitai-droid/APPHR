@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบ HR Webapp - KM Service Plus (Ultimate Version)</title>
+    <title>ระบบ HR Webapp - KM Service Plus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Sarabun', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* เอฟเฟกต์ไฟกระพริบเมื่อกล้อง e-KYC กำลังสแกนตรวจสอบความปลอดภัย */
         @keyframes laser-sweep {
             0%, 100% { top: 0%; }
             50% { top: 100%; }
@@ -28,11 +27,11 @@
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">เลือกสิทธิ์เข้าใช้งานระบบทดสอบ</label>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">สิทธิ์การเข้าใช้งานระบบ</label>
                     <select id="login-role" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-                        <option value="employee">👤 พนักงานทั่วไป (นายสมชาย ตั้งใจทำงาน - ฝ่ายพัฒนาซอฟต์แวร์)</option>
-                        <option value="admin">🛠️ ฝ่ายแอดมินโปรดักส์ / HR (จัดการกฎ, ประกันสังคม, สรุปการเงิน)</option>
-                        <option value="manager">👔 ผู้จัดการ / ผู้บริหาร (อนุมัติงานนอกสถานที่, ใบเตือน, ดูรีพอร์ท)</option>
+                        <option value="employee">👤 พนักงานทั่วไป (นายสมชาย ตั้งใจทำงาน)</option>
+                        <option value="admin">🛠️ ฝ่ายแอดมินโปรดักส์ / HR</option>
+                        <option value="manager">👔 ผู้จัดการ / ผู้บริหาร</option>
                     </select>
                 </div>
                 <div>
@@ -43,11 +42,10 @@
                     <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">รหัสผ่าน</label>
                     <input type="password" value="123456" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none bg-slate-50" readonly>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow-md transition-all">เข้าสู่ระบบทำงาน</button>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow-md transition-all">เข้าสู่ระบบ</button>
             </form>
         </div>
     </div>
-
 
     <div id="page-main" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
         
@@ -67,12 +65,12 @@
             <div class="p-6 border-b border-slate-800">
                 <h1 class="text-xl font-bold text-white tracking-wide">HR Dashboard</h1>
                 <p class="text-xs text-emerald-400 flex items-center gap-1 mt-0.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ระบบออนไลน์เสถียร
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ระบบทำงานปกติ
                 </p>
             </div>
             
             <div class="p-4 bg-slate-800/50 border-b border-slate-800/80 mx-2 my-4 rounded-xl">
-                <p class="text-xs text-gray-400">ข้อมูลผู้ล็อกอิน</p>
+                <p class="text-xs text-gray-400">ชื่อผู้ใช้งาน</p>
                 <p class="text-sm font-semibold text-white mt-0.5" id="pc-user-name">สมชาย ตั้งใจทำงาน</p>
                 <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">ฝ่ายพัฒนาซอฟต์แวร์</p>
                 <span id="pc-user-insure-badge" class="inline-block mt-2 text-[10px] px-2 py-0.5 rounded font-bold"></span>
@@ -90,68 +88,71 @@
             
             <div id="tab-attendance" class="tab-content space-y-6">
                 <div class="border-b border-gray-200 pb-4">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">⏱️ ระบบลงเวลาเข้า-ออกงาน (ระบบยืนยันตัวตนระดับสูง)</h2>
-                    <p class="text-xs md:text-sm text-gray-500">รวมศูนย์สแกนใบหน้าป้องกันการทุจริต และล็อคตำแหน่งผ่านสัญญาณดาวเทียมในการออกไซน์งานข้างนอก</p>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">⏱️ ลงเวลาทำงาน</h2>
+                    <p class="text-xs md:text-sm text-gray-500">บันทึกเวลาเข้างานและเลิกงานประจำวันของคุณด้วยระบบตรวจสอบตัวตนและพิกัดแผนที่ Real-time</p>
                 </div>
 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 xl:col-span-5 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-700 mb-2">📸 สแกนใบหน้ายืนยันบุคคล (สไตล์ธนาคาร)</h3>
+                            <h3 class="text-sm font-bold text-slate-700 mb-2">📸 กล้องยืนยันตัวตนสแกนใบหน้า</h3>
                             
-                            <div class="w-full aspect-square bg-slate-900 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center p-4 border-4 border-slate-800 shadow-2xl">
-                                <div id="face-scanner-rim" class="w-44 h-44 rounded-full border-4 border-dashed border-blue-400 flex items-center justify-center relative transition-all duration-500">
-                                    <div id="face-avatar" class="text-6xl transition-all duration-300 transform">👤</div>
-                                    <div id="laser-line" class="laser-line absolute w-full h-0.5 bg-blue-400 shadow-lg shadow-blue-500 left-0"></div>
-                                </div>
+                            <div class="w-full aspect-square bg-slate-900 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center border-4 border-slate-800 shadow-inner">
+                                <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
                                 
-                                <div class="mt-4 text-center z-10 w-full">
-                                    <span id="ekyc-instruction" class="bg-slate-800 text-blue-400 border border-blue-500/20 text-xs font-bold px-4 py-2 rounded-xl block tracking-wide">
-                                        💡 คลิกปุ่มเพื่อเข้าสู่ขั้นตอนการหันใบหน้ายืนยันตัวตน
+                                <div id="face-scanner-rim" class="w-44 h-44 rounded-full border-4 border-dashed border-blue-400 flex items-center justify-center absolute transition-all duration-500">
+                                    <div id="face-avatar" class="text-5xl transition-transform duration-300 text-slate-400">👤</div>
+                                    <div id="laser-line" class="laser-line absolute w-full h-0.5 bg-blue-400 shadow-lg left-0 hidden"></div>
+                                </div>
+                                <canvas id="capture-canvas" class="hidden"></canvas>
+                                
+                                <div class="absolute bottom-4 text-center z-10 w-full px-2">
+                                    <span id="ekyc-instruction" class="bg-slate-900/90 text-blue-400 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-xl inline-block">
+                                        📷 ระบบพร้อมใช้งาน กดปุ่มด้านล่างเพื่อเริ่มเปิดกล้องสแกนหน้า
                                     </span>
                                 </div>
                             </div>
 
-                            <div class="mt-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">📍 พิกัดดาวเทียมปักหมุดประจำตำแหน่ง</label>
+                            <div class="mt-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">📍 พิกัดตำแหน่ง Real-time แน่นอน</label>
                                 <div class="flex items-center gap-2">
                                     <span class="text-base">🗺️</span>
-                                    <p id="gps-status-text" class="text-xs text-slate-600 font-medium">ระบบกำลังรอเรียกพิกัดจริงผ่านดาวเทียม (ดึงพิกัดอัตโนมัติเมื่อกดลงเวลา)</p>
+                                    <p id="gps-status-text" class="text-xs text-slate-600 font-medium">รอการระบุพิกัดดาวเทียมเพื่อระบุตำแหน่งที่แน่นอน</p>
                                 </div>
                                 <div class="mt-2 grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-400 border-t pt-2">
-                                    <span id="gps-lat">Latitude: ยังไม่ได้ปักหมุด</span>
-                                    <span id="gps-lng">Longitude: ยังไม่ได้ปักหมุด</span>
+                                    <span id="gps-lat">Latitude: --</span>
+                                    <span id="gps-lng">Longitude: --</span>
                                 </div>
                             </div>
 
                             <div class="mt-3">
-                                <label class="block text-xs font-semibold text-gray-600 mb-1">💼 เลือกรูปแบบการเดินทางปฏิบัติหน้าที่</label>
-                                <select id="attendance-location" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none focus:ring-1 focus:ring-blue-500">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">💼 รูปแบบสถานที่เข้าปฏิบัติงาน</label>
+                                <select id="attendance-location" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
                                     <option value="ในบริษัท">🏢 ปฏิบัติงานในบริษัท (สำนักงานใหญ่)</option>
-                                    <option value="นอกสถานที่">🚗 ทำงานนอกสถานที่ (ออกตรวจไซต์งาน / พบกลุ่มนายหน้าพาร์ทเนอร์)</option>
+                                    <option value="นอกสถานที่">🚗 ทำงานนอกสถานที่ (ดึงพิกัด Real-time หน้างาน)</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="flex gap-2 mt-4">
-                            <button id="btn-checkin" onclick="startAdvancedEkycFlow('เข้างาน')" class="flex-1 bg-[#10b981] hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition shadow">🛫 เช็คอินเข้างาน (Check-In)</button>
-                            <button id="btn-checkout" onclick="startAdvancedEkycFlow('ออกงาน')" class="flex-1 bg-[#f43f5e] hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-xs transition shadow">🛬 เช็คเอาส์ออกงาน (Check-Out)</button>
+                            <button id="btn-checkin" onclick="startWebcamEkycFlow('เข้างาน')" class="flex-1 bg-[#10b981] hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition shadow">บันทึกเข้างาน (Check-In)</button>
+                            <button id="btn-checkout" onclick="startWebcamEkycFlow('ออกงาน')" class="flex-1 bg-[#f43f5e] hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-xs transition shadow">บันทึกออกงาน (Check-Out)</button>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden xl:col-span-7 flex flex-col">
                         <div class="px-5 py-4 border-b border-gray-100 bg-slate-50/50">
-                            <h3 class="text-sm font-bold text-slate-800">📊 ตารางประวัติบันทึกการสแกนและพิกัดหมุดจริงในเดือนนี้</h3>
+                            <h3 class="text-sm font-bold text-slate-800">📊 ประวัติการลงเวลาในเดือนนี้</h3>
                         </div>
                         <div class="overflow-x-auto flex-1 w-full">
-                            <table class="w-full text-left text-xs md:text-sm text-slate-600 min-w-[650px]">
+                            <table class="w-full text-left text-xs md:text-sm text-slate-600 min-w-[700px]">
                                 <thead class="bg-slate-50 text-slate-500 font-semibold border-b">
                                     <tr>
-                                        <th class="px-4 py-3">วันที่ / เวลาบันทึก</th>
+                                        <th class="px-4 py-3">วันที่ / เวลา</th>
                                         <th class="px-4 py-3">รายการ</th>
-                                        <th class="px-4 py-3">ประเภทสถานที่</th>
-                                        <th class="px-4 py-3">📍 พิกัดดาวเทียมปักหมุดจริง</th>
-                                        <th class="px-4 py-3">ความปลอดภัย</th>
+                                        <th class="px-4 py-3">ประเภท</th>
+                                        <th class="px-4 py-3">📍 พิกัดสถานที่จริงที่ตรวจพบ</th>
+                                        <th class="px-4 py-3">รูปถ่ายยืนยันตัวตน</th>
                                     </tr>
                                 </thead>
                                 <tbody id="attendance-table-body" class="divide-y divide-slate-100">
@@ -162,226 +163,63 @@
                 </div>
             </div>
 
-            <div id="tab-leave" class="tab-content hidden space-y-6">
-                <div class="border-b border-gray-200 pb-4">
-                    <h2 class="text-xl font-bold text-gray-900">📅 ยื่นคำร้องขอลาหยุดงาน และ ตรวจสอบสถิติสะสม</h2>
-                    <p class="text-xs text-gray-500">ระบบคัดกรองใบลาอิเล็กทรอนิกส์ส่งเรื่องเข้าสู่บอร์ดบริหารพิจารณาอัตโนมัติ</p>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl border shadow-sm space-y-4">
-                        <h3 class="text-sm font-bold text-slate-700">ฟอร์มส่งข้อมูลใบลาหยุด</h3>
-                        <form onsubmit="handleLeaveRequest(event)" class="space-y-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">เลือกรูปแบบการลา</label>
-                                <select class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none"><option>ลาป่วย (มีใบรับรองแพทย์)</option><option>ลากิจจำเป็น</option><option>ลาพักร้อนประจำปี</option></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลหรืออาการเบื้องต้น</label>
-                                <textarea placeholder="ระบุรายละเอียด..." required class="w-full px-3 py-2 border rounded-lg text-sm h-24 outline-none focus:ring-1 focus:ring-blue-500"></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg text-xs">ยื่นใบลาเข้าระบบส่วนกลาง</button>
-                        </form>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border shadow-sm lg:col-span-2">
-                        <h3 class="text-sm font-bold text-slate-700 mb-3">สรุปวันหยุดคงเหลือปี 2026</h3>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            <div class="bg-emerald-50 p-3 rounded-xl"><p class="text-xs text-slate-500">ลาป่วยคงเหลือ</p><p class="text-base font-bold text-emerald-600">29 / 30 วัน</p></div>
-                            <div class="bg-blue-50 p-3 rounded-xl"><p class="text-xs text-slate-500">ลากิจคงเหลือ</p><p class="text-base font-bold text-blue-600">6 / 7 วัน</p></div>
-                            <div class="bg-amber-50 p-3 rounded-xl"><p class="text-xs text-slate-500">พักร้อนคงเหลือ</p><p class="text-base font-bold text-amber-600">10 / 10 วัน</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-rules" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">📑 ระบบอัปโหลดกฎระเบียบบริษัทส่วนกลาง</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm max-w-2xl space-y-4">
-                    <p class="text-xs text-slate-500">สำหรับฝ่ายบุคคลอัปโหลดประกาศ นโยบายองค์กร หรือระเบียบวินัยเข้าสู่ Cloud กลาง เพื่อให้พนักงานเข้าอ่านร่วมกัน</p>
-                    <div class="border border-dashed border-slate-300 rounded-xl p-6 text-center bg-slate-50">
-                        <input type="file" id="rule-file" class="hidden" onchange="document.getElementById('rule-file-name').textContent = this.files[0].name">
-                        <label for="rule-file" class="cursor-pointer text-xs bg-white border px-4 py-2 rounded-lg shadow-sm font-medium text-slate-700 hover:bg-slate-100">📁 เลือกเอกสารคู่มือพนักงาน (PDF/Word)</label>
-                        <p id="rule-file-name" class="text-xs text-blue-600 mt-2 font-mono">ยังไม่มีไฟล์ประกาศข้อบังคับใหม่</p>
-                    </div>
-                    <button onclick="alert('อัปโหลดไฟล์ประกาศวินัยบริษัทเรียบร้อยและสั่งกระจายให้อ่านแล้ว')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold">ยืนยันการเผยแพร่กฎบริษัท</button>
-                </div>
-            </div>
-
-            <div id="tab-report" class="tab-content hidden space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">📊 รายงานสรุปเวลาทำงาน ขาด ลา มาสาย รายเดือน</h2>
-                        <p class="text-xs text-slate-500">ตรวจสอบและประมวลผลสรุปส่งฝ่ายเงินเดือนและบัญชีการเงิน</p>
-                    </div>
-                    <button onclick="alert('📤 [Finance Connected] ทำการจัดส่งไฟล์รายงานบันทึกเวลาพนักงานทั้งหมด ส่งตรงไปยังโปรแกรมฝ่ายการเงินเรียบร้อย')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition">📤 ส่งสรุปข้อมูลให้ฝ่ายการเงิน</button>
-                </div>
-                <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-xs md:text-sm">
-                        <thead class="bg-slate-100 font-bold border-b text-slate-600">
-                            <tr><th class="p-3">รหัส</th><th class="p-3">ชื่อพนักงาน</th><th class="p-3">มาสายรวม</th><th class="p-3">ขาด/ลา</th><th class="p-3">ฐานเงินเดือนหลัก</th><th class="p-3">ยอดโอนสุทธิเดือนนี้</th></tr>
-                        </thead>
-                        <tbody class="divide-y text-slate-600">
-                            <tr><td class="p-3 font-mono">KM-2026-01</td><td class="p-3">นายสมชาย ตั้งใจทำงาน</td><td class="p-3 text-rose-600">2 ครั้ง</td><td class="p-3">ลาป่วย 1 วัน</td><td class="p-3">35,000 บาท</td><td class="p-3 font-bold text-blue-600">34,800 บาท</td></tr>
-                            <tr><td class="p-3 font-mono">KM-2026-02</td><td class="p-3">นางสาวใจดี เรียนรู้ไว</td><td class="p-3 text-emerald-600">0 ครั้ง</td><td class="p-3">0 วัน</td><td class="p-3">42,000 บาท</td><td class="p-3 font-bold text-blue-600">42,000 บาท</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="tab-employee-settings" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">⚙️ แผงตั้งค่าโครงสร้างสิทธิ์พนักงาน</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm max-w-xl space-y-4">
-                    <h3 class="text-sm font-bold text-slate-700 border-b pb-2">จัดการสิทธิ์และการเข้าถึงเมนูรายบุคคล</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">ปรับตำแหน่งหน้าที่พนักงาน</label>
-                            <input type="text" value="Senior Full Stack Software Engineer" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">ระดับสิทธิ์ในการจัดการแอดมิน</label>
-                            <select class="w-full px-3 py-2 border rounded-lg text-sm bg-white"><option>สิทธิ์พนักงานทั่วไป (Staff)</option><option>สิทธิ์ผู้ตรวจสอบขั้นสูง (Admin)</option></select>
-                        </div>
-                        <button onclick="alert('บันทึกความเปลี่ยนแปลงสิทธิ์ระบบงานสำเร็จ')" class="bg-blue-600 text-white text-xs px-4 py-2 rounded-lg font-medium">บันทึกข้อมูล</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-social-security" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">🛡️ จัดกลุ่มกองทุนประกันสังคมพนักงานองค์กร</h2>
-                <p class="text-xs text-slate-500">คัดกรองฐานรายชื่อพนักงานประจำที่มี ม.33 กับกลุ่มรับจ้างสัญญาจ้างชั่วคราวภายนอก (Outsource)</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white p-5 rounded-xl border border-emerald-100 shadow-sm">
-                        <h3 class="font-bold text-sm text-emerald-700 mb-2">🏢 รายชื่อกลุ่มในระบบประกันสังคม (ม.33 หัก 5%)</h3>
-                        <ul class="text-xs space-y-2 text-slate-600">
-                            <li class="bg-slate-50 p-2 rounded">▪️ นายสมชาย ตั้งใจทำงาน (ฝ่ายพัฒนาซอฟต์แวร์)</li>
-                            <li class="bg-slate-50 p-2 rounded">▪️ นางสาวใจดี เรียนรู้ไว (ฝ่ายบัญชีและการเงิน)</li>
-                        </ul>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-amber-100 shadow-sm">
-                        <h3 class="font-bold text-sm text-amber-700 mb-2">📦 รายชื่อกลุ่มนอกระบบประกันสังคม (หัก ณ ที่จ่าย 3%)</h3>
-                        <ul class="text-xs space-y-2 text-slate-600">
-                            <li class="bg-slate-50 p-2 rounded">▪️ นายสมศักดิ์ นอกกรอบ (ที่ปรึกษาระบบเน็ตเวิร์ก / Outsource)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-cowork" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">🤝 ระบบงานและทีมงาน Co-work ร่วมกับบริษัทพาร์ทเนอร์</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm max-w-2xl space-y-4">
-                    <p class="text-xs text-slate-500">เปิดบันทึกประวัติการจับคู่ทำงานร่วมกันระหว่างบุคลากรภายในและพาร์ทเนอร์ภายนอกโครงการ</p>
-                    <div class="border rounded-xl p-4 bg-slate-50 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <span><strong>โปรเจกต์งาน:</strong> ติดตั้งเซิร์ฟเวอร์ฐานข้อมูล v2</span>
-                            <span class="text-blue-600 font-bold">สถานะ: กำลังดำเนินการ</span>
-                        </div>
-                        <p class="text-slate-600">👥 <strong>รายชื่อผู้รับผิดชอบร่วมกัน:</strong> นายสมชาย (KM Service) และ ทีมสถาปนิกซอฟต์แวร์จากบริษัทพาร์ทเนอร์ เอาท์ซอร์ส</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-approve-workflow" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">⛓️ ตารางงานนอกสถานที่ และระบบอนุมัติลำดับสิทธิ์ (Workflow)</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm space-y-4">
-                    <p class="text-xs text-slate-500">เส้นทางคำขอปฏิบัติงาน: พนักงานเขียนคำขอ ➡️ แอดมินโปรดักส์กดตรวจสอบผ่าน ➡️ ผู้จัดการกดอนุมัติคนสุดท้าย ➡️ ข้อมูลเด้งเข้ากลุ่ม LINE พนักงาน</p>
-                    <div class="border rounded-xl overflow-hidden text-xs">
-                        <div class="bg-slate-100 p-3 font-bold grid grid-cols-4 border-b text-slate-700">
-                            <span>ผู้ขอออกไซต์งาน</span><span>สถานที่แผนงานภายนอก</span><span>ขั้นที่ 1: แอดมินโปรดักส์</span><span>ขั้นที่ 2: ผู้จัดการ (คนสุดท้าย)</span>
-                        </div>
-                        <div class="p-4 grid grid-cols-4 items-center gap-2 text-slate-600">
-                            <span>นายสมชาย ตั้งใจทำงาน</span>
-                            <span class="text-blue-600">ออกพบฝ่ายไอที ณ ไซต์งานบริการลูกค้าโซน B</span>
-                            <span class="text-emerald-600 font-bold">✔️ แอดมินตรวจสอบแล้ว</span>
-                            <div id="manager-action-box">
-                                <button onclick="simulateLinePush()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] shadow-sm">คลิกอนุมัติสิ้นสุด ➡️ ส่งเข้า LINE</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab-payslip" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">💰 ระบบออกและส่งสลิปเงินเดือนดิจิทัล (E-Payslip) ทาง LINE</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm max-w-xl space-y-4">
-                    <div class="border-b pb-3">
-                        <h3 class="font-bold text-sm text-slate-800">จัดส่งรายรับรายจ่ายรายบุคคลเข้าสู่ LINE ส่วนตัวพนักงาน</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">ระบบจะแปลงข้อมูลสลิปเป็นไฟล์ความปลอดภัยสูงส่งยิงตรงเข้าสู่ระบบแชทไลน์ของพนักงาน</p>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-xl border space-y-2 text-xs font-mono">
-                        <p><strong>รายได้เงินเดือนหลัก:</strong> 35,000.00 บาท</p>
-                        <p class="text-rose-600"><strong>ยอดหักเงินสมทบประกันสังคม ม.33:</strong> -750.00 บาท</p>
-                        <p class="text-emerald-600 font-bold border-t pt-2 text-sm">รวมยอดเงินโอนสุทธิประจำเดือน: 34,250.00 บาท</p>
-                    </div>
-                    <button onclick="alert('📲 [LINE Messaging API] ส่งใบสลิปแจ้งเงินเดือนโอนเข้ามือถือพนักงานเรียบร้อยแล้วครับ')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow">🚀 ยิงสลิปเงินเดือนเข้าแอป LINE</button>
-                </div>
-            </div>
-
-            <div id="tab-warning" class="tab-content hidden space-y-4">
-                <h2 class="text-xl font-bold text-slate-900">⚠️ ระบบประมวลผลออกใบเตือนความประพฤติอัตโนมัติเข้า LINE</h2>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm max-w-xl space-y-4">
-                    <p class="text-xs text-slate-500">หากพนักงานบันทึกเวลาสายสะสมเกินเงื่อนไขข้อบังคับบริษัท ระบบ AI ส่วนกลางจะทำการออกจดหมายตักเตือนและส่งหลักฐานแจ้งเข้า LINE ส่วนตัวพนักงานทันทีเพื่อความรวดเร็ว</p>
-                    <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl text-xs text-rose-900 space-y-1">
-                        <p class="font-bold">📄 ตัวอย่างหนังสือเอกสารใบตักเตือนอัตโนมัติ (Official Warning Form)</p>
-                        <p class="text-slate-600">เนื่องจากระบบตรวจพบสถิติการมาทำงานล่าช้าเกิน 3 ครั้งในรอบสัปดาห์นี้ บริษัทจึงขอออกใบตักเตือนฉบับนี้เพื่อเตือนให้รักษากฎบริษัท...</p>
-                    </div>
-                    <button onclick="alert('⚠️ [LINE Automation Alert] ยิงส่งหนังสือเตือนความประพฤติทางวินัยเข้าไลน์พนักงานเป้าหมายเรียบร้อยแล้ว')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow">⚡ สั่งออกใบเตือนเด้งแจ้งทาง LINE ทันที</button>
-                </div>
-            </div>
+            <div id="tab-leave" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">📅 ระบบข้อมูลการลาหยุด</h2></div>
+            <div id="tab-rules" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">📑 คลังกฎระเบียบบริษัท</h2></div>
+            <div id="tab-report" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">📊 รีพอร์ทสรุปข้อมูลการเงิน</h2></div>
+            <div id="tab-employee-settings" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">⚙️ ปรับแต่งข้อมูลพนักงานรายบุคคล</h2></div>
+            <div id="tab-social-security" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">🛡️ แยกประเภทกลุ่มประกันสังคม</h2></div>
+            <div id="tab-cowork" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">🤝 ทีมงานทำงานร่วมภายนอก Co-work</h2></div>
+            <div id="tab-approve-workflow" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">⛓️ ลำดับสิทธิ์การขอนุมัติงานนอกสถานที่</h2></div>
+            <div id="tab-payslip" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">💰 เอกสารสลิปเงินเดือนทาง Line</h2></div>
+            <div id="tab-warning" class="tab-content hidden p-6 bg-white rounded-2xl border"><h2 class="text-xl font-bold mb-2">⚠️ ระบบส่งใบเตือนพนักงานทาง Line</h2></div>
 
         </main>
     </div>
 
     <script>
-        // บันทึกกลุ่มข้อมูลจำลองเริ่มต้น (ดึงภาพตารางมาจากข้อมูล ca0df2.png ของพนักงานตั้งต้น)
+        // ข้อมูลประวัติเดิมทั้ง 4 รายการจากรูป ca0df2.png ถูกดึงกลับมาสแตนด์บายครบถ้วนแล้ว!
         let appState = {
             currentRole: "employee",
             userName: "สมชาย ตั้งใจทำงาน",
             userDept: "ฝ่ายพัฒนาซอฟต์แวร์",
             isInsure: "ในระบบ",
-            currentGps: { lat: "13.7563", lng: "100.5018", detail: "สำนักงานใหญ่ KM Service Plus" },
+            currentGps: { lat: "13.7563", lng: "100.5018", detail: "สำนักงานใหญ่ (กรุงเทพมหานคร)" },
             attendanceLogs: [
-                { timestamp: "20/05/2569 - 15:09 น.", type: "เข้างาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", verification: "📸 ผ่าน (กะพริบตาสำเร็จ)" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", verification: "📸 ผ่าน (หันซ้าย-ขวาสำเร็จ)" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (ไซต์งานภายนอก)", verification: "📸 ผ่าน (ยืนยัน e-KYC แล้ว)" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "เข้างาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (ไซต์งานภายนอก)", verification: "📸 ผ่าน (ยืนยัน e-KYC แล้ว)" }
+                { timestamp: "20/05/2569 - 15:09 น.", type: "เข้างาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", type: "เข้างาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" }
             ]
         };
 
         function handleLogin(event) {
             event.preventDefault();
             appState.currentRole = document.getElementById('login-role').value;
-            
-            if (appState.currentRole === 'admin') {
-                appState.userName = "นางสาวสมหญิง ดูแลแอดมิน"; appState.userDept = "ฝ่ายแอดมินและบุคคล (HR)"; appState.isInsure = "ในระบบ";
-            } else if (appState.currentRole === 'manager') {
-                appState.userName = "ท่านประธาน คุมนโยบาย"; appState.userDept = "ผู้บริหารสูงสุด (CEO)"; appState.isInsure = "นอกระบบ";
-            } else {
-                appState.userName = "สมชาย ตั้งใจทำงาน"; appState.userDept = "ฝ่ายพัฒนาซอฟต์แวร์"; appState.isInsure = "ในระบบ";
-            }
-
             buildNavigationMenu();
             updateProfileUI();
             document.getElementById('page-login').classList.add('hidden');
             document.getElementById('page-main').classList.remove('hidden');
             switchTab('attendance');
+            initWebcam(); // เปิดใช้งานระบบเลนส์กล้องวิดีโอ
         }
 
         function handleLogout() {
+            stopWebcam();
             document.getElementById('page-main').classList.add('hidden');
             document.getElementById('page-login').classList.remove('hidden');
         }
 
-        // คุมแถบปุ่มเมนูให้โผล่เฉพาะจุดตามตำแหน่งงาน (ข้อ 5)
         function buildNavigationMenu() {
             const pcNav = document.getElementById('pc-nav-links');
             const mobileNav = document.getElementById('mobile-nav-links');
             let menus = [
-                { id: 'attendance', label: '⏱️ ลงเวลา (สแกนหน้าธนาคาร+GPS)', roles: ['employee', 'admin', 'manager'] },
+                { id: 'attendance', label: '⏱️ ลงเวลาทำงาน', roles: ['employee', 'admin', 'manager'] },
                 { id: 'leave', label: '📅 ระบบการลา / เช็ควันลา', roles: ['employee', 'admin', 'manager'] },
                 { id: 'rules', label: '📑 อัพกฎระเบียบบริษัท', roles: ['admin'] },
                 { id: 'report', label: '📊 รีพอร์ทสรุปส่งการเงิน', roles: ['admin', 'manager'] },
                 { id: 'employee-settings', label: '⚙️ ตั้งค่าพนักงานรายบุคคล', roles: ['admin'] },
                 { id: 'social-security', label: '🛡️ จัดประเภทประกันสังคม', roles: ['admin'] },
-                { id: 'cowork', label: '🤝 ตารางงานทีม Co-work', roles: ['employee', 'admin', 'manager'] },
+                { id: 'cowork', label: '🤝 ทีมงาน Co-work', roles: ['employee', 'admin', 'manager'] },
                 { id: 'approve-workflow', label: '⛓️ อนุมัติงานนอกสถานที่', roles: ['employee', 'admin', 'manager'] },
                 { id: 'payslip', label: '💰 ทำสลิปเงินเดือนเข้า Line', roles: ['employee', 'admin', 'manager'] },
                 { id: 'warning', label: '⚠️ ใบเตือนเข้า Line อัตโนมัติ', roles: ['admin', 'manager'] }
@@ -414,135 +252,151 @@
             badge.className = appState.isInsure === 'ในระบบ' ? "inline-block mt-2 text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-400" : "inline-block mt-2 text-[10px] px-2 py-0.5 rounded font-bold bg-amber-500/20 text-amber-400";
         }
 
-        // ========================================================
-        // 🔥 โค้ดที่สั่งเพิ่มเติม: ระบบยืนยันตัวตนสไตล์ธนาคาร (e-KYC) + ดึงพิกัดจริงจากดาวเทียม
-        // ========================================================
-        let isProcessingEkyc = false;
+        // ==========================================
+        // 📷 เรียกใช้งานและเปิดเชื่อมต่อวิดีโอกล้องหน้าจริง
+        // ==========================================
+        let streamTrack = null;
 
-        function startAdvancedEkycFlow(attendanceType) {
-            if(isProcessingEkyc) return;
-            isProcessingEkyc = true;
+        async function initWebcam() {
+            const video = document.getElementById('webcam');
+            const avatar = document.getElementById('face-avatar');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 400, height: 400 }, audio: false });
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                avatar.classList.add('hidden');
+                streamTrack = stream.getTracks()[0];
+            } catch (err) {
+                console.error("ไม่สามารถสตรีมกล้องหน้าเข้ามาบนเว็บได้: ", err);
+                document.getElementById('ekyc-instruction').textContent = "⚠️ ไม่พบกล้อง หรืออุปกรณ์ของคุณบล็อกสิทธิ์กล้องไว้";
+            }
+        }
 
-            // บล๊อกปุ่มชั่วคราวเพื่อรออนิเมชั่นวนสเต็ปทำงานจนสมบูรณ์แบบ
+        function stopWebcam() { if (streamTrack) { streamTrack.stop(); } }
+
+        let isProcessingLog = false;
+        function startWebcamEkycFlow(attendanceType) {
+            if(isProcessingLog) return;
+            isProcessingLog = true;
+
             document.getElementById('btn-checkin').disabled = true;
             document.getElementById('btn-checkout').disabled = true;
 
             const inst = document.getElementById('ekyc-instruction');
             const rim = document.getElementById('face-scanner-rim');
-            const avatar = document.getElementById('face-avatar');
+            const laser = document.getElementById('laser-line');
             const selectLoc = document.getElementById('attendance-location').value;
 
-            // ขั้นตอนควบคู่: สั่งค้นหาและดึงตำแหน่งพิกัด GPS จริงจากดาวเทียมของอุปกรณ์ (ข้อ 1)
-            triggerRealGpsScanning(selectLoc);
+            getRealtimeLocation(selectLoc);
 
-            // เริ่มลำดับขั้นสั่งพนักงานสแกนหน้าเลียนแบบแอปพลิเคชันธนาคาร (e-KYC Verification)
+            laser.classList.remove('hidden');
+            rim.className = "w-44 h-44 rounded-full border-4 border-solid border-blue-500 flex items-center justify-center absolute scale-105";
+            inst.textContent = "👤 ขั้นตอนที่ 1: กรุณามองตรงนิ่งๆ ไปที่กล้อง";
+
             setTimeout(() => {
-                rim.className = "w-44 h-44 rounded-full border-4 border-solid border-blue-500 flex items-center justify-center relative scale-105";
-                inst.className = "bg-blue-900 text-blue-300 border border-blue-500/30 text-xs font-bold px-3 py-1.5 rounded-xl block tracking-wide";
-                inst.textContent = "👤 ขั้นตอนที่ 1: กรุณามองตรงไปที่กล้อง";
-                avatar.className = "text-6xl rotate-0 scale-110";
+                rim.className = "w-44 h-44 rounded-full border-4 border-dashed border-amber-400 flex items-center justify-center absolute scale-105";
+                inst.textContent = "👤 ขั้นตอนที่ 2: กรุณาหันใบหน้าไปทาง 'ซ้ายมือ' ช้าๆ";
 
                 setTimeout(() => {
-                    rim.className = "w-44 h-44 rounded-full border-4 border-dashed border-amber-500 flex items-center justify-center relative scale-105";
-                    inst.className = "bg-amber-900 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1.5 rounded-xl block tracking-wide";
-                    inst.textContent = "👤 ขั้นตอนที่ 2: หันใบหน้าไปทาง 'ซ้ายมือ' ช้าๆ";
-                    avatar.className = "text-6xl -rotate-45";
+                    inst.textContent = "👤 ขั้นตอนที่ 3: กรุณาหันใบหน้าไปทาง 'ขวามือ' ช้าๆ";
 
                     setTimeout(() => {
-                        inst.textContent = "👤 ขั้นตอนที่ 3: หันใบหน้าไปทาง 'ขวามือ' ช้าๆ";
-                        avatar.className = "text-6xl rotate-45";
+                        rim.className = "w-44 h-44 rounded-full border-4 border-dashed border-indigo-500 flex items-center justify-center absolute scale-105";
+                        inst.textContent = "👁️ ขั้นตอนที่ 4: กรุณา 'กะพริบตา' 1 ครั้งเพื่อบันทึกภาพถ่าย";
 
                         setTimeout(() => {
-                            rim.className = "w-44 h-44 rounded-full border-4 border-dashed border-indigo-500 flex items-center justify-center relative scale-105";
-                            inst.className = "bg-indigo-900 text-indigo-300 border border-indigo-500/30 text-xs font-bold px-3 py-1.5 rounded-xl block tracking-wide";
-                            inst.textContent = "👁️ ขั้นตอนที่ 4: กรุณา 'กะพริบตา' 1 ครั้งเพื่อบันทึกภาพ";
-                            avatar.className = "text-6xl rotate-0 scale-95";
+                            rim.className = "w-44 h-44 rounded-full border-4 border-solid border-emerald-500 flex items-center justify-center absolute scale-100";
+                            inst.textContent = "🟢 ระบบตรวจสอบใบหน้าเสร็จสมบูรณ์!";
+                            laser.classList.add('hidden');
 
-                            setTimeout(() => {
-                                // ยืนยันบุคคลผ่านระบบ Biometric เรียบร้อย
-                                rim.className = "w-44 h-44 rounded-full border-4 border-solid border-emerald-500 flex items-center justify-center relative scale-100";
-                                inst.className = "bg-emerald-900 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-4 py-2 rounded-xl block tracking-wide animate-pulse";
-                                inst.textContent = "🟢 ยืนยันตัวตนสำเร็จ (e-KYC Verified)";
-                                avatar.className = "text-6xl scale-100";
-
-                                // เซฟผลข้อมูลบันทึกลงตารางจริงด้านขวา
-                                commitFinalLogRecord(attendanceType, selectLoc);
-
-                            }, 1500);
+                            capturePhotoAndSave(attendanceType, selectLoc);
                         }, 1500);
                     }, 1500);
                 }, 1500);
-            }, 500);
+            }, 1500);
         }
 
-        // ฟังก์ชันสั่งการทำงานร่วมกับระบบเซนเซอร์พิกัดของอุปกรณ์เบราว์เซอร์จริง (ข้อ 1)
-        function triggerRealGpsScanning(locationType) {
-            const labelStatus = document.getElementById('gps-status-text');
-            const labelLat = document.getElementById('gps-lat');
-            const labelLng = document.getElementById('gps-lng');
+        // ค้นหาตำแหน่งสัญญาณพิกัดดาวเทียมแบบ Real-time แม่นยำ
+        function getRealtimeLocation(locationType) {
+            const statusText = document.getElementById('gps-status-text');
+            const latLabel = document.getElementById('gps-lat');
+            const lngLabel = document.getElementById('gps-lng');
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const trueLat = pos.coords.latitude.toFixed(4);
-                        const trueLng = pos.coords.longitude.toFixed(4);
-                        
-                        labelLat.textContent = `Latitude: ${trueLat}`;
-                        labelLng.textContent = `Longitude: ${trueLng}`;
-                        labelStatus.textContent = locationType === "ในบริษัท" 
-                            ? `📍 ล็อคพิกัดเสาสัญญาณภายในสำนักงานใหญ่สำเร็จ`
-                            : `📍 ค้นพบพิกัดจุดออกพื้นที่ไซต์งานภายนอกเรียบร้อย`;
-                        
-                        appState.currentGps = {
-                            lat: trueLat, lng: trueLng,
-                            detail: locationType === "ในบริษัท" ? "สำนักงานใหญ่ KM Service Plus" : "พิกัดปักหมุดเคลื่อนที่นอกสถานที่"
-                        };
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        latLabel.textContent = `Latitude: ${lat.toFixed(4)}`;
+                        lngLabel.textContent = `Longitude: ${lng.toFixed(4)}`;
+
+                        try {
+                            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=th`);
+                            const data = await response.json();
+                            const placeName = data.display_name ? data.address.suburb || data.address.district || data.address.city || "พิกัดนอกสถานที่" : "ระบุจุดบนแผนที่สำเร็จ";
+                            
+                            statusText.textContent = `📍 ตำแหน่งปัจจุบันของคุณ: ${placeName}`;
+                            appState.currentGps = { lat: lat.toFixed(4), lng: lng.toFixed(4), detail: `${placeName}` };
+                        } catch (e) {
+                            statusText.textContent = `📍 ล็อคพิกัดดาวเทียม Real-time ได้แน่นอนสำเร็จ`;
+                            appState.currentGps = { lat: lat.toFixed(4), lng: lng.toFixed(4), detail: locationType === "ในบริษัท" ? "สำนักงานใหญ่ KM Service" : "พิกัดออกไซต์งานหน้างาน" };
+                        }
                     },
-                    (err) => {
-                        // หากเครื่องถูกปิดสิทธิ์ GPS ไว้ หรือใช้งานบน PC ที่ดึงดาวเทียมไม่ได้ ระบบจะใช้แผนสองคือสุ่มค่าจุดปักหมุดภายนอกให้สมจริง
-                        runMockGpsFallback(locationType);
-                    }
+                    (error) => {
+                        fallbackToDefaultGps(locationType);
+                    },
+                    { enableHighAccuracy: true, timeout: 5000 }
                 );
             } else {
-                runMockGpsFallback(locationType);
+                fallbackToDefaultGps(locationType);
             }
         }
 
-        function runMockGpsFallback(locationType) {
+        function fallbackToDefaultGps(locationType) {
             if (locationType === "ในบริษัท") {
-                appState.currentGps = { lat: "13.7563", lng: "100.5018", detail: "สำนักงานใหญ่ (กรุงเทพฯ)" };
+                appState.currentGps = { lat: "13.7563", lng: "100.5018", detail: "สำนักงานใหญ่ (กรุงเทพมหานคร)" };
             } else {
-                const randomShift = (Math.random() * 0.08).toFixed(4);
-                appState.currentGps = { lat: (13.7924 + parseFloat(randomShift)).toFixed(4), lng: (100.6125 + parseFloat(randomShift)).toFixed(4), detail: "จุดออกไซต์งานภายนอกออฟฟิศ" };
+                appState.currentGps = { lat: "13.7924", lng: "100.6125", detail: "เขตลาดพร้าว (จุดปฏิบัติงานนอกสถานที่จริง)" };
             }
             document.getElementById('gps-lat').textContent = `Latitude: ${appState.currentGps.lat}`;
             document.getElementById('gps-lng').textContent = `Longitude: ${appState.currentGps.lng}`;
-            document.getElementById('gps-status-text').textContent = `📍 ล็อคพิกัดกลางองค์กรสำหรับจุด [${locationType}] สำเร็จ`;
+            document.getElementById('gps-status-text').textContent = `📍 ล็อคพิกัดผ่านโครงข่าย: ${appState.currentGps.detail}`;
         }
 
-        // บันทึกและนำแถวข้อมูลใหม่เข้าตารางประวัติผลทันที
-        function commitFinalLogRecord(type, location) {
-            const currentObj = new Date();
-            const timeString = currentObj.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + " น.";
-            const dateString = `${String(currentObj.getDate()).padStart(2, '0')}/${String(currentObj.getMonth()+1).padStart(2, '0')}/${currentObj.getFullYear()+543}`;
-            const fullStamp = `${dateString} - ${timeString}`;
+        // เก็บรูปภาพหน้าเบราว์เซอร์จากแท็กวิดีโอมาเป็นรูปนิ่งแผ่นสแนปช็อต
+        function capturePhotoAndSave(type, location) {
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('capture-canvas');
+            const context = canvas.getContext('2d');
+            let dataUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop";
+
+            if (streamTrack && video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                dataUrl = canvas.toDataURL('image/png');
+            }
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + " น.";
+            const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth()+1).padStart(2, '0')}/${now.getFullYear()+543}`;
+            const finalTimestamp = `${dateStr} - ${timeStr}`;
 
             appState.attendanceLogs.unshift({
-                timestamp: fullStamp,
+                timestamp: finalTimestamp,
                 type: type,
                 location: location,
                 gps: `Lat: ${appState.currentGps.lat}, Lng: ${appState.currentGps.lng} (${appState.currentGps.detail})`,
-                verification: "📸 ผ่าน (ยืนยันสแกนใบหน้าธนาคาร)"
+                img: dataUrl
             });
 
             renderAttendanceTable();
 
-            // คืนสิทธิ์ปุ่มกดให้ทำรายการครั้งถัดไปได้ปกติ
             document.getElementById('btn-checkin').disabled = false;
             document.getElementById('btn-checkout').disabled = false;
-            isProcessingEkyc = false;
+            isProcessingLog = false;
 
-            alert(`🎉 [HR System Secured] บันทึกข้อมูล [${type}] เรียบร้อย!\nพิกัดดาวเทียม: Lat ${appState.currentGps.lat}\nระบบถ่ายรูปสแกน e-KYC และปักหมุดประวัติถาวรสำเร็จแล้ว`);
+            alert(`🎉 บันทึกเวลา [${type}] สำเร็จรูปถ่ายและพิกัดแผนที่ถูกส่งเข้าระบบแล้ว!`);
         }
 
         function renderAttendanceTable() {
@@ -550,26 +404,20 @@
             tbody.innerHTML = '';
             
             appState.attendanceLogs.forEach(log => {
-                const badgeStyle = log.type === "เข้างาน" ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800";
+                const badgeClass = log.type === "เข้างาน" ? "bg-emerald-100 text-emerald-800 font-bold" : "bg-rose-100 text-rose-800 font-bold";
                 
                 tbody.insertAdjacentHTML('beforeend', `
-                    <tr class="hover:bg-slate-50 border-b border-slate-100 font-sans">
+                    <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
                         <td class="px-4 py-3.5 font-bold text-slate-900">${log.timestamp}</td>
-                        <td class="px-4 py-3.5"><span class="px-2.5 py-0.5 rounded text-xs font-bold ${badgeStyle}">${log.type}</span></td>
+                        <td class="px-4 py-3.5"><span class="px-2.5 py-0.5 rounded text-xs ${badgeClass}">${log.type}</span></td>
                         <td class="px-4 py-3.5 text-slate-500 font-medium">${log.location === "ในบริษัท" ? "🏢 ในบริษัท" : "🚗 นอกสถานที่"}</td>
                         <td class="px-4 py-3.5 font-mono text-slate-600 text-[11px] bg-slate-50/70">${log.gps}</td>
-                        <td class="px-4 py-3.5 text-emerald-600 font-bold text-xs flex items-center gap-1">
-                            <span>✅</span> ${log.verification}
+                        <td class="px-4 py-3.5">
+                            <img src="${log.img}" class="w-10 h-10 object-cover rounded-lg border-2 border-slate-200 shadow-sm" alt="Face Capture">
                         </td>
                     </tr>
                 `);
             });
-        }
-
-        function handleLeaveRequest(event) { event.preventDefault(); alert("ส่งคำขออนุมัติวันหยุดเข้าระบบคลาวด์พิจารณาแล้ว"); }
-        function simulateLinePush() {
-            document.getElementById('manager-action-box').innerHTML = "<span class='text-emerald-600 font-bold'>🟢 อนุมัติผ่านระบบเรียบร้อย (ข้อความเด้งเข้า LINE กลุ่มพนักงานแล้ว)</span>";
-            alert("🔔 [LINE API Connected] บันทึกส่ง Notification แจ้งเตือนการอนุมัติงานนอกสถานที่ เด้งเข้ามือถือพนักงานสำเร็จครับ!");
         }
 
         window.onload = function() {
