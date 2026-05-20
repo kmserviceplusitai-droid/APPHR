@@ -98,7 +98,7 @@
                             <h3 class="text-sm font-bold text-slate-700 mb-2">📸 กล้องยืนยันตัวตนสแกนใบหน้า</h3>
                             
                             <div class="w-full aspect-square bg-slate-900 rounded-2xl overflow-hidden relative flex flex-col items-center justify-center border-4 border-slate-800 shadow-inner">
-                                <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                                <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden transform -scale-x-100"></video>
                                 
                                 <div id="face-scanner-rim" class="w-44 h-44 rounded-full border-4 border-dashed border-blue-400 flex items-center justify-center absolute transition-all duration-500">
                                     <div id="face-avatar" class="text-5xl transition-transform duration-300 text-slate-400">👤</div>
@@ -145,10 +145,11 @@
                             <h3 class="text-sm font-bold text-slate-800">📊 ประวัติการลงเวลาในเดือนนี้</h3>
                         </div>
                         <div class="overflow-x-auto flex-1 w-full">
-                            <table class="w-full text-left text-xs md:text-sm text-slate-600 min-w-[700px]">
+                            <table class="w-full text-left text-xs md:text-sm text-slate-600 min-w-[850px]">
                                 <thead class="bg-slate-50 text-slate-500 font-semibold border-b">
                                     <tr>
                                         <th class="px-4 py-3">วันที่ / เวลา</th>
+                                        <th class="px-4 py-3">ชื่อ-นามสกุลพนักงาน</th>
                                         <th class="px-4 py-3">รายการ</th>
                                         <th class="px-4 py-3">ประเภท</th>
                                         <th class="px-4 py-3">📍 พิกัดสถานที่จริงที่ตรวจพบ</th>
@@ -177,7 +178,7 @@
     </div>
 
     <script>
-        // ข้อมูลประวัติเดิมทั้ง 4 รายการจากรูป ca0df2.png ถูกดึงกลับมาสแตนด์บายครบถ้วนแล้ว!
+        // ข้อมูลประวัติเดิมครบทั้ง 4 รายการ พร้อมเพิ่มฟิลด์ name เพื่อนำไปแสดงในตารางแล้วครับ
         let appState = {
             currentRole: "employee",
             userName: "สมชาย ตั้งใจทำงาน",
@@ -185,10 +186,10 @@
             isInsure: "ในระบบ",
             currentGps: { lat: "13.7563", lng: "100.5018", detail: "สำนักงานใหญ่ (กรุงเทพมหานคร)" },
             attendanceLogs: [
-                { timestamp: "20/05/2569 - 15:09 น.", type: "เข้างาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "ออกงาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
-                { timestamp: "20/05/2569 - 15:04 น.", type: "เข้างาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" }
+                { timestamp: "20/05/2569 - 15:09 น.", name: "สมชาย ตั้งใจทำงาน", type: "เข้างาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", name: "สมชาย ตั้งใจทำงาน", type: "ออกงาน", location: "ในบริษัท", gps: "Lat: 13.7563, Lng: 100.5018 (สำนักงานใหญ่)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", name: "สมชาย ตั้งใจทำงาน", type: "ออกงาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" },
+                { timestamp: "20/05/2569 - 15:04 น.", name: "สมชาย ตั้งใจทำงาน", type: "เข้างาน", location: "นอกสถานที่", gps: "Lat: 13.7924, Lng: 100.6125 (เขตลาดพร้าว กรุงเทพฯ)", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" }
             ]
         };
 
@@ -200,7 +201,7 @@
             document.getElementById('page-login').classList.add('hidden');
             document.getElementById('page-main').classList.remove('hidden');
             switchTab('attendance');
-            initWebcam(); // เปิดใช้งานระบบเลนส์กล้องวิดีโอ
+            initWebcam(); 
         }
 
         function handleLogout() {
@@ -253,7 +254,7 @@
         }
 
         // ==========================================
-        // 📷 เรียกใช้งานและเปิดเชื่อมต่อวิดีโอกล้องหน้าจริง
+        // 📸 ล็อคเสปคเปิดใช้งาน "กล้องหน้า" เท่านั้น (facingMode: "user")
         // ==========================================
         let streamTrack = null;
 
@@ -261,14 +262,22 @@
             const video = document.getElementById('webcam');
             const avatar = document.getElementById('face-avatar');
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 400, height: 400 }, audio: false });
+                // บังคับกำหนดให้ใช้กล้องหน้า (facingMode: "user")
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 400, 
+                        height: 400,
+                        facingMode: "user" 
+                    }, 
+                    audio: false 
+                });
                 video.srcObject = stream;
                 video.classList.remove('hidden');
                 avatar.classList.add('hidden');
                 streamTrack = stream.getTracks()[0];
             } catch (err) {
-                console.error("ไม่สามารถสตรีมกล้องหน้าเข้ามาบนเว็บได้: ", err);
-                document.getElementById('ekyc-instruction').textContent = "⚠️ ไม่พบกล้อง หรืออุปกรณ์ของคุณบล็อกสิทธิ์กล้องไว้";
+                console.error("ไม่สามารถเรียกกล้องหน้าขึ้นมาทำงานได้: ", err);
+                document.getElementById('ekyc-instruction').textContent = "⚠️ ไม่พบกล้องหน้า หรือสิทธิ์การเปิดกล้องถูกบล็อกอยู่";
             }
         }
 
@@ -291,7 +300,7 @@
 
             laser.classList.remove('hidden');
             rim.className = "w-44 h-44 rounded-full border-4 border-solid border-blue-500 flex items-center justify-center absolute scale-105";
-            inst.textContent = "👤 ขั้นตอนที่ 1: กรุณามองตรงนิ่งๆ ไปที่กล้อง";
+            inst.textContent = "👤 ขั้นตอนที่ 1: กรุณามองตรงนิ่งๆ ไปที่กล้องหน้า";
 
             setTimeout(() => {
                 rim.className = "w-44 h-44 rounded-full border-4 border-dashed border-amber-400 flex items-center justify-center absolute scale-105";
@@ -306,7 +315,7 @@
 
                         setTimeout(() => {
                             rim.className = "w-44 h-44 rounded-full border-4 border-solid border-emerald-500 flex items-center justify-center absolute scale-100";
-                            inst.textContent = "🟢 ระบบตรวจสอบใบหน้าเสร็จสมบูรณ์!";
+                            inst.textContent = "🟢 ยืนยันพิกัดและตัวตนสำเร็จ!";
                             laser.classList.add('hidden');
 
                             capturePhotoAndSave(attendanceType, selectLoc);
@@ -363,7 +372,7 @@
             document.getElementById('gps-status-text').textContent = `📍 ล็อคพิกัดผ่านโครงข่าย: ${appState.currentGps.detail}`;
         }
 
-        // เก็บรูปภาพหน้าเบราว์เซอร์จากแท็กวิดีโอมาเป็นรูปนิ่งแผ่นสแนปช็อต
+        // บันทึกภาพถ่ายและโยนลงตารางประวัติ
         function capturePhotoAndSave(type, location) {
             const video = document.getElementById('webcam');
             const canvas = document.getElementById('capture-canvas');
@@ -373,6 +382,9 @@
             if (streamTrack && video.readyState === video.HAVE_ENOUGH_DATA) {
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
+                // กลับภาพบน canvas เพื่อให้รูปที่ถ่ายออกมาไม่กลับด้านเหมือนส่องกระจก
+                context.translate(canvas.width, 0);
+                context.scale(-1, 1);
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 dataUrl = canvas.toDataURL('image/png');
             }
@@ -382,8 +394,10 @@
             const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth()+1).padStart(2, '0')}/${now.getFullYear()+543}`;
             const finalTimestamp = `${dateStr} - ${timeStr}`;
 
+            // แทรกลงในตารางพร้อมแนบชื่อผู้ใช้งานระบบปัจจุบันเข้าไปด้วย
             appState.attendanceLogs.unshift({
                 timestamp: finalTimestamp,
+                name: appState.userName,
                 type: type,
                 location: location,
                 gps: `Lat: ${appState.currentGps.lat}, Lng: ${appState.currentGps.lng} (${appState.currentGps.detail})`,
@@ -396,7 +410,7 @@
             document.getElementById('btn-checkout').disabled = false;
             isProcessingLog = false;
 
-            alert(`🎉 บันทึกเวลา [${type}] สำเร็จรูปถ่ายและพิกัดแผนที่ถูกส่งเข้าระบบแล้ว!`);
+            alert(`🎉 บันทึกเวลา [${type}] ของคุณ ${appState.userName} เรียบร้อยแล้วครับ!`);
         }
 
         function renderAttendanceTable() {
@@ -409,6 +423,7 @@
                 tbody.insertAdjacentHTML('beforeend', `
                     <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
                         <td class="px-4 py-3.5 font-bold text-slate-900">${log.timestamp}</td>
+                        <td class="px-4 py-3.5 text-slate-700 font-semibold">${log.name || appState.userName}</td>
                         <td class="px-4 py-3.5"><span class="px-2.5 py-0.5 rounded text-xs ${badgeClass}">${log.type}</span></td>
                         <td class="px-4 py-3.5 text-slate-500 font-medium">${log.location === "ในบริษัท" ? "🏢 ในบริษัท" : "🚗 นอกสถานที่"}</td>
                         <td class="px-4 py-3.5 font-mono text-slate-600 text-[11px] bg-slate-50/70">${log.gps}</td>
