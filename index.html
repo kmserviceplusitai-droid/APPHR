@@ -74,8 +74,8 @@ table th { font-weight: 600; }
           <label class="block text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">รหัสผ่าน</label>
           <input type="password" value="123456" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none" readonly>
         </div>
-        <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg mt-2">เข้าสู่ระบบ →</button> <!-- FIXED: Moved button inside div and fixed syntax -->
-      </div> <!-- FIXED: Balanced closing div for login card -->
+      </div>
+        <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg mt-2">เข้าสู่ระบบ →</button>
       <p class="text-center text-blue-300/70 text-xs mt-4">Demo: เลือกสิทธิ์แล้วกดเข้าสู่ระบบได้เลย</p>
     </div>
   </div>
@@ -85,6 +85,7 @@ table th { font-weight: 600; }
 <div id="page-main" class="hidden min-h-screen flex flex-col md:flex-row">
 
   <!-- MOBILE HEADER --> 
+  <!-- MOBILE HEADER --> 
   <header class="md:hidden bg-slate-900 text-white sticky top-0 z-50">
     <div class="px-4 py-3 flex justify-between items-center">
       <div>
@@ -92,7 +93,7 @@ table th { font-weight: 600; }
         <p class="text-xs text-emerald-400" id="mb-user-name">...</p>
       </div>
       <div class="flex items-center gap-2">
-        <div class="relative"> <!-- FIXED: Balanced container -->
+        <div class="relative"> <!-- This div was previously hidden, keeping it consistent -->
           <button id="btn-notification-mobile" class="text-slate-400 hover:text-white relative">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             <span id="notif-badge-mb" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">3</span>
@@ -124,15 +125,17 @@ table th { font-weight: 600; }
     <div class="mx-3 my-3 p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
       <p class="text-[11px] text-slate-500 uppercase tracking-wider">ผู้ใช้งาน</p>
       <p class="text-sm font-bold text-white mt-0.5" id="pc-user-name">—</p>
-      <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
+      <p clat-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
       <div class="flex gap-1 mt-2 flex-wrap">
         <span id="pc-insure-badge" class="badge badge-green">ประกัน: ในระบบ</span>
-        <span id="pc-role-badge" class="badge badge-blue">—</span> <!-- FIXED: Removed hidden from role badge -->
-      </div>
-    </div> <!-- FIXED: Closed user info card -->
+        <span id="pc-role-badge" class="badge hidden md:block badge-blue">—</span>
+    <iv>
+    </div>
     <nav class="flex-1 px-2 space-y-0.5 pb-4" id="pc-nav"></nav>
-    <div class="p-3 border-t border-slate-800"> <!-- FIXED: Sidebar footer -->
-      <button id="btn-logout-pc" onclick="handleLogout()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-xl transition">
+    <div class="p-3 border-t border-slate-800">
+      <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-xl transition">
+    <div class="p-3 border-t border-slate-800 hidden md:block">
+      <button id="btn-logout-pc" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-xl transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
         ออกจากระบบ
       </button>
@@ -228,12 +231,10 @@ table th { font-weight: 600; }
                     <th class="px-3 py-2.5 text-left">สถานที่</th>
                     <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
                     <th class="px-3 py-2.5 text-left">รูปถ่าย (3 มุม)</th>
-                  </tr> <!-- FIXED: Closed row -->
-                </thead> <!-- FIXED: Closed head -->
-                <tbody id="att-tbody" class="divide-y divide-slate-100">
-                  <!-- Rows injected by JS -->
-                </tbody>
-              </table> <!-- FIXED: Closed table -->
+                  </tr>
+              
+                </thead><tbody></tbody><tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -245,12 +246,10 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">📅 ระบบการลา</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอลา ตรวจสอบโควต้าวันลา และดูประวัติการลา</p>
           </div>
-          <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button> <!-- FIXED: Placed correctly -->
-        </div> <!-- FIXED: Closed flex container -->
+          <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button>
+        </div>
 
         <!-- Leave Quota -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <!-- Quota cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="card text-center border-l-4 border-blue-500">
             <p class="text-xs text-slate-500">ลาพักร้อน</p>
@@ -276,7 +275,7 @@ table th { font-weight: 600; }
             <p class="text-xs text-slate-400">สิทธิ์ตามกฎหมาย</p>
             <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-purple-500 rounded-full" style="width:100%"></div></div>
           </div>
-        </div> <!-- FIXED: Closed grid -->
+        </div>
 
         <!-- Leave History Table -->
         <div class="card">
@@ -374,8 +373,8 @@ table th { font-weight: 600; }
                   <th class="px-3 py-2.5 text-left">จุดหมาย</th>
                   <th class="px-3 py-2.5 text-left">วัตถุประสงค์</th>
                   <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
-                  <th class="px-3 py-2.5 text-left">สถานะ</th> <!-- FIXED: Removed broken attribute -->
-                  <th class="px-3 py-2.5 text-left admin-only">การดำเนินการ</th> <!-- FIXED: Removed broken attribute -->
+                  <th class="px-3 py-2.5 text-left">สถานะ</th>
+                  <th class="px-3 py-2.5 text-left admin-only">การดำเนินการ</th>
                 </tr>
               </thead>
               <tbody id="outside-tbody">
@@ -386,8 +385,8 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-slate-500">ประชุมลูกค้า XYZ Corp</td>
                   <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7924, 100.6125</td>
                   <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
-                  <td class="px-3 py-3 admin-only">
-                    <div class="flex gap-1">
+                  <td class="px-3 py-3 admin-only" data-action-cell>
+                    <div class="flex gap-1 btn-approve-area" data-action-buttons>
                       <button onclick="approveOutside(this, 'อนุมัติ')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ อนุมัติ</button>
                       <button onclick="approveOutside(this, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
                     </div>
@@ -400,7 +399,7 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-slate-500">นำส่งเอกสารธนาคาร</td>
                   <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7231, 100.5281</td>
                   <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only">ดำเนินการแล้ว</td>
+                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only" data-action-cell>ดำเนินการแล้ว</td>
                 </tr>
               </tbody>
             </table>
@@ -414,14 +413,14 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">💰 ระบบเงินเดือน & สลิปเงินเดือน</h2>
             <p class="text-sm text-slate-500">ดึงข้อมูลสรุป หักลด และส่งสลิปผ่าน Line OA อัตโนมัติ</p>
           </div>
-          <button id="btn-send-all-payroll" class="line-btn" onclick="alert('ส่งสลิปพนักงานทุกคนเรียบร้อย')">📤 ส่งสลิปทาง Line (ทุกคน)</button> <!-- FIXED: Added simple mock handler -->
+          <button id="btn-send-all-payroll" class="line-btn">📤 ส่งสลิปทาง Line (ทุกคน)</button>
         </div>
 
         <!-- Payroll Summary Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="stat-card"><p class="text-xs text-slate-500">เงินเดือนรวม</p><p class="text-xl font-bold text-slate-900">฿2,840,000</p><p class="text-xs text-slate-400">พนักงาน 47 คน</p></div>
           <div class="stat-card"><p class="text-xs text-slate-500">หักประกันสังคม</p><p class="text-xl font-bold text-red-600">฿426,000</p><p class="text-xs text-slate-400">5% × ยอดรวม</p></div>
-          <div class="stat-card"><p class="text-xs text-slate-500">ยอดรวมสุทธิ</p><p class="text-xl font-bold text-emerald-600">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
+          <div class="stat-card"><p class="text-xs text-slate-500">หักภาษี ณ ที่จ่าย</p><p class="textx0">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
         </div>
 
         <!-- Payroll Table -->
@@ -467,7 +466,7 @@ table th { font-weight: 600; }
               </tbody>
             </table>
           </div>
-        </div> <!-- FIXED: Closed card -->
+        </div>
       </div>
       <!-- ===== TAB: EMPLOYEE SETTINGS ===== -->
       <div id="tab-employee-settings" class="tab-content space-y-5">
@@ -476,7 +475,6 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⚙️ จัดการพนักงาน</h2>
             <p class="text-sm text-slate-500">เพิ่ม แก้ไข ตั้งค่าข้อมูลรายบุคคล และกำหนดค่าตอบแทน</p>
           </div>
-          <button id="btn-open-add-employee-modal" class="btn-primary text-sm">+ เพิ่มพนักงานใหม่</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards">
           <!-- Rendered by JS -->
@@ -606,9 +604,7 @@ table th { font-weight: 600; }
                   <span class="text-xs text-slate-400">ประสิทธิ์ มุ่งมั่น (Offline)</span>
               </div>
             </div>
-          </div> <!-- FIXED: Closed online team card -->
-        </div> <!-- FIXED: Closed cowork grid -->
-      </div> <!-- FIXED: Closed tab-cowork -->
+          </div>
 
       <!-- ===== REPORT SECTION (Point 4) ===== -->
       <div id="report-drawer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 p-4 shadow-2xl z-50 fade-in">
@@ -621,17 +617,17 @@ table th { font-weight: 600; }
                <button id="btn-send-report-finance" class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
                <button id="btn-close-report-drawer" class="btn-secondary text-xs">ปิด</button>
             </div>
-         </div>
-      </div> <!-- FIXED: Cleaned up cey3 text -->
+         </div>cey3>
+      </div>
 
-    </div> <!-- FIXED: Closed max-w container -->
-  </main> <!-- FIXED: Closed main -->
-</div> <!-- FIXED: Closed page-main -->
+    </div>
+  </main>
+</div>
 
 <!-- ==================== MODALS ==================== -->
 <!-- Leave Modal -->
 <div id="modal-leave-request" class="modal-overlay hidden">
-  <div class="modal-box"> <!-- FIXED: Removed actions00 corrupted string -->
+  <div class="modal-box">
     <h3 class="text-lg font-bold text-slate-900 mb-4">📝 ยื่นคำขอลาพักผ่อน / ลากิจ / ลาป่วย</h3>
     <div class="space-y-3">
       <div>
@@ -654,21 +650,21 @@ table th { font-weight: 600; }
         <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลการลา</label>
         <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
       </div>
-      <div class="flex justify-end gap-2 mt-4"> <!-- FIXED: Reconstructed modal actions -->
+      <div class="flex justify-end gap-2 mt-4 modal-actions">
         <button type="button" data-modal-id="modal-leave-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitLeave()" class="btn-primary text-xs">ส่งคำขอลา</button>
       </div>
     </div>
   </div>
-</div> <!-- FIXED: Balanced closing div -->
+</div>
 
 <!-- Outside Request Modal -->
 <div id="modal-outside-request" class="modal-overlay hidden">
-  <div class="modal-box"> <!-- FIXED: Cleaned up slattong text -->
+  <div class="modal-box">
     <h3 class="text-lg font-bold text-slate-900 mb-4">⛓️ ยื่นคำขอออกนอกสถานที่</h3>
     <div class="space-y-3">
       <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่ต้องการไป</label> <!-- FIXED: Fixed label syntax -->
+        <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่ต้องการไป</label>
         <input type="date" id="form-out-date" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
       <div>
@@ -678,12 +674,12 @@ table th { font-weight: 600; }
       <div>
         <label class="block text-xs font-semibold text-slate-600 mb-1">วัตถุประสงค์</label>
         <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น เข้าประชุมงานประจำปี..."></textarea>
-      </div>
-      <div class="flex justify-end gap-2 mt-4"> <!-- FIXED: Reconstructed buttons -->
+      </div> 
+      <div class="flex justify-end gap-2 mt-4 modal-actions">
         <button type="button" data-modal-id="modal-outside-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitOutsideWork()" class="btn-primary text-xs">ส่งคำขออนุมัติ</button>
       </div>
-    </div> <!-- FIXED: Balanced div -->
+    </div>
   </div>
 </div>
 
@@ -691,9 +687,8 @@ table th { font-weight: 600; }
 <div id="modal-add-employee" class="modal-overlay hidden">
   <div class="modal-box">
     <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
-    <div class="space-y-3"> <!-- FIXED: Cleaned up corrupted label start -->
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
+    <div class="space-y-3">
+      <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
         <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
       <div>
@@ -702,22 +697,19 @@ table th { font-weight: 600; }
       </div>
       <div>
         <label class="block text-xs font-semibold text-slate-600 mb-1">สิทธิ์ระบบ</label>
-        <select id="form-emp-role" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none"> <!-- FIXED: Cleaned up currentUser corrupted text -->
+        <select id="form-emp-role" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
             <option value="employee">Employee (พนักงานทั่วไป)</option>
           <option value="admin">HR Admin (ฝ่ายบุคคล)</option>
-          <option value="manager">Manager (ผู้บริหาร)</option> <!-- FIXED: Fixed typo optiofunction -->
+          <option value="manager">Manager (ผู้บริหาร)</option>
         </select>
-      </div>
-      <div class="flex justify-end gap-2 mt-4"> <!-- FIXED: Balanced actions div -->
         <button type="button" data-modal-id="modal-add-employee" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
       </div>
-    </div> <!-- FIXED: Closed space-y-3 -->
+    </div>
   </div>
 </div>
 
 <!-- ==================== JAVASCRIPT SYSTEM ==================== -->
-<script>
 let currentUser = { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" };
 
 let attendanceLogs = [
@@ -858,7 +850,6 @@ function buildNavigationMenu(role) {
       mbLink.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 shrink-0";
       mbLink.innerText = menu.label.split(' ')[0] + " " + menu.label.substring(2);
       mbLink.onclick = () => switchTab(menu.id);
-      mbNav.appendChild(mbLink);
         }
   });
 
@@ -979,10 +970,10 @@ function executeLogAttendance(type) {
   document.getElementById('ekyc-status').className = "bg-emerald-100 text-emerald-800 text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
 }
 
-function renderAttendanceTable() { // FIXED: Removed corrupted comment
+function renderAttendanceTable() {
   const filterVal = document.getElementById('att-filter').value; // Retrieve filter value inside the function
   const tbody = document.getElementById('att-tbody');
-  tbody.innerHTML = ''; // FIXED: Removed corrupted ainewarng
+  tbody.innerHTML = '';
 
   attendanceLogs.forEach(log => {
     if(filterVal !== 'all' && log.type !== filterVal) return;
@@ -1006,7 +997,7 @@ async function sendLineWarning(name) {
    if (!emp || !emp.lineUserId) return alert('ไม่พบข้อมูล LINE User ID ของพนักงานท่านนี้');
 
    try {
-      const response = await fetch('http://localhost:3000/api/line/send-warning', { 
+      const response = await fetch('/api/line/send-warning', { 
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({
@@ -1130,7 +1121,7 @@ function submitAddEmployee() {
   employees.push({ name, dept, role });
   renderEmployeeCards();
   closeModal('modal-add-employee');
-  alert(`เพิ่มคุณ ${name} เข้าสู่ฐานข้อมูลพนักงานเรียบร้อย`);
+  alert(`เพิ่มคุณ ${name} เข้าสู่ฐานข้อมูลพนักงานเรียบร้อย`); // Corrected alert message
 }
 
 function renderEmployeeCards() {

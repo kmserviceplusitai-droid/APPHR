@@ -10,7 +10,7 @@ app.use(express.json());
 // นำ Token จาก LINE Developers Console มาใส่ที่นี่
 const config = {
   channelAccessToken: 'vX6EeJA8+f33abIOjJ/YycLUmoCf2Wbb90K25I4q37obHKltGwycWPWIuzwJGxmuxqCd7WdOQ39uFgUhVT1Zxo/hgkVfRGjM3H+VPPW5GlM939FS1oGmhLaeDc7hZecxIPIeS+w1c8wOZqiUuwnhPwdB04t89/1O/w1cDnyilFU=',
-  channelSecret: 'YOUR_CHANNEL_SECRET' // ยังขาด Channel Secret
+  channelSecret: 'YOUR_CHANNEL_SECRET' // REMINDER: กรุณาใส่ Channel Secret จาก LINE Console เพื่อเริ่มใช้งาน
 };
 
 const client = new line.MessagingApiClient(config);
