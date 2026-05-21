@@ -9,14 +9,14 @@ app.use(express.json());
 // --- การตั้งค่า LINE Messaging API ---
 // นำ Token จาก LINE Developers Console มาใส่ที่นี่
 const config = {
-  channelAccessToken: 'YOUR_CHANNEL_ACCESS_TOKEN',
-  channelSecret: 'YOUR_CHANNEL_SECRET'
+  channelAccessToken: 'vX6EeJA8+f33abIOjJ/YycLUmoCf2Wbb90K25I4q37obHKltGwycWPWIuzwJGxmuxqCd7WdOQ39uFgUhVT1Zxo/hgkVfRGjM3H+VPPW5GlM939FS1oGmhLaeDc7hZecxIPIeS+w1c8wOZqiUuwnhPwdB04t89/1O/w1cDnyilFU=',
+  channelSecret: 'YOUR_CHANNEL_SECRET' // ยังขาด Channel Secret
 };
 
 const client = new line.MessagingApiClient(config);
 
 // Endpoint สำหรับส่ง "ใบเตือน"
-app.post('/api/send-line', async (req, res) => {
+app.post('/api/line/send-warning', async (req, res) => {
   const { userId, message } = req.body;
   
   try {
@@ -32,7 +32,7 @@ app.post('/api/send-line', async (req, res) => {
 });
 
 // Endpoint สำหรับส่ง "สลิปเงินเดือน" (Flex Message)
-app.post('/api/send-payroll', async (req, res) => {
+app.post('/api/line/send-payroll', async (req, res) => {
   const { userId, employeeName, amount } = req.body;
 
   const flexMessage = {
