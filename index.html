@@ -74,6 +74,7 @@ table th { font-weight: 600; }
           <label class="block text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">รหัสผ่าน</label>
           <input type="password" value="123456" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none" readonly>
         </div>
+      </div>
         <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg mt-2">เข้าสู่ระบบ →</button>
       <p class="text-center text-blue-300/70 text-xs mt-4">Demo: เลือกสิทธิ์แล้วกดเข้าสู่ระบบได้เลย</p>
     </div>
@@ -92,7 +93,7 @@ table th { font-weight: 600; }
         <p class="text-xs text-emerald-400" id="mb-user-name">...</p>
       </div>
       <div class="flex items-center gap-2">
-        <div class="relative">
+        <div class="relative"> <!-- This div was previously hidden, keeping it consistent -->
           <button id="btn-notification-mobile" class="text-slate-400 hover:text-white relative">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             <span id="notif-badge-mb" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">3</span>
@@ -124,11 +125,11 @@ table th { font-weight: 600; }
     <div class="mx-3 my-3 p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
       <p class="text-[11px] text-slate-500 uppercase tracking-wider">ผู้ใช้งาน</p>
       <p class="text-sm font-bold text-white mt-0.5" id="pc-user-name">—</p>
-      <p clat-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
+      <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
       <div class="flex gap-1 mt-2 flex-wrap">
         <span id="pc-insure-badge" class="badge badge-green">ประกัน: ในระบบ</span>
         <span id="pc-role-badge" class="badge hidden md:block badge-blue">—</span>
-    <iv>
+      </div>
     </div>
     <nav class="flex-1 px-2 space-y-0.5 pb-4" id="pc-nav"></nav>
     <div class="p-3 border-t border-slate-800">
@@ -232,7 +233,8 @@ table th { font-weight: 600; }
                     <th class="px-3 py-2.5 text-left">รูปถ่าย (3 มุม)</th>
                   </tr>
               
-                </thead><tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
+                </thead>
+                <tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
               </table>
             </div>
           </div>
@@ -245,6 +247,7 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">📅 ระบบการลา</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอลา ตรวจสอบโควต้าวันลา และดูประวัติการลา</p>
           </div>
+          <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button>
         </div>
 
         <!-- Leave Quota -->
@@ -327,6 +330,7 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่ (Lawyer & Product Admin Workflow)</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอออกนอกสถานที่ ผู้จัดการตรวจสอบและอนุมัติ พร้อมระบบ GPS Track ปลายทาง</p>
           </div>
+          <button id="btn-open-outside-modal" class="btn-primary text-sm">+ ยื่นคำขอออกนอกสถานที่</button>
         </div>
 
         <!-- Approval Pipeline -->
@@ -396,7 +400,7 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-slate-500">นำส่งเอกสารธนาคาร</td>
                   <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7231, 100.5281</td>
                   <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only" data-action-cell>ดำเนินการแล้ว</td>
+                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only">ดำเนินการแล้ว</td>
                 </tr>
               </tbody>
             </table>
@@ -417,7 +421,7 @@ table th { font-weight: 600; }
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="stat-card"><p class="text-xs text-slate-500">เงินเดือนรวม</p><p class="text-xl font-bold text-slate-900">฿2,840,000</p><p class="text-xs text-slate-400">พนักงาน 47 คน</p></div>
           <div class="stat-card"><p class="text-xs text-slate-500">หักประกันสังคม</p><p class="text-xl font-bold text-red-600">฿426,000</p><p class="text-xs text-slate-400">5% × ยอดรวม</p></div>
-          <div class="stat-card"><p class="text-xs text-slate-500">หักภาษี ณ ที่จ่าย</p><p class="textx0">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
+          <div class="stat-card"><p class="text-xs text-slate-500">ยอดรวมสุทธิ</p><p class="text-xl font-bold text-emerald-600">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
         </div>
 
         <!-- Payroll Table -->
@@ -472,6 +476,7 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⚙️ จัดการพนักงาน</h2>
             <p class="text-sm text-slate-500">เพิ่ม แก้ไข ตั้งค่าข้อมูลรายบุคคล และกำหนดค่าตอบแทน</p>
           </div>
+          <button id="btn-open-add-employee-modal" class="btn-primary text-sm">+ เพิ่มพนักงานใหม่</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards">
           <!-- Rendered by JS -->
@@ -614,7 +619,7 @@ table th { font-weight: 600; }
                <button id="btn-send-report-finance" class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
                <button id="btn-close-report-drawer" class="btn-secondary text-xs">ปิด</button>
             </div>
-         </div>cey3>
+         </div>
       </div>
 
     </div>
@@ -647,7 +652,7 @@ table th { font-weight: 600; }
         <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลการลา</label>
         <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
       </div>
-      <div class="flex justify-end gap-2 mt-4 modal-actions">
+      <div class="flex justify-end gap-2 mt-4">
         <button type="button" data-modal-id="modal-leave-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitLeave()" class="btn-primary text-xs">ส่งคำขอลา</button>
       </div>
@@ -671,8 +676,8 @@ table th { font-weight: 600; }
       <div>
         <label class="block text-xs font-semibold text-slate-600 mb-1">วัตถุประสงค์</label>
         <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น เข้าประชุมงานประจำปี..."></textarea>
-      </div> 
-      <div class="flex justify-end gap-2 mt-4 modal-actions">
+      </div>
+      <div class="flex justify-end gap-2 mt-4">
         <button type="button" data-modal-id="modal-outside-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitOutsideWork()" class="btn-primary text-xs">ส่งคำขออนุมัติ</button>
       </div>
@@ -685,7 +690,8 @@ table th { font-weight: 600; }
   <div class="modal-box">
     <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
     <div class="space-y-3">
-      <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
         <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
       <div>
@@ -700,7 +706,7 @@ table th { font-weight: 600; }
           <option value="manager">Manager (ผู้บริหาร)</option>
         </select>
       </div>
-      <div class="flex justify-end gap-2 mt-4 modal-actions">
+      <div class="flex justify-end gap-2 mt-4">
         <button type="button" data-modal-id="modal-add-employee" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
       </div>
@@ -850,6 +856,7 @@ function buildNavigationMenu(role) {
       mbLink.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 shrink-0";
       mbLink.innerText = menu.label.split(' ')[0] + " " + menu.label.substring(2);
       mbLink.onclick = () => switchTab(menu.id);
+      mbNav.appendChild(mbLink);
         }
   });
 
@@ -997,7 +1004,7 @@ async function sendLineWarning(name) {
    if (!emp || !emp.lineUserId) return alert('ไม่พบข้อมูล LINE User ID ของพนักงานท่านนี้');
 
    try {
-      const response = await fetch('/api/line/send-warning', { 
+      const response = await fetch('http://localhost:3000/api/line/send-warning', { 
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({
@@ -1079,7 +1086,7 @@ function submitOutsideWork() {
     <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รอ Admin Product ตรวจ</span></td>
     <td class="px-3 py-3 admin-only">
       <div class="flex gap-1 btn-approve-area" data-action-buttons> 
-        <button onclick="approveOutsidthis, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
+        <button onclick="approveOutside(this, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
       </div>
     </td>
   `;
@@ -1114,7 +1121,7 @@ function submitAddEmployee() {
   const dept = document.getElementById('form-emp-dept').value;
   const role = document.getElementById('form-emp-role').value;
 
-  if(!name || !dept) {
+  if(!name || !dept || !role) { // Added role validation
     return;
   }
 
