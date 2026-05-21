@@ -245,7 +245,6 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">📅 ระบบการลา</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอลา ตรวจสอบโควต้าวันลา และดูประวัติการลา</p>
           </div>
-          <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button>
         </div>
 
         <!-- Leave Quota -->
@@ -328,7 +327,6 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่ (Lawyer & Product Admin Workflow)</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอออกนอกสถานที่ ผู้จัดการตรวจสอบและอนุมัติ พร้อมระบบ GPS Track ปลายทาง</p>
           </div>
-          <button id="btn-open-outside-modal" class="btn-primary text-sm">+ ยื่นคำขอออกนอกสถานที่</button>
         </div>
 
         <!-- Approval Pipeline -->
@@ -474,7 +472,6 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⚙️ จัดการพนักงาน</h2>
             <p class="text-sm text-slate-500">เพิ่ม แก้ไข ตั้งค่าข้อมูลรายบุคคล และกำหนดค่าตอบแทน</p>
           </div>
-          <button id="btn-open-add-employee-modal" class="btn-primary text-sm">+ เพิ่มพนักงานใหม่</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards">
           <!-- Rendered by JS -->
@@ -637,7 +634,7 @@ table th { font-weight: 600; }
           <option value="📋 ลากิจ">📋 ลากิจ</option>
           <option value="🏥 ลาป่วย">🏥 ลาป่วย</option>
         </select>
-      </div><div>
+      </div>
       <div class="grid grid-cols-2 gap-2">
           <input type="date" id="form-leave-start" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
         </div>
@@ -650,6 +647,7 @@ table th { font-weight: 600; }
         <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลการลา</label>
         <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
       </div>
+      <div class="flex justify-end gap-2 mt-4 modal-actions">
         <button type="button" data-modal-id="modal-leave-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitLeave()" class="btn-primary text-xs">ส่งคำขอลา</button>
       </div>
@@ -663,7 +661,7 @@ table th { font-weight: 600; }
     <h3 class="text-lg font-bold text-slate-900 mb-4">⛓️ ยื่นคำขอออกนอกสถานที่</h3>
     <div class="space-y-3">
       <div>
-        <label conclick="submi-fontsebold text-slate-60n-0 mb-1">วันที่ต้องการไป</labe
+        <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่ต้องการไป</label>
         <input type="date" id="form-out-date" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
       <div>
@@ -673,7 +671,8 @@ table th { font-weight: 600; }
       <div>
         <label class="block text-xs font-semibold text-slate-600 mb-1">วัตถุประสงค์</label>
         <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น เข้าประชุมงานประจำปี..."></textarea>
-      </div>
+      </div> 
+      <div class="flex justify-end gap-2 mt-4 modal-actions">
         <button type="button" data-modal-id="modal-outside-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitOutsideWork()" class="btn-primary text-xs">ส่งคำขออนุมัติ</button>
       </div>
@@ -685,7 +684,7 @@ table th { font-weight: 600; }
 <div id="modal-add-employee" class="modal-overlay hidden">
   <div class="modal-box">
     <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
-    <div class="space-y-3"><div>
+    <div class="space-y-3">
       <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
         <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
@@ -700,6 +699,8 @@ table th { font-weight: 600; }
           <option value="admin">HR Admin (ฝ่ายบุคคล)</option>
           <option value="manager">Manager (ผู้บริหาร)</option>
         </select>
+      </div>
+      <div class="flex justify-end gap-2 mt-4 modal-actions">
         <button type="button" data-modal-id="modal-add-employee" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
         <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
       </div>
@@ -708,6 +709,7 @@ table th { font-weight: 600; }
 </div>
 
 <!-- ==================== JAVASCRIPT SYSTEM ==================== -->
+<script>
 let currentUser = { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" };
 
 let attendanceLogs = [
@@ -969,8 +971,9 @@ function executeLogAttendance(type) {
 }
 
 function renderAttendanceTable() {
+  const filterVal = document.getElementById('att-filter').value; // Retrieve filter value inside the function
   const tbody = document.getElementById('att-tbody');
-  tbody.innerHTML = '';/ainewarng 
+  tbody.innerHTML = '';
 
   attendanceLogs.forEach(log => {
     if(filterVal !== 'all' && log.type !== filterVal) return;
@@ -987,6 +990,25 @@ function renderAttendanceTable() {
     `;
     tbody.appendChild(row);
   });
+}
+
+async function sendLineWarning(name) {
+   const emp = employees.find(e => e.name === name);
+   if (!emp || !emp.lineUserId) return alert('ไม่พบข้อมูล LINE User ID ของพนักงานท่านนี้');
+
+   try {
+      const response = await fetch('/api/line/send-warning', { 
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            userId: emp.lineUserId,
+            message: `⚠️ เรียนคุณ ${name}, ระบบได้ออกใบเตือนเรื่องระเบียบวินัย กรุณาตรวจสอบในระบบ HR`
+         })
+      });
+      if (response.ok) alert(`ส่งใบเตือนเข้า LINE คุณ ${name} เรียบร้อยแล้ว`);
+   } catch (err) {
+      alert('ไม่สามารถเชื่อมต่อ Server ได้: ' + err.message);
+   }
 }
 
 // --- MODAL UTILITY TRIGGERS ---
@@ -1028,7 +1050,7 @@ function submitLeave() {
     <td class="px-3 py-3 text-slate-400">${reason || '-'}</td>
     <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
   `;
-  
+  closeModal('modal-leave-request'); // Close modal after submission
   tbody.insertBefore(row, tbody.firstChild);
   alert('ระบบส่งคำขอใบลาไปยังกล่องข้อความผู้จัดการของคุณเรียบร้อยแล้ว');
 }
@@ -1039,7 +1061,7 @@ function submitOutsideWork() {
   const reason = document.getElementById('form-out-reason').value;
 
   if(!date || !target) {
-    alert('กรุณากรอกข้อมูลวันที่และสถานที่ให้ถูกต้องครับ');
+    alert('กรุณากรอกข้อมูลวันที่และสถานที่ให้ถูกต้องครับ'); // Corrected alert message
     return;
   }
 
@@ -1056,7 +1078,7 @@ function submitOutsideWork() {
     <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7563, 100.5018</td>
     <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รอ Admin Product ตรวจ</span></td>
     <td class="px-3 py-3 admin-only">
-      <div class="flex gap-1 btn-approve-area" data-action-buttons>
+      <div class="flex gap-1 btn-approve-area" data-action-buttons> 
         <button onclick="approveOutsidthis, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
       </div>
     </td>
@@ -1084,7 +1106,7 @@ function approveOutside(btn, status) {
   }
   
   tdCell.className = "px-3 py-3 text-slate-400 text-[11px]";
-  tdCell.innerText = "ดำเนินการแล้ว"; 
+  tdCell.innerText = "ดำเนินการแล้ว";
 }
 
 function submitAddEmployee() {
@@ -1099,8 +1121,8 @@ function submitAddEmployee() {
   employees.push({ name, dept, role });
   renderEmployeeCards();
   closeModal('modal-add-employee');
-  alert(`เพิ่มคุณ ${name} เข้าสู่ฐานข้อมูลพนักงานเรียบร้อย`); // Corrected alert message
-}cript
+  alert(`เพิ่มคุณ ${name} เข้าสู่ฐานข้อมูลพนักงานเรียบร้อย`);
+}
 
 function renderEmployeeCards() {
   const container = document.getElementById('employee-cards');
