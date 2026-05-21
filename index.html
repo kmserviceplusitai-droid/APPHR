@@ -101,6 +101,14 @@ table th { font-weight: 600; }
         <button onclick="handleLogout()" class="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded-lg">ออก</button>
       </div>
     </div>
+    <!-- Status Bar for Attendance Summary (Point 2) -->
+    <div class="px-4 py-2 bg-slate-800 border-t border-slate-700 flex justify-between text-[10px]">
+      <div class="flex gap-3">
+        <span class="text-slate-400">มาสาย: <b class="text-amber-400">2</b></span>
+        <span class="text-slate-400">ขาดงาน: <b class="text-red-400">1</b></span>
+      </div>
+      <div class="text-blue-300">งวดบัญชี: พฤษภาคม 2569</div>
+    </div>
     <nav class="flex gap-1 p-2 overflow-x-auto no-scrollbar bg-slate-800" id="mobile-nav"></nav>
   </header>
 
@@ -160,7 +168,9 @@ table th { font-weight: 600; }
               </div>
               <canvas id="capture-canvas" class="hidden"></canvas>
               <div class="absolute bottom-3 w-full px-3 text-center z-10">
-                <span id="ekyc-status" class="bg-black/70 text-blue-300 text-xs px-3 py-1.5 rounded-lg inline-block font-medium">📷 กดปุ่มด้านล่างเพื่อเริ่มสแกนใบหน้า</span>
+                <span id="ekyc-status" class="bg-black/70 text-blue-300 text-xs px-3 py-1.5 rounded-lg inline-block font-medium">
+                  📷 กดปุ่มเพื่อเริ่มสแกนหน้า (หน้าตรง/ซ้าย/ขวา)
+                </span>
               </div>
             </div>
 
@@ -217,7 +227,7 @@ table th { font-weight: 600; }
                     <th class="px-3 py-2.5 text-left">รายการ</th>
                     <th class="px-3 py-2.5 text-left">สถานที่</th>
                     <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
-                    <th class="px-3 py-2.5 text-left">รูปถ่าย</th>
+                    <th class="px-3 py-2.5 text-left">รูปถ่าย (3 มุม)</th>
                   </tr>
                 </thead>
                 <tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
@@ -315,7 +325,7 @@ table th { font-weight: 600; }
       <div id="tab-outside-work" class="tab-content space-y-5">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-xl font-bold text-slate-900">⛓️ ขออนุมัติงานนอกสถานที่</h2>
+            <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่ (Lawyer & Product Admin Workflow)</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอออกนอกสถานที่ ผู้จัดการตรวจสอบและอนุมัติ พร้อมระบบ GPS Track ปลายทาง</p>
           </div>
           <button onclick="openModal('modal-outside-request')" class="btn-primary text-sm">+ ยื่นคำขอออกนอกสถานที่</button>
@@ -327,20 +337,20 @@ table th { font-weight: 600; }
           <div class="flex items-center gap-0 overflow-x-auto pb-2">
             <div class="flex flex-col items-center min-w-[120px]">
               <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl">👤</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">พนักงาน</p>
+              <p class="text-xs font-semibold text-slate-700 mt-1">ทนาย / พนักงาน</p>
               <p class="text-[10px] text-slate-400">ยื่นคำขอ</p>
             </div>
             <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
             <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-xl">👔</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">ผู้จัดการ</p>
-              <p class="text-[10px] text-slate-400">ตรวจสอบ</p>
+              <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-xl">🛠️</div>
+              <p class="text-xs font-semibold text-slate-700 mt-1">Admin Product</p>
+              <p class="text-[10px] text-slate-400">ตรวจกฎอนุมัติ</p>
             </div>
             <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
             <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-xl">🛠️</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">HR Admin</p>
-              <p class="text-[10px] text-slate-400">บันทึกสรุป</p>
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-xl">👔</div>
+              <p class="text-xs font-semibold text-slate-700 mt-1">Manager</p>
+              <p class="text-[10px] text-slate-400">อนุมัติคนสุดท้าย</p>
             </div>
             <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
             <div class="flex flex-col items-center min-w-[120px]">
@@ -517,6 +527,108 @@ table th { font-weight: 600; }
         </div>
       </div>
 
+      <!-- ===== TAB: COMPANY REGULATIONS (Point 3) ===== -->
+      <div id="tab-regulations" class="tab-content space-y-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">📚 กฎระเบียบบริษัท</h2>
+          <p class="text-sm text-slate-500">รวมระเบียบข้อบังคับ คู่มือพนักงาน และประกาศต่างๆ</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="card flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center text-xl">📄</div>
+              <div>
+                <p class="font-bold text-sm">ข้อบังคับการทำงาน 2567</p>
+                <p class="text-[10px] text-slate-400">อัปเดตล่าสุด: 01/01/2567</p>
+              </div>
+            </div>
+            <button class="text-blue-600 text-xs font-bold">ดาวน์โหลด</button>
+          </div>
+          <div class="card flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl">📘</div>
+              <div>
+                <p class="font-bold text-sm">คู่มือสวัสดิการพนักงาน</p>
+                <p class="text-[10px] text-slate-400">อัปเดตล่าสุด: 15/03/2567</p>
+              </div>
+            </div>
+            <button class="text-blue-600 text-xs font-bold">ดาวน์โหลด</button>
+          </div>
+        </div>
+        <div class="admin-only card bg-blue-50 border-blue-200">
+          <h4 class="text-sm font-bold text-blue-800 mb-2">อัปโหลดกฎระเบียบใหม่</h4>
+          <input type="file" class="text-xs text-slate-500 mb-3 block">
+          <button class="btn-primary text-xs">บันทึกลงระบบ</button>
+        </div>
+      </div>
+
+      <!-- ===== TAB: COWORK (Point 7) ===== -->
+      <div id="tab-cowork" class="tab-content space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">🤝 Cowork & Collaboration</h2>
+            <p class="text-sm text-slate-500">พื้นที่ทำงานร่วมกัน ติดตามงาน และสื่อสารในทีม</p>
+          </div>
+          <button class="btn-primary text-xs">+ สร้างโปรเจกต์ใหม่</button>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="lg:col-span-2 space-y-4">
+            <div class="card">
+              <h3 class="font-bold text-sm mb-3">📌 บอร์ดกิจกรรมล่าสุด</h3>
+              <div class="space-y-4">
+                <div class="flex gap-3 pb-3 border-b border-slate-50">
+                  <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-[10px]">สม</div>
+                  <div>
+                    <p class="text-xs"><span class="font-bold">สมชาย</span> ได้อัปเดตสถานะงาน <span class="text-blue-600">"พัฒนาระบบสแกนหน้า"</span> เป็น <span class="badge badge-green">เสร็จสิ้น</span></p>
+                    <p class="text-[10px] text-slate-400 mt-1">2 ชั่วโมงที่แล้ว</p>
+                  </div>
+                </div>
+                <div class="flex gap-3 pb-3">
+                  <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-[10px]">หญ</div>
+                  <div>
+                    <p class="text-xs"><span class="font-bold">สมหญิง</span> ได้สร้างกระทู้สนทนาใหม่ <span class="text-blue-600">"เตรียมสรุปยอดเงินเดือนปลายเดือนนี้"</span></p>
+                    <p class="text-[10px] text-slate-400 mt-1">5 ชั่วโมงที่แล้ว</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="card">
+              <h3 class="font-bold text-sm mb-3">👥 สมาชิกในทีมที่ออนไลน์</h3>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span class="text-xs">สมชาย ตั้งใจทำงาน</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span class="text-xs">สมหญิง ขยันดี</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                  <span class="text-xs text-slate-400">ประสิทธิ์ มุ่งมั่น (Offline)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== REPORT SECTION (Point 4) ===== -->
+      <div id="report-drawer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 p-4 shadow-2xl z-50 fade-in">
+         <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div>
+               <h4 class="font-bold text-sm text-slate-900">📊 สรุปรายงานขาดลามาสาย (Finance Export Ready)</h4>
+               <p class="text-xs text-slate-500">ประจำงวดวันที่ 01/05 - 20/05 | พร้อมส่งให้ฝ่ายการเงิน</p>
+            </div>
+            <div class="flex gap-2">
+               <button onclick="alert('ส่งข้อมูลให้ฝ่ายการเงินเรียบร้อยแล้ว')" class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
+               <button onclick="document.getElementById('report-drawer').classList.add('hidden')" class="btn-secondary text-xs">ปิด</button>
+            </div>
+         </div>
+      </div>
+
     </div>
   </main>
 </div>
@@ -616,13 +728,13 @@ table th { font-weight: 600; }
 // --- GLOBAL DATA STATES (Mock Data) ---
 let currentUser = { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" };
 let attendanceLogs = [
-  { time: "21/05/2569 08:24:12", name: "สมชาย ตั้งใจทำงาน", type: "เข้างาน", loc: "ในบริษัท", gps: "13.7367, 100.5231", img: "📸 สำเร็จ" },
-  { time: "20/05/2569 17:35:01", name: "สมชาย ตั้งใจทำงาน", type: "ออกงาน", loc: "ในบริษัท", gps: "13.7365, 100.5234", img: "📸 สำเร็จ" }
+  { time: "21/05/2569 08:24:12", name: "สมชาย ตั้งใจทำงาน", type: "เข้างาน", loc: "ในบริษัท", gps: "13.7367, 100.5231", img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา" },
+  { time: "20/05/2569 17:35:01", name: "สมชาย ตั้งใจทำงาน", type: "ออกงาน", loc: "ในบริษัท", gps: "13.7365, 100.5234", img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา" }
 ];
 let employees = [
-  { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" },
-  { name: "สมหญิง ขยันดี", dept: "บัญชี-การเงิน", role: "admin" },
-  { name: "ประสิทธิ์ มุ่งมั่น", dept: "ผู้จัดการทั่วไป", role: "manager" }
+  { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee", lineUserId: "USER_ID_1" },
+  { name: "สมหญิง ขยันดี", dept: "บัญชี-การเงิน", role: "admin", lineUserId: "USER_ID_2" },
+  { name: "ประสิทธิ์ มุ่งมั่น", dept: "ผู้จัดการทั่วไป", role: "manager", lineUserId: "USER_ID_3" }
 ];
 
 // Definition of menu tabs based on Role permissions
@@ -630,6 +742,8 @@ const menuDefinitions = [
   { id: 'attendance', label: '⏱️ ลงเวลาทำงาน', roles: ['employee', 'admin', 'manager'] },
   { id: 'leave', label: '📅 ระบบการลา', roles: ['employee', 'admin', 'manager'] },
   { id: 'outside-work', label: '⛓️ ขออนุมัติงานนอกสถานที่', roles: ['employee', 'admin', 'manager'] },
+  { id: 'regulations', label: '📚 กฎระเบียบบริษัท', roles: ['employee', 'admin', 'manager'] },
+  { id: 'cowork', label: '🤝 Cowork', roles: ['employee', 'admin', 'manager'] },
   { id: 'payroll', label: '💰 ระบบเงินเดือน', roles: ['admin', 'manager'] },
   { id: 'employees', label: '⚙️ จัดการพนักงาน', roles: ['admin', 'manager'] },
   { id: 'social-security', label: '🛡️ ประกันสังคม', roles: ['admin', 'manager'] }
@@ -704,6 +818,10 @@ function handleLogin() {
   renderEmployeeCards();
 }
 
+function toggleReportDrawer() {
+  document.getElementById('report-drawer').classList.toggle('hidden');
+}
+
 function handleLogout() {
   document.getElementById('page-main').classList.add('hidden');
   document.getElementById('page-login').classList.remove('hidden');
@@ -749,22 +867,20 @@ function buildNavigationMenu(role) {
 
 function switchTab(tabId) {
   // Toggle Visibility Content DOM elements
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-  const currentActiveTab = document.getElementById(`tab-${tabId}`);
-  if(currentActiveTab) currentActiveTab.classList.add('active');
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => tab.classList.toggle('active', tab.id === `tab-${tabId}`));
   
   // Reset navigation selection state highlights
   menuDefinitions.forEach(menu => {
     const pcBtn = document.getElementById(`nav-pc-${menu.id}`);
     const mbBtn = document.getElementById(`nav-mb-${menu.id}`);
+    const isActive = menu.id === tabId;
     
     if(pcBtn) {
-      pcBtn.className = "w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition " + 
-                        (menu.id === tabId ? "bg-blue-600 text-white shadow-md font-semibold" : "text-slate-400 hover:bg-slate-800 hover:text-slate-200");
+      pcBtn.className = `w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition ${isActive ? "bg-blue-600 text-white shadow-md font-semibold" : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"}`;
     }
     if(mbBtn) {
-      mbBtn.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 " +
-                        (menu.id === tabId ? "bg-blue-600 text-white font-bold" : "text-slate-400 bg-slate-800/50");
+      mbBtn.className = `whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 ${isActive ? "bg-blue-600 text-white font-bold" : "text-slate-400 bg-slate-800/50"}`;
     }
   });
 }
@@ -789,23 +905,33 @@ function startEkycFlow(type) {
       videoStream = stream;
       webcamEl.srcObject = stream;
       
-      // Simulate Deep Recognition Bio Scan Pipeline Processing
+      // Phase 1: Front Face
       setTimeout(() => {
-        statusText.innerText = "⚡ กำลังวิเคราะห์โครงสร้างไบโอเมตริกซ์...";
+        statusText.innerText = "⚡ สแกนหน้าตรง... กรุณารอ";
         statusText.className = "bg-amber-500 text-white text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
       }, 1500);
 
+      // Phase 2: Left Face (Point 1)
       setTimeout(() => {
-        // Complete Scan Success Handler Trigger Block
-        statusText.innerText = "🎉 ยืนยันตัวตนสำเร็จ! กำลังลงบันทึกเวลา...";
+        statusText.innerText = "👈 หันหน้าไปทางซ้าย...";
+        document.getElementById('face-rim').style.transform = "rotate(-20deg)";
+      }, 3000);
+
+      // Phase 3: Right Face (Point 1)
+      setTimeout(() => {
+        statusText.innerText = "👉 หันหน้าไปทางขวา...";
+        document.getElementById('face-rim').style.transform = "rotate(20deg)";
+      }, 4500);
+
+      setTimeout(() => {
+        statusText.innerText = "🎉 ยืนยัน 3 ทิศทางสำเร็จ! กำลังบันทึก...";
+        document.getElementById('face-rim').style.transform = "rotate(0deg)";
         statusText.className = "bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
-        
         executeLogAttendance(type);
         stopWebcamStream();
-      }, 3500);
+      }, 6000);
     })
     .catch(err => {
-      // Fail Gracefully on Hardware Fault Mock Failover Handling Block
       console.warn("Camera hardware access rejected or missing: ", err);
       setTimeout(() => {
         executeLogAttendance(type);
@@ -838,7 +964,7 @@ function executeLogAttendance(type) {
     type: type,
     loc: location,
     gps: finalCoordinates,
-    img: "📸 สำเร็จ"
+    img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา"
   });
 
   renderAttendanceTable();
@@ -866,6 +992,25 @@ function renderAttendanceTable() {
     `;
     tbody.appendChild(row);
   });
+}
+
+async function sendLineWarning(name) {
+   const emp = employees.find(e => e.name === name);
+   if (!emp || !emp.lineUserId) return alert('ไม่พบข้อมูล LINE User ID ของพนักงานท่านนี้');
+
+   try {
+      const response = await fetch('http://localhost:3000/api/send-line', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            userId: emp.lineUserId,
+            message: `⚠️ เรียนคุณ ${name}, ระบบได้ออกใบเตือนเรื่องระเบียบวินัย กรุณาตรวจสอบในระบบ HR`
+         })
+      });
+      if (response.ok) alert(`ส่งใบเตือนเข้า LINE คุณ ${name} เรียบร้อยแล้ว`);
+   } catch (err) {
+      alert('ไม่สามารถเชื่อมต่อ Server ได้: ' + err.message);
+   }
 }
 
 // --- MODAL UTILITY TRIGGERS ---
@@ -934,7 +1079,7 @@ function submitOutsideWork() {
     <td class="px-3 py-3">${target}</td>
     <td class="px-3 py-3 text-slate-500">${reason || '-'}</td>
     <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7563, 100.5018</td>
-    <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
+    <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รอ Admin Product ตรวจ</span></td>
     <td class="px-3 py-3 admin-only">
       <div class="flex gap-1 btn-approve-area">
         <button onclick="approveOutside(this, 'อนุมัติ')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ อนุมัติ</button>
@@ -958,7 +1103,8 @@ function approveOutside(btn, status) {
   // Update status badge UI in specific column index inside layout row target
   const statusBadgeTd = trRow.cells[5];
   if(status === 'อนุมัติ') {
-    statusBadgeTd.innerHTML = '<span class="badge badge-green">✅ อนุมัติแล้ว</span>';
+    statusBadgeTd.innerHTML = '<span class="badge badge-green">✅ อนุมัติแล้ว (แจ้งเข้า Line)</span>';
+    alert('อนุมัติสำเร็จ! ระบบเด้งแจ้งเตือนเข้า LINE พนักงานเรียบร้อย (ข้อ 8)');
   } else {
     statusBadgeTd.innerHTML = '<span class="badge badge-red">❌ ไม่อนุมัติ</span>';
   }
@@ -1004,7 +1150,8 @@ function renderEmployeeCards() {
       </div>
       <div class="flex gap-1 mt-4 pt-2 border-t border-slate-100">
         <button onclick="alert('ฟังก์ชันแก้ไขข้อมูลพนักงาน')" class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md font-medium hover:bg-blue-100">📝 แก้ไข</button>
-        <button onclick="alert('ระงับสิทธิ์ชั่วคราวสำเร็จ')" class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md font-medium hover:bg-slate-200">🔒 ระงับ</button>
+        <button onclick="sendLineWarning('${emp.name}')" class="text-xs text-red-600 bg-red-50 px-2.5 py-1 rounded-md font-medium hover:bg-red-100">⚠️ ส่งใบเตือน</button>
+        <button onclick="toggleReportDrawer()" class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md font-medium hover:bg-slate-200">📊 รีพอร์ท</button>
       </div>
     `;
     container.appendChild(card);
