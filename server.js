@@ -1,6 +1,7 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
 const cors = require('cors');
+const { Pool } = require('pg'); // FIXED: Added pg Pool import
 
 const app = express();
 app.use(cors());
