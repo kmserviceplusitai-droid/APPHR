@@ -2,10 +2,10 @@
   "name": "km-service-plus",
   "version": "1.0.0",
   "description": "ระบบบริหารจัดการพนักงานครบวงจร (HR Management System)",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "@line/bot-sdk": "^9.4.1",
