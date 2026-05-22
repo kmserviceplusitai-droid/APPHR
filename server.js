@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API Routes
 app.use('/api/line', lineRoutes);
 
 const PORT = process.env.PORT || 3000;
