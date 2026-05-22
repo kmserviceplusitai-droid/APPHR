@@ -1,670 +1,93 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KM Service Plus — HR Webapp</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="frontend/assets/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบริหารจัดการพนักงาน (My Web App)</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- ==================== LOGIN PAGE ==================== -->
-<div id="page-login" class="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-lg">
-        <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-      </div>
-      <h1 class="text-3xl font-bold text-white">KM Service Plus</h1>
-      <p class="text-blue-300 text-sm mt-1">ระบบบริหารจัดการพนักงานครบวงจร</p>
+    <div id="login-section" class="container">
+        <h2>เข้าสู่ระบบพนักงาน / Admin</h2>
+        <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน">
+        <input type="password" id="password" placeholder="รหัสผ่าน">
+        <button onclick="login()">เข้าสู่ระบบ</button>
     </div>
-    <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl">
-      <div class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">สิทธิ์การเข้าใช้งาน</label>
-          <select id="login-role" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none focus:ring-2 focus:ring-blue-400">
-            <option value="employee" class="text-black">👤 พนักงานทั่วไป (นายสมชาย ตั้งใจทำงาน)</option>
-            <option value="admin" class="text-black">🛠️ ฝ่าย HR / แอดมิน</option>
-            <option value="manager" class="text-black">👔 ผู้จัดการ / ผู้บริหาร</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">อีเมล</label>
-          <input type="email" value="somchai.p@kmservice.com" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none" readonly>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-blue-200 uppercase tracking-wider mb-2">รหัสผ่าน</label>
-          <input type="password" value="123456" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none" readonly>
-        </div>
-      </div>
-      <div class="mt-6">
-        <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg">เข้าสู่ระบบ →</button>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- ==================== MAIN APP ==================== -->
-<div id="page-main" class="hidden min-h-screen flex flex-col md:flex-row">
- 
-  <!-- MOBILE HEADER -->
-  <header class="md:hidden bg-slate-900 text-white sticky top-0 z-50">
-    <div class="px-4 py-3 flex justify-between items-center">
-      <div>
-        <h1 class="text-base font-bold">KM Service Plus</h1>
-        <p class="text-xs text-emerald-400" id="mb-user-name">...</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="relative">
-          <button id="btn-notification-mobile" class="text-slate-400 hover:text-white relative">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-            <span id="notif-badge-mb" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">3</span>
-          </button>
-        </div>
-        <button id="btn-logout-mobile" class="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded-lg">ออก</button>
-      </div>
-    </div>
-    <div class="px-4 py-2 bg-slate-800 border-t border-slate-700 flex justify-between text-[10px]">
-      <div class="flex gap-3">
-        <span class="text-slate-400">มาสาย: <b class="text-amber-400">2</b></span>
-        <span class="text-slate-400">ขาดงาน: <b class="text-red-400">1</b></span>
-      </div>
-      <div class="text-blue-300">งวดบัญชี: พฤษภาคม 2569</div>
-    </div>
-    <nav class="flex gap-1 p-2 overflow-x-auto no-scrollbar bg-slate-800" id="mobile-nav"></nav>
-  </header>
- 
-  <!-- SIDEBAR -->
-  <aside class="hidden md:flex w-64 bg-slate-900 text-slate-300 flex-col shrink-0 sticky top-0 h-screen overflow-y-auto">
-    <div class="p-5 border-b border-slate-800">
-      <h1 class="text-lg font-bold text-white">KM Service Plus</h1>
-      <div class="flex items-center gap-1.5 mt-1">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
-        <span class="text-xs text-emerald-400">ระบบออนไลน์</span>
-      </div>
-    </div>
-    <div class="mx-3 my-3 p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
-      <p class="text-[11px] text-slate-500 uppercase tracking-wider">ผู้ใช้งาน</p>
-      <p class="text-sm font-bold text-white mt-0.5" id="pc-user-name">—</p>
-      <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
-      <div class="flex gap-1 mt-2 flex-wrap">
-        <span id="pc-insure-badge" class="badge badge-green">ประกัน: ในระบบ</span>
-        <span id="pc-role-badge" class="badge badge-blue hidden">—</span>
-      </div>
-    </div>
-    <nav class="flex-1 px-2 space-y-0.5 pb-4" id="pc-nav"></nav>
-    <div class="p-3 border-t border-slate-800">
-      <button id="btn-logout-pc" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-xl transition">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-        ออกจากระบบ
-      </button>
-    </div>
-  </aside>
- 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 overflow-y-auto">
-    <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-5">
- 
-      <!-- ===== TAB: ATTENDANCE ===== -->
-      <div id="tab-attendance" class="tab-content space-y-5">
-        <div class="flex items-start justify-between">
-          <div>
-            <div class="flex items-center gap-2">
-              <h2 class="text-xl font-bold text-slate-900">⏱️ ลงเวลาทำงาน</h2>
-              <span class="badge badge-yellow text-[10px]">Frontend Demo</span>
-            </div>
-            <p class="text-sm text-slate-500">บันทึกเวลาเข้า-ออกงานพร้อมยืนยันตัวตนและพิกัด GPS</p>
-          </div>
-          <div class="text-right hidden md:block">
-            <p class="text-2xl font-bold text-slate-900" id="live-time">--:--:--</p>
-            <p class="text-xs text-slate-500" id="live-date">--/--/----</p>
-          </div>
-        </div>
- 
-        <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
-          <!-- Camera Card -->
-          <div class="xl:col-span-5 card space-y-4">
-            <h3 class="text-sm font-bold text-slate-800">📸 ยืนยันตัวตน (Face Scan)</h3>
-            <div class="w-full aspect-square bg-slate-900 rounded-xl overflow-hidden relative flex items-center justify-center border-2 border-slate-700">
-              <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden -scale-x-100"></video>
-              <div id="face-rim" class="w-40 h-40 rounded-full border-4 border-dashed border-blue-400 flex items-center justify-center absolute transition-all duration-500">
-                <span class="text-5xl text-slate-500" id="face-icon">👤</span>
-                <div id="laser-line" class="laser-line absolute w-full h-0.5 bg-blue-400 left-0 hidden"></div>
-              </div>
-              <canvas id="capture-canvas" class="hidden"></canvas>
-              <div class="absolute bottom-3 w-full px-3 text-center z-10">
-                <span id="ekyc-status" class="bg-black/70 text-blue-300 text-xs px-3 py-1.5 rounded-lg inline-block font-medium">
-                  📷 กดปุ่มเพื่อเริ่มสแกนหน้า (หน้าตรง/ซ้าย/ขวา)
-                </span>
-              </div>
-            </div>
- 
-            <!-- GPS -->
-            <div class="bg-slate-50 rounded-xl p-3 border border-slate-200">
-              <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">📍 พิกัด GPS</p>
-              <p id="gps-text" class="text-xs text-slate-700 font-medium">รอรับสัญญาณ GPS...</p>
-              <div class="flex gap-4 mt-1 font-mono text-[10px] text-slate-400">
-                <span id="gps-lat">Lat: --</span>
-                <span id="gps-lng">Lng: --</span>
-              </div>
-            </div>
- 
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">สถานที่ปฏิบัติงาน</label>
-              <select id="attendance-location" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white outline-none">
-                <option value="ในบริษัท">🏢 ในบริษัท (สำนักงานใหญ่)</option>
-                <option value="นอกสถานที่">📍 นอกสถานที่</option>
-                <option value="Work from Home">🏠 Work from Home</option>
-              </select>
-            </div>
- 
-            <div class="grid grid-cols-2 gap-2">
-              <button id="btn-checkin" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl text-sm transition shadow">✅ เข้างาน</button>
-              <button id="btn-checkout" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl text-sm transition shadow">🚪 ออกงาน</button>
-            </div>
-          </div>
- 
-          <!-- Attendance Log -->
-          <div class="xl:col-span-7 card flex flex-col">
-            <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
-              <h3 class="text-sm font-bold text-slate-800">📊 ประวัติการลงเวลา</h3>
-              <div class="flex gap-2">
-                <button id="btn-export-attendance" class="btn-secondary text-xs py-1.5 px-3">⬇️ Export</button>
-                <select id="att-filter" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 outline-none bg-white">
-                  <option value="all">ทั้งหมด</option>
-                  <option value="เข้างาน">เข้างาน</option>
-                  <option value="ออกงาน">ออกงาน</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-3 gap-2 mb-3">
-              <div class="stat-card text-center"><p class="text-[11px] text-slate-500">วันทำงานเดือนนี้</p><p class="text-xl font-bold text-slate-900" id="stat-work-days">22</p></div>
-              <div class="stat-card text-center"><p class="text-[11px] text-slate-500">มาสาย</p><p class="text-xl font-bold text-amber-600" id="stat-late">2</p></div>
-              <div class="stat-card text-center"><p class="text-[11px] text-slate-500">ขาด/ลา</p><p class="text-xl font-bold text-red-600" id="stat-absent">1</p></div>
-            </div>
-            <div class="mb-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <p class="text-xs font-bold text-slate-500 uppercase mb-3">📈 สถิติการเข้างานรายวัน (เดือนปัจจุบัน)</p>
-              <div class="h-40"><canvas id="attendanceChart"></canvas></div>
-            </div>
-            <div class="overflow-x-auto flex-1">
-              <table class="w-full text-xs text-slate-600 min-w-[700px]">
-                <thead class="bg-slate-50 text-slate-500 border-b">
-                  <tr>
-                    <th class="px-3 py-2.5 text-left">วันที่ / เวลา</th>
-                    <th class="px-3 py-2.5 text-left">ชื่อ-นามสกุล</th>
-                    <th class="px-3 py-2.5 text-left">รายการ</th>
-                    <th class="px-3 py-2.5 text-left">สถานที่</th>
-                    <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
-                    <th class="px-3 py-2.5 text-left">รูปถ่าย (3 มุม)</th>
-                  </tr>
-                </thead>
-                <tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: LEAVE ===== -->
-      <div id="tab-leave" class="tab-content space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900">📅 ระบบการลา</h2>
-            <p class="text-sm text-slate-500">ยื่นคำขอลา ตรวจสอบโควต้าวันลา และดูประวัติการลา</p>
-          </div>
-          <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div class="card text-center border-l-4 border-blue-500">
-            <p class="text-xs text-slate-500">ลาพักร้อน</p>
-            <p class="text-2xl font-bold text-blue-600">6</p>
-            <p class="text-xs text-slate-400">คงเหลือ / 10 วัน</p>
-            <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width:60%"></div></div>
-          </div>
-          <div class="card text-center border-l-4 border-green-500">
-            <p class="text-xs text-slate-500">ลากิจ</p>
-            <p class="text-2xl font-bold text-green-600">3</p>
-            <p class="text-xs text-slate-400">คงเหลือ / 5 วัน</p>
-            <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:60%"></div></div>
-          </div>
-          <div class="card text-center border-l-4 border-red-500">
-            <p class="text-xs text-slate-500">ลาป่วย</p>
-            <p class="text-2xl font-bold text-red-600">28</p>
-            <p class="text-xs text-slate-400">คงเหลือ / 30 วัน</p>
-            <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-red-500 rounded-full" style="width:93%"></div></div>
-          </div>
-          <div class="card text-center border-l-4 border-purple-500">
-            <p class="text-xs text-slate-500">ลาคลอด</p>
-            <p class="text-2xl font-bold text-purple-600">90</p>
-            <p class="text-xs text-slate-400">สิทธิ์ตามกฎหมาย</p>
-            <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-purple-500 rounded-full" style="width:100%"></div></div>
-          </div>
-        </div>
-        <div class="card">
-          <h3 class="font-bold text-slate-800 mb-3 text-sm">ประวัติการลา</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-slate-600 min-w-[600px]">
-              <thead class="bg-slate-50 text-slate-500 border-b">
-                <tr>
-                  <th class="px-3 py-2.5 text-left">วันที่ยื่น</th>
-                  <th class="px-3 py-2.5 text-left">ประเภทการลา</th>
-                  <th class="px-3 py-2.5 text-left">ช่วงวันลา</th>
-                  <th class="px-3 py-2.5 text-left">จำนวนวัน</th>
-                  <th class="px-3 py-2.5 text-left">เหตุผล</th>
-                  <th class="px-3 py-2.5 text-left">สถานะ</th>
-                </tr>
-              </thead>
-              <tbody id="leave-tbody">
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3">15/05/2569</td>
-                  <td class="px-3 py-3">🏖️ ลาพักร้อน</td>
-                  <td class="px-3 py-3">20/05 – 21/05/2569</td>
-                  <td class="px-3 py-3 font-bold text-blue-600">2 วัน</td>
-                  <td class="px-3 py-3 text-slate-400">ไปเที่ยวกับครอบครัว</td>
-                  <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                </tr>
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3">10/04/2569</td>
-                  <td class="px-3 py-3">🏥 ลาป่วย</td>
-                  <td class="px-3 py-3">11/04/2569</td>
-                  <td class="px-3 py-3 font-bold text-red-600">1 วัน</td>
-                  <td class="px-3 py-3 text-slate-400">ไม่สบาย มีใบรับรองแพทย์</td>
-                  <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                </tr>
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3">18/05/2569</td>
-                  <td class="px-3 py-3">📋 ลากิจ</td>
-                  <td class="px-3 py-3">22/05/2569</td>
-                  <td class="px-3 py-3 font-bold text-yellow-600">1 วัน</td>
-                  <td class="px-3 py-3 text-slate-400">ธุระส่วนตัว</td>
-                  <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: OUTSIDE WORK ===== -->
-      <div id="tab-outside-work" class="tab-content space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่</h2>
-            <p class="text-sm text-slate-500">ยื่นคำขอออกนอกสถานที่ ผู้จัดการตรวจสอบและอนุมัติ พร้อมระบบ GPS Track ปลายทาง</p>
-          </div>
-          <button id="btn-open-outside-modal" class="btn-primary text-sm">+ ยื่นคำขอออกนอกสถานที่</button>
-        </div>
-        <div class="card">
-          <h3 class="font-bold text-slate-800 mb-4 text-sm">⛓️ ลำดับสายการอนุมัติ</h3>
-          <div class="flex items-center gap-0 overflow-x-auto pb-2">
-            <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl">👤</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">ทนาย / พนักงาน</p>
-              <p class="text-[10px] text-slate-400">ยื่นคำขอ</p>
-            </div>
-            <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
-            <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-xl">🛠️</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">Admin Product</p>
-              <p class="text-[10px] text-slate-400">ตรวจกฎอนุมัติ</p>
-            </div>
-            <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
-            <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-xl">👔</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">Manager</p>
-              <p class="text-[10px] text-slate-400">อนุมัติคนสุดท้าย</p>
-            </div>
-            <div class="flex-1 h-0.5 bg-slate-200 min-w-[30px]"></div>
-            <div class="flex flex-col items-center min-w-[120px]">
-              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-xl">✅</div>
-              <p class="text-xs font-semibold text-slate-700 mt-1">แจ้ง Line</p>
-              <p class="text-[10px] text-slate-400">อัตโนมัติ</p>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <h3 class="font-bold text-slate-800 mb-3 text-sm">รายการคำขอออกนอกสถานที่</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-slate-600 min-w-[700px]">
-              <thead class="bg-slate-50 text-slate-500 border-b">
-                <tr>
-                  <th class="px-3 py-2.5 text-left">ชื่อพนักงาน</th>
-                  <th class="px-3 py-2.5 text-left">วันที่</th>
-                  <th class="px-3 py-2.5 text-left">จุดหมาย</th>
-                  <th class="px-3 py-2.5 text-left">วัตถุประสงค์</th>
-                  <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
-                  <th class="px-3 py-2.5 text-left">สถานะ</th>
-                  <th class="px-3 py-2.5 text-left admin-only">การดำเนินการ</th>
-                </tr>
-              </thead>
-              <tbody id="outside-tbody">
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3 font-semibold text-slate-800">สมชาย ตั้งใจทำงาน</td>
-                  <td class="px-3 py-3">21/05/2569</td>
-                  <td class="px-3 py-3">ลาดพร้าว, กรุงเทพฯ</td>
-                  <td class="px-3 py-3 text-slate-500">ประชุมลูกค้า XYZ Corp</td>
-                  <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7924, 100.6125</td>
-                  <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
-                  <td class="px-3 py-3 admin-only">
-                    <div class="flex gap-1">
-                      <button onclick="approveOutside(this, 'อนุมัติ')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ อนุมัติ</button>
-                      <button onclick="approveOutside(this, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3 font-semibold text-slate-800">สมหญิง ขยันดี</td>
-                  <td class="px-3 py-3">20/05/2569</td>
-                  <td class="px-3 py-3">สีลม, กรุงเทพฯ</td>
-                  <td class="px-3 py-3 text-slate-500">นำส่งเอกสารธนาคาร</td>
-                  <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7231, 100.5281</td>
-                  <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only">ดำเนินการแล้ว</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: PAYROLL ===== -->
-      <div id="tab-payroll" class="tab-content space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900">💰 ระบบเงินเดือน & สลิปเงินเดือน</h2>
-            <p class="text-sm text-slate-500">ดึงข้อมูลสรุป หักลด และส่งสลิปผ่าน Line OA อัตโนมัติ</p>
-          </div>
-          <button class="line-btn" onclick="sendAllPayroll()">📤 ส่งสลิปทาง Line (ทุกคน)</button>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div class="stat-card"><p class="text-xs text-slate-500">เงินเดือนรวม</p><p class="text-xl font-bold text-slate-900">฿2,840,000</p><p class="text-xs text-slate-400">พนักงาน 47 คน</p></div>
-          <div class="stat-card"><p class="text-xs text-slate-500">หักประกันสังคม</p><p class="text-xl font-bold text-red-600">฿426,000</p><p class="text-xs text-slate-400">5% × ยอดรวม</p></div>
-          <div class="stat-card"><p class="text-xs text-slate-500">ยอดรวมสุทธิ</p><p class="text-xl font-bold text-emerald-600">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
-        </div>
-        <div class="card">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-slate-800 text-sm">รายการเงินเดือนพนักงาน — เดือนพฤษภาคม 2569</h3>
-            <button class="btn-secondary text-xs py-1.5 px-3">⬇️ Export Excel</button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-slate-600 min-w-[800px]">
-              <thead class="bg-slate-50 text-slate-500 border-b">
-                <tr>
-                  <th class="px-3 py-2.5 text-left">ชื่อพนักงาน</th>
-                  <th class="px-3 py-2.5 text-left">แผนก</th>
-                  <th class="px-3 py-2.5 text-right">เงินเดือน</th>
-                  <th class="px-3 py-2.5 text-right">OT</th>
-                  <th class="px-3 py-2.5 text-right">หักประกัน</th>
-                  <th class="px-3 py-2.5 text-right">หักภาษี</th>
-                  <th class="px-3 py-2.5 text-right">สุทธิ</th>
-                  <th class="px-3 py-2.5 text-left">สลิป Line</th>
-                </tr>
-              </thead>
-              <tbody id="payroll-tbody">
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3 font-semibold text-slate-800">สมชาย ตั้งใจทำงาน</td>
-                  <td class="px-3 py-3 text-slate-400">พัฒนาซอฟต์แวร์</td>
-                  <td class="px-3 py-3 text-right font-mono">45,000</td>
-                  <td class="px-3 py-3 text-right font-mono text-green-600">+2,500</td>
-                  <td class="px-3 py-3 text-right font-mono text-red-500">-2,250</td>
-                  <td class="px-3 py-3 text-right font-mono text-amber-600">-3,200</td>
-                  <td class="px-3 py-3 text-right font-bold text-slate-900">฿42,050</td>
-                  <td class="px-3 py-3"><button onclick="sendPayroll('สมชาย ตั้งใจทำงาน', 42050)" class="line-btn text-[11px] py-1 px-2">📤 ส่ง Line</button></td>
-                </tr>
-                <tr class="border-b border-slate-100 hover:bg-slate-50">
-                  <td class="px-3 py-3 font-semibold text-slate-800">สมหญิง ขยันดี</td>
-                  <td class="px-3 py-3 text-slate-400">บัญชี-การเงิน</td>
-                  <td class="px-3 py-3 text-right font-mono">38,000</td>
-                  <td class="px-3 py-3 text-right font-mono text-green-600">+0</td>
-                  <td class="px-3 py-3 text-right font-mono text-red-500">-1,900</td>
-                  <td class="px-3 py-3 text-right font-mono text-amber-600">-2,500</td>
-                  <td class="px-3 py-3 text-right font-bold text-slate-900">฿33,600</td>
-                  <td class="px-3 py-3"><button onclick="sendPayroll('สมหญิง ขยันดี', 33600)" class="line-btn text-[11px] py-1 px-2">📤 ส่ง Line</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: EMPLOYEE SETTINGS ===== -->
-      <div id="tab-employee-settings" class="tab-content space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900">⚙️ จัดการพนักงาน</h2>
-            <p class="text-sm text-slate-500">เพิ่ม แก้ไข ตั้งค่าข้อมูลรายบุคคล และกำหนดค่าตอบแทน</p>
-          </div>
-          <button id="btn-open-add-employee-modal" class="btn-primary text-xs">+ เพิ่มพนักงาน</button>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards"></div>
-      </div>
- 
-      <!-- ===== TAB: SOCIAL SECURITY ===== -->
-      <div id="tab-social-security" class="tab-content space-y-5">
-        <div>
-          <h2 class="text-xl font-bold text-slate-900">🛡️ จัดการประกันสังคม</h2>
-          <p class="text-sm text-slate-500">แยกประเภทพนักงานในระบบประกันสังคม และดึงรีพอร์ทส่งสำนักงานประกันสังคม</p>
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div class="card border-l-4 border-green-500 text-center"><p class="text-xs text-slate-500">อยู่ในระบบ (ม.33)</p><p class="text-3xl font-bold text-green-600">42</p><p class="text-xs text-slate-400">คน</p></div>
-          <div class="card border-l-4 border-amber-500 text-center"><p class="text-xs text-slate-500">ภาคสมัครใจ (ม.39)</p><p class="text-3xl font-bold text-amber-600">3</p><p class="text-xs text-slate-400">คน</p></div>
-          <div class="card border-l-4 border-slate-400 text-center"><p class="text-xs text-slate-500">ยังไม่ได้ลงทะเบียน</p><p class="text-3xl font-bold text-slate-500">2</p><p class="text-xs text-slate-400">คน</p></div>
-        </div>
-        <div class="card">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-slate-800 text-sm">รายชื่อพนักงานและสถานะประกันสังคม</h3>
-            <button class="btn-secondary text-xs py-1.5 px-3">⬇️ Export ส่งสำนักงานประกัน</button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-slate-600">
-              <thead class="bg-slate-50 text-slate-500 border-b">
-                <tr>
-                  <th class="px-3 py-2.5 text-left">ชื่อพนักงาน</th>
-                  <th class="px-3 py-2.5 text-left">ประเภทสิทธิ์</th>
-                  <th class="px-3 py-2.5 text-left">สถานะการนำส่ง</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b">
-                  <td class="px-3 py-2.5 font-medium">สมชาย ตั้งใจทำงาน</td>
-                  <td class="px-3 py-2.5">มาตรา 33</td>
-                  <td class="px-3 py-2.5"><span class="badge badge-green">ปกติ</span></td>
-                </tr>
-                <tr class="border-b">
-                  <td class="px-3 py-2.5 font-medium">สมหญิง ขยันดี</td>
-                  <td class="px-3 py-2.5">มาตรา 33</td>
-                  <td class="px-3 py-2.5"><span class="badge badge-green">ปกติ</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: REGULATIONS ===== -->
-      <div id="tab-regulations" class="tab-content space-y-5">
-        <div>
-          <h2 class="text-xl font-bold text-slate-900">📚 กฎระเบียบบริษัท</h2>
-          <p class="text-sm text-slate-500">รวมระเบียบข้อบังคับ คู่มือพนักงาน และประกาศต่างๆ</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="card flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center text-xl">📄</div>
-              <div>
-                <p class="font-bold text-sm">ข้อบังคับการทำงาน 2567</p>
-                <p class="text-[10px] text-slate-400">อัปเดตล่าสุด: 01/01/2567</p>
-              </div>
-            </div>
-            <button class="text-blue-600 text-xs font-bold">ดาวน์โหลด</button>
-          </div>
-          <div class="card flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl">📘</div>
-              <div>
-                <p class="font-bold text-sm">คู่มือสวัสดิการพนักงาน</p>
-                <p class="text-[10px] text-slate-400">อัปเดตล่าสุด: 15/03/2567</p>
-              </div>
-            </div>
-            <button class="text-blue-600 text-xs font-bold">ดาวน์โหลด</button>
-          </div>
-        </div>
-        <div class="admin-only card bg-blue-50 border-blue-200">
-          <h4 class="text-sm font-bold text-blue-800 mb-2">อัปโหลดกฎระเบียบใหม่</h4>
-          <input type="file" class="text-xs text-slate-500 mb-3 block">
-          <button class="btn-primary text-xs">บันทึกลงระบบ</button>
-        </div>
-      </div>
- 
-      <!-- ===== TAB: COWORK ===== -->
-      <div id="tab-cowork" class="tab-content space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900">🤝 Cowork & Collaboration</h2>
-            <p class="text-sm text-slate-500">พื้นที่ทำงานร่วมกัน ติดตามงาน และสื่อสารในทีม</p>
-          </div>
-          <button class="btn-primary text-xs">+ สร้างโปรเจกต์ใหม่</button>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div class="lg:col-span-2 space-y-4">
+
+    <div id="main-app" class="container hidden">
+        <header>
+            <h3>สวัสดีคุณ: <span id="user-display-name"></span> (<span id="user-role"></span>)</h3>
+            <button class="btn-danger" onclick="logout()">ออกจากระบบ</button>
+        </header>
+        <hr>
+
+        <div id="employee-menu">
+            <h2>⚙️ เมนูพนักงาน</h2>
             <div class="card">
-              <h3 class="font-bold text-sm mb-3">📌 บอร์ดกิจกรรมล่าสุด</h3>
-              <div class="space-y-4">
-                <div class="flex gap-3 pb-3 border-b border-slate-50">
-                  <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-[10px]">สม</div>
-                  <div>
-                    <p class="text-xs"><span class="font-bold">สมชาย</span> ได้อัปเดตสถานะงาน <span class="text-blue-600">"พัฒนาระบบสแกนหน้า"</span> เป็น <span class="badge badge-green">เสร็จสิ้น</span></p>
-                    <p class="text-[10px] text-slate-400 mt-1">2 ชั่วโมงที่แล้ว</p>
-                  </div>
-                </div>
-                <div class="flex gap-3 pb-3">
-                  <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-[10px]">หญ</div>
-                  <div>
-                    <p class="text-xs"><span class="font-bold">สมหญิง</span> ได้สร้างกระทู้สนทนาใหม่ <span class="text-blue-600">"เตรียมสรุปยอดเงินเดือนปลายเดือนนี้"</span></p>
-                    <p class="text-[10px] text-slate-400 mt-1">5 ชั่วโมงที่แล้ว</p>
-                  </div>
-                </div>
-              </div>
+                <h3>ลงเวลาเข้า–ออกงาน</h3>
+                <button class="btn-success" onclick="markAttendance('in')">เข้างาน (Check In)</button>
+                <button class="btn-warning" onclick="markAttendance('out')">ออกงาน (Check Out)</button>
             </div>
-          </div>
-          <div class="card">
-            <h3 class="font-bold text-sm mb-3">👥 สมาชิกในทีมที่ออนไลน์</h3>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="text-xs">สมชาย ตั้งใจทำงาน</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="text-xs">สมหญิง ขยันดี</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                <span class="text-xs text-slate-400">ประสิทธิ์ มุ่งมั่น (Offline)</span>
-              </div>
+
+            <div class="card">
+                <h3>ยื่นลางาน</h3>
+                <select id="leave-type">
+                    <option value="ลาป่วย">ลาป่วย</option>
+                    <option value="ลากิจ">ลากิจ</option>
+                    <option value="ลาพักร้อน">ลาพักร้อน</option>
+                </select>
+                <input type="date" id="leave-start"> ถึง <input type="date" id="leave-end">
+                <textarea id="leave-reason" placeholder="เหตุผลการลา"></textarea>
+                <button onclick="submitLeave()">ส่งคำขอลางาน</button>
             </div>
-          </div>
         </div>
-      </div>
- 
+
+        <div id="admin-menu" class="hidden">
+            <h2>📊 Admin Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="card-count">พนักงานทั้งหมด: <span id="dash-emp-count">0</span> คน</div>
+                <div class="card-count alert">คำขอรออนุมัติ: <span id="dash-leave-count">0</span> รายการ</div>
+            </div>
+
+            <div class="card">
+                <h3>🔔 ตั้งค่าเชื่อมต่อ LINE Notify (แอดมิน)</h3>
+                <input type="text" id="line-token" placeholder="วาง LINE Notify Token ที่นี่">
+                <button onclick="saveLineToken()">บันทึก Token</button>
+            </div>
+
+            <div class="card">
+                <h3>📋 รายชื่อพนักงาน & เงินเดือน</h3>
+                <table id="employee-table">
+                    <thead>
+                        <tr>
+                            <th>ชื่อ-นามสกุล</th>
+                            <th>ตำแหน่ง</th>
+                            <th>เงินเดือน (บาท)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>📝 รายการอนุมัติการลางาน</h3>
+                <table id="leave-table">
+                    <thead>
+                        <tr>
+                            <th>ชื่อพนักงาน</th>
+                            <th>ประเภท</th>
+                            <th>เหตุผล</th>
+                            <th>สถานะ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </main>
-</div>
- 
-<!-- REPORT DRAWER -->
-<div id="report-drawer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 p-4 shadow-2xl z-50 fade-in">
-  <div class="max-w-7xl mx-auto flex items-center justify-between">
-    <div>
-      <h4 class="font-bold text-sm text-slate-900">📊 สรุปรายงานขาดลามาสาย</h4>
-      <p class="text-xs text-slate-500">ประจำงวดวันที่ 01/05 - 20/05</p>
-    </div>
-    <div class="flex gap-2">
-      <button class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
-      <button id="btn-close-report-drawer" class="btn-secondary text-xs">ปิด</button>
-    </div>
-  </div>
-</div>
- 
-<!-- Add Employee Modal -->
-<div id="modal-add-employee" class="modal-overlay hidden">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
-    <div class="space-y-3">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
-        <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">แผนก / ตำแหน่ง</label>
-        <input type="text" id="form-emp-dept" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น การตลาด">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">สิทธิ์ระบบ</label>
-        <select id="form-emp-role" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
-          <option value="employee">Employee (พนักงานทั่วไป)</option>
-          <option value="admin">HR Admin (ฝ่ายบุคคล)</option>
-          <option value="manager">Manager (ผู้บริหาร)</option>
-        </select>
-      </div>
-    </div>
-    <div class="flex justify-end gap-2 mt-6">
-      <button type="button" onclick="closeModal('modal-add-employee')" class="btn-secondary text-xs">ยกเลิก</button>
-      <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
-    </div>
-  </div>
-</div>
- 
-<!-- Leave Modal -->
-<div id="modal-leave-request" class="modal-overlay hidden">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold text-slate-900 mb-4">📝 ยื่นคำขอลา</h3>
-    <div class="space-y-3">
-      <select id="form-leave-type" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
-        <option value="🏖️ ลาพักร้อน">🏖️ ลาพักร้อน</option>
-        <option value="📋 ลากิจ">📋 ลากิจ</option>
-        <option value="🏥 ลาป่วย">🏥 ลาป่วย</option>
-      </select>
-      <div class="grid grid-cols-2 gap-2">
-        <input type="date" id="form-leave-start" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-        <input type="date" id="form-leave-end" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-      </div>
-      <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
-      <div class="flex justify-end gap-2 mt-2">
-        <button type="button" onclick="closeModal('modal-leave-request')" class="btn-secondary text-xs">ยกเลิก</button>
-        <button onclick="submitLeave()" class="btn-primary text-xs">ส่งคำขอลา</button>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- Outside Request Modal -->
-<div id="modal-outside-request" class="modal-overlay hidden">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold text-slate-900 mb-4">⛓️ ยื่นคำขอออกนอกสถานที่</h3>
-    <div class="space-y-3">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่ต้องการไป</label>
-        <input type="date" id="form-out-date" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">สถานที่จุดหมาย</label>
-        <input type="text" id="form-out-target" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น บจก. พลังงานดี">
-      </div>
-      <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="วัตถุประสงค์..."></textarea>
-      <div class="flex justify-end gap-2 mt-2">
-        <button type="button" onclick="closeModal('modal-outside-request')" class="btn-secondary text-xs">ยกเลิก</button>
-        <button onclick="submitOutsideWork()" class="btn-primary text-xs">ส่งคำขออนุมัติ</button>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- ==================== JAVASCRIPT SERVICES & APP ==================== -->
-<script src="frontend/services/api.js"></script>
-<script src="frontend/js/app.js"></script>
+
+    <script src="app.js"></script>
 </body>
 </html>
- 
