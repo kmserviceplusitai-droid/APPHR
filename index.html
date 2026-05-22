@@ -6,6 +6,7 @@
 <title>KM Service Plus — HR Webapp</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 * { box-sizing: border-box; }
 body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; color: #1e293b; }
@@ -45,7 +46,7 @@ table th { font-weight: 600; }
 </style>
 </head>
 <body>
-
+ 
 <!-- ==================== LOGIN PAGE ==================== -->
 <div id="page-login" class="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
   <div class="w-full max-w-md">
@@ -75,17 +76,17 @@ table th { font-weight: 600; }
           <input type="password" value="123456" class="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-sm text-white outline-none" readonly>
         </div>
       </div>
-        <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg mt-2">เข้าสู่ระบบ →</button>
-      <p class="text-center text-blue-300/70 text-xs mt-4">Demo: เลือกสิทธิ์แล้วกดเข้าสู่ระบบได้เลย</p>
+      <div class="mt-6">
+        <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg">เข้าสู่ระบบ →</button>
+      </div>
     </div>
   </div>
 </div>
-
+ 
 <!-- ==================== MAIN APP ==================== -->
 <div id="page-main" class="hidden min-h-screen flex flex-col md:flex-row">
-
-  <!-- MOBILE HEADER --> 
-  <!-- MOBILE HEADER --> 
+ 
+  <!-- MOBILE HEADER -->
   <header class="md:hidden bg-slate-900 text-white sticky top-0 z-50">
     <div class="px-4 py-3 flex justify-between items-center">
       <div>
@@ -93,7 +94,7 @@ table th { font-weight: 600; }
         <p class="text-xs text-emerald-400" id="mb-user-name">...</p>
       </div>
       <div class="flex items-center gap-2">
-        <div class="relative"> <!-- This div was previously hidden, keeping it consistent -->
+        <div class="relative">
           <button id="btn-notification-mobile" class="text-slate-400 hover:text-white relative">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
             <span id="notif-badge-mb" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">3</span>
@@ -102,7 +103,6 @@ table th { font-weight: 600; }
         <button id="btn-logout-mobile" class="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded-lg">ออก</button>
       </div>
     </div>
-    <!-- Status Bar for Attendance Summary (Point 2) -->
     <div class="px-4 py-2 bg-slate-800 border-t border-slate-700 flex justify-between text-[10px]">
       <div class="flex gap-3">
         <span class="text-slate-400">มาสาย: <b class="text-amber-400">2</b></span>
@@ -112,7 +112,7 @@ table th { font-weight: 600; }
     </div>
     <nav class="flex gap-1 p-2 overflow-x-auto no-scrollbar bg-slate-800" id="mobile-nav"></nav>
   </header>
-
+ 
   <!-- SIDEBAR -->
   <aside class="hidden md:flex w-64 bg-slate-900 text-slate-300 flex-col shrink-0 sticky top-0 h-screen overflow-y-auto">
     <div class="p-5 border-b border-slate-800">
@@ -125,30 +125,33 @@ table th { font-weight: 600; }
     <div class="mx-3 my-3 p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
       <p class="text-[11px] text-slate-500 uppercase tracking-wider">ผู้ใช้งาน</p>
       <p class="text-sm font-bold text-white mt-0.5" id="pc-user-name">—</p>
-      <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p> <!-- FIXED: Corrected class attribute -->
+      <p class="text-xs text-blue-400 mt-0.5" id="pc-user-dept">—</p>
       <div class="flex gap-1 mt-2 flex-wrap">
         <span id="pc-insure-badge" class="badge badge-green">ประกัน: ในระบบ</span>
-        <span id="pc-role-badge" class="badge hidden md:block badge-blue">—</span>
+        <span id="pc-role-badge" class="badge badge-blue hidden">—</span>
       </div>
     </div>
     <nav class="flex-1 px-2 space-y-0.5 pb-4" id="pc-nav"></nav>
-    <div class="p-3 border-t border-slate-800 hidden md:block">
+    <div class="p-3 border-t border-slate-800">
       <button id="btn-logout-pc" class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-xl transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
         ออกจากระบบ
       </button>
     </div>
   </aside>
-
+ 
   <!-- MAIN CONTENT -->
   <main class="flex-1 overflow-y-auto">
     <div class="max-w-7xl mx-auto p-4 md:p-6 space-y-5">
-
+ 
       <!-- ===== TAB: ATTENDANCE ===== -->
       <div id="tab-attendance" class="tab-content space-y-5">
         <div class="flex items-start justify-between">
           <div>
-            <h2 class="text-xl font-bold text-slate-900">⏱️ ลงเวลาทำงาน</h2>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-bold text-slate-900">⏱️ ลงเวลาทำงาน</h2>
+              <span class="badge badge-yellow text-[10px]">Frontend Demo</span>
+            </div>
             <p class="text-sm text-slate-500">บันทึกเวลาเข้า-ออกงานพร้อมยืนยันตัวตนและพิกัด GPS</p>
           </div>
           <div class="text-right hidden md:block">
@@ -156,7 +159,7 @@ table th { font-weight: 600; }
             <p class="text-xs text-slate-500" id="live-date">--/--/----</p>
           </div>
         </div>
-
+ 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
           <!-- Camera Card -->
           <div class="xl:col-span-5 card space-y-4">
@@ -174,7 +177,7 @@ table th { font-weight: 600; }
                 </span>
               </div>
             </div>
-
+ 
             <!-- GPS -->
             <div class="bg-slate-50 rounded-xl p-3 border border-slate-200">
               <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">📍 พิกัด GPS</p>
@@ -184,7 +187,7 @@ table th { font-weight: 600; }
                 <span id="gps-lng">Lng: --</span>
               </div>
             </div>
-
+ 
             <div>
               <label class="block text-xs font-semibold text-slate-600 mb-1">สถานที่ปฏิบัติงาน</label>
               <select id="attendance-location" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white outline-none">
@@ -193,13 +196,13 @@ table th { font-weight: 600; }
                 <option value="Work from Home">🏠 Work from Home</option>
               </select>
             </div>
-
+ 
             <div class="grid grid-cols-2 gap-2">
               <button id="btn-checkin" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl text-sm transition shadow">✅ เข้างาน</button>
               <button id="btn-checkout" class="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl text-sm transition shadow">🚪 ออกงาน</button>
             </div>
           </div>
-
+ 
           <!-- Attendance Log -->
           <div class="xl:col-span-7 card flex flex-col">
             <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
@@ -213,11 +216,14 @@ table th { font-weight: 600; }
                 </select>
               </div>
             </div>
-            <!-- Summary Row -->
             <div class="grid grid-cols-3 gap-2 mb-3">
               <div class="stat-card text-center"><p class="text-[11px] text-slate-500">วันทำงานเดือนนี้</p><p class="text-xl font-bold text-slate-900" id="stat-work-days">22</p></div>
               <div class="stat-card text-center"><p class="text-[11px] text-slate-500">มาสาย</p><p class="text-xl font-bold text-amber-600" id="stat-late">2</p></div>
               <div class="stat-card text-center"><p class="text-[11px] text-slate-500">ขาด/ลา</p><p class="text-xl font-bold text-red-600" id="stat-absent">1</p></div>
+            </div>
+            <div class="mb-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <p class="text-xs font-bold text-slate-500 uppercase mb-3">📈 สถิติการเข้างานรายวัน (เดือนปัจจุบัน)</p>
+              <div class="h-40"><canvas id="attendanceChart"></canvas></div>
             </div>
             <div class="overflow-x-auto flex-1">
               <table class="w-full text-xs text-slate-600 min-w-[700px]">
@@ -230,25 +236,23 @@ table th { font-weight: 600; }
                     <th class="px-3 py-2.5 text-left">พิกัด GPS</th>
                     <th class="px-3 py-2.5 text-left">รูปถ่าย (3 มุม)</th>
                   </tr>
-              
                 </thead>
-                <tbody id="att-tbody" class="divide-y divide-slate-100"></tbody> <!-- FIXED: Cleaned up double tbody -->
-              </table> <!-- FIXED: Corrected table closing -->
+                <tbody id="att-tbody" class="divide-y divide-slate-100"></tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-
+ 
       <!-- ===== TAB: LEAVE ===== -->
       <div id="tab-leave" class="tab-content space-y-5">
+        <div class="flex items-center justify-between">
           <div>
             <h2 class="text-xl font-bold text-slate-900">📅 ระบบการลา</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอลา ตรวจสอบโควต้าวันลา และดูประวัติการลา</p>
           </div>
           <button id="btn-open-leave-modal" class="btn-primary text-sm">+ ยื่นคำขอลา</button>
         </div>
-
-        <!-- Leave Quota -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="card text-center border-l-4 border-blue-500">
             <p class="text-xs text-slate-500">ลาพักร้อน</p>
@@ -275,8 +279,6 @@ table th { font-weight: 600; }
             <div class="mt-2 h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-purple-500 rounded-full" style="width:100%"></div></div>
           </div>
         </div>
-
-        <!-- Leave History Table -->
         <div class="card">
           <h3 class="font-bold text-slate-800 mb-3 text-sm">ประวัติการลา</h3>
           <div class="overflow-x-auto">
@@ -321,17 +323,16 @@ table th { font-weight: 600; }
           </div>
         </div>
       </div>
-
+ 
+      <!-- ===== TAB: OUTSIDE WORK ===== -->
       <div id="tab-outside-work" class="tab-content space-y-5">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่ (Lawyer & Product Admin Workflow)</h2>
+            <h2 class="text-xl font-bold text-slate-900">⛓️ งานนอกสถานที่</h2>
             <p class="text-sm text-slate-500">ยื่นคำขอออกนอกสถานที่ ผู้จัดการตรวจสอบและอนุมัติ พร้อมระบบ GPS Track ปลายทาง</p>
           </div>
           <button id="btn-open-outside-modal" class="btn-primary text-sm">+ ยื่นคำขอออกนอกสถานที่</button>
         </div>
-
-        <!-- Approval Pipeline -->
         <div class="card">
           <h3 class="font-bold text-slate-800 mb-4 text-sm">⛓️ ลำดับสายการอนุมัติ</h3>
           <div class="flex items-center gap-0 overflow-x-auto pb-2">
@@ -360,7 +361,6 @@ table th { font-weight: 600; }
             </div>
           </div>
         </div>
-
         <div class="card">
           <h3 class="font-bold text-slate-800 mb-3 text-sm">รายการคำขอออกนอกสถานที่</h3>
           <div class="overflow-x-auto">
@@ -384,8 +384,8 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-slate-500">ประชุมลูกค้า XYZ Corp</td>
                   <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7924, 100.6125</td>
                   <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
-                  <td class="px-3 py-3 admin-only" data-action-cell>
-                    <div class="flex gap-1 btn-approve-area" data-action-buttons>
+                  <td class="px-3 py-3 admin-only">
+                    <div class="flex gap-1">
                       <button onclick="approveOutside(this, 'อนุมัติ')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ อนุมัติ</button>
                       <button onclick="approveOutside(this, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
                     </div>
@@ -398,35 +398,32 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-slate-500">นำส่งเอกสารธนาคาร</td>
                   <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7231, 100.5281</td>
                   <td class="px-3 py-3"><span class="badge badge-green">✅ อนุมัติแล้ว</span></td>
-                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only" data-action-cell>ดำเนินการแล้ว</td>
+                  <td class="px-3 py-3 text-slate-400 text-[11px] admin-only">ดำเนินการแล้ว</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-
+ 
+      <!-- ===== TAB: PAYROLL ===== -->
       <div id="tab-payroll" class="tab-content space-y-5">
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-xl font-bold text-slate-900">💰 ระบบเงินเดือน & สลิปเงินเดือน</h2>
             <p class="text-sm text-slate-500">ดึงข้อมูลสรุป หักลด และส่งสลิปผ่าน Line OA อัตโนมัติ</p>
           </div>
-          <button id="btn-send-all-payroll" class="line-btn" onclick="sendAllPayroll()">📤 ส่งสลิปทาง Line (ทุกคน)</button>
+          <button class="line-btn" onclick="sendAllPayroll()">📤 ส่งสลิปทาง Line (ทุกคน)</button>
         </div>
-
-        <!-- Payroll Summary Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div class="stat-card"><p class="text-xs text-slate-500">เงินเดือนรวม</p><p class="text-xl font-bold text-slate-900">฿2,840,000</p><p class="text-xs text-slate-400">พนักงาน 47 คน</p></div>
           <div class="stat-card"><p class="text-xs text-slate-500">หักประกันสังคม</p><p class="text-xl font-bold text-red-600">฿426,000</p><p class="text-xs text-slate-400">5% × ยอดรวม</p></div>
-          <div class="stat-card"><p class="text-xs text-slate-500">ยอดรวมสุทธิ</p><p class="text-xl font-bold text-emerald-600" id="payroll-net-total">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
+          <div class="stat-card"><p class="text-xs text-slate-500">ยอดรวมสุทธิ</p><p class="text-xl font-bold text-emerald-600">฿2,130,000</p><p class="text-xs text-slate-400">โอนเข้าบัญชีแล้ว</p></div>
         </div>
-
-        <!-- Payroll Table -->
         <div class="card">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-bold text-slate-800 text-sm">รายการเงินเดือนพนักงาน — เดือนพฤษภาคม 2569</h3>
-            <button id="btn-export-payroll" class="btn-secondary text-xs py-1.5 px-3">⬇️ Export Excel</button>
+            <button class="btn-secondary text-xs py-1.5 px-3">⬇️ Export Excel</button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-xs text-slate-600 min-w-[800px]">
@@ -451,8 +448,9 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-right font-mono text-red-500">-2,250</td>
                   <td class="px-3 py-3 text-right font-mono text-amber-600">-3,200</td>
                   <td class="px-3 py-3 text-right font-bold text-slate-900">฿42,050</td>
-                  <td class="px-3 py-3"><button data-employee-name="สมชาย ตั้งใจทำงาน" class="line-btn text-[11px] py-1 px-2 btn-send-single-payroll">📤 ส่ง Line</button></td>
-                </tr><tr class="border-b border-slate-100 hover:bg-slate-50">
+                  <td class="px-3 py-3"><button onclick="sendPayroll('สมชาย ตั้งใจทำงาน', 42050)" class="line-btn text-[11px] py-1 px-2">📤 ส่ง Line</button></td>
+                </tr>
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
                   <td class="px-3 py-3 font-semibold text-slate-800">สมหญิง ขยันดี</td>
                   <td class="px-3 py-3 text-slate-400">บัญชี-การเงิน</td>
                   <td class="px-3 py-3 text-right font-mono">38,000</td>
@@ -460,13 +458,14 @@ table th { font-weight: 600; }
                   <td class="px-3 py-3 text-right font-mono text-red-500">-1,900</td>
                   <td class="px-3 py-3 text-right font-mono text-amber-600">-2,500</td>
                   <td class="px-3 py-3 text-right font-bold text-slate-900">฿33,600</td>
-                  <td class="px-3 py-3"><button data-employee-name="สมหญิง ขยันดี" class="line-btn text-[11px] py-1 px-2 btn-send-single-payroll">📤 ส่ง Line</button></td>
+                  <td class="px-3 py-3"><button onclick="sendPayroll('สมหญิง ขยันดี', 33600)" class="line-btn text-[11px] py-1 px-2">📤 ส่ง Line</button></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+ 
       <!-- ===== TAB: EMPLOYEE SETTINGS ===== -->
       <div id="tab-employee-settings" class="tab-content space-y-5">
         <div class="flex items-center justify-between">
@@ -474,12 +473,11 @@ table th { font-weight: 600; }
             <h2 class="text-xl font-bold text-slate-900">⚙️ จัดการพนักงาน</h2>
             <p class="text-sm text-slate-500">เพิ่ม แก้ไข ตั้งค่าข้อมูลรายบุคคล และกำหนดค่าตอบแทน</p>
           </div>
+          <button id="btn-open-add-employee-modal" class="btn-primary text-xs">+ เพิ่มพนักงาน</button>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards">
-          <!-- Rendered by JS -->
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="employee-cards"></div>
       </div>
-
+ 
       <!-- ===== TAB: SOCIAL SECURITY ===== -->
       <div id="tab-social-security" class="tab-content space-y-5">
         <div>
@@ -494,7 +492,7 @@ table th { font-weight: 600; }
         <div class="card">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-bold text-slate-800 text-sm">รายชื่อพนักงานและสถานะประกันสังคม</h3>
-            <button id="btn-export-social-security" class="btn-secondary text-xs py-1.5 px-3">⬇️ Export ส่งสำนักงานประกัน</button>
+            <button class="btn-secondary text-xs py-1.5 px-3">⬇️ Export ส่งสำนักงานประกัน</button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-xs text-slate-600">
@@ -521,8 +519,8 @@ table th { font-weight: 600; }
           </div>
         </div>
       </div>
-
-      <!-- ===== TAB: COMPANY REGULATIONS (Point 3) ===== -->
+ 
+      <!-- ===== TAB: REGULATIONS ===== -->
       <div id="tab-regulations" class="tab-content space-y-5">
         <div>
           <h2 class="text-xl font-bold text-slate-900">📚 กฎระเบียบบริษัท</h2>
@@ -556,8 +554,8 @@ table th { font-weight: 600; }
           <button class="btn-primary text-xs">บันทึกลงระบบ</button>
         </div>
       </div>
-
-      <!-- ===== TAB: COWORK (Point 7) ===== -->
+ 
+      <!-- ===== TAB: COWORK ===== -->
       <div id="tab-cowork" class="tab-content space-y-5">
         <div class="flex items-center justify-between">
           <div>
@@ -587,76 +585,97 @@ table th { font-weight: 600; }
                 </div>
               </div>
             </div>
-          </div><div class="card">
-              <h3 class="font-bold text-sm mb-3">👥 สมาชิกในทีมที่ออนไลน์</h3>
-              <div class="space-y-2">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span class="text-xs">สมชาย ตั้งใจทำงาน</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span class="text-xs">สมหญิง ขยันดี</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                  <span class="text-xs text-slate-400">ประสิทธิ์ มุ่งมั่น (Offline)</span>
+          </div>
+          <div class="card">
+            <h3 class="font-bold text-sm mb-3">👥 สมาชิกในทีมที่ออนไลน์</h3>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs">สมชาย ตั้งใจทำงาน</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs">สมหญิง ขยันดี</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                <span class="text-xs text-slate-400">ประสิทธิ์ มุ่งมั่น (Offline)</span>
               </div>
             </div>
           </div>
-
-      <!-- ===== REPORT SECTION (Point 4) ===== -->
-      <div id="report-drawer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 p-4 shadow-2xl z-50 fade-in">
-         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div>
-               <h4 class="font-bold text-sm text-slate-900">📊 สรุปรายงานขาดลามาสาย (Finance Export Ready)</h4>
-               <p class="text-xs text-slate-500" id="report-drawer-date-range">ประจำงวดวันที่ 01/05 - 20/05 | พร้อมส่งให้ฝ่ายการเงิน</p>
-            </div>
-            <div class="flex gap-2">
-               <button id="btn-send-report-finance" class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
-               <button id="btn-close-report-drawer" class="btn-secondary text-xs">ปิด</button>
-            </div>
-         </div>
+        </div>
       </div>
-
+ 
     </div>
   </main>
 </div>
-
-<!-- ==================== MODALS ==================== -->
+ 
+<!-- REPORT DRAWER -->
+<div id="report-drawer" class="hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-blue-500 p-4 shadow-2xl z-50 fade-in">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <div>
+      <h4 class="font-bold text-sm text-slate-900">📊 สรุปรายงานขาดลามาสาย</h4>
+      <p class="text-xs text-slate-500">ประจำงวดวันที่ 01/05 - 20/05</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="btn-primary text-xs">🚀 ส่งไฟล์ให้การเงิน</button>
+      <button id="btn-close-report-drawer" class="btn-secondary text-xs">ปิด</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- Add Employee Modal -->
+<div id="modal-add-employee" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
+    <div class="space-y-3">
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
+        <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">แผนก / ตำแหน่ง</label>
+        <input type="text" id="form-emp-dept" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น การตลาด">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">สิทธิ์ระบบ</label>
+        <select id="form-emp-role" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
+          <option value="employee">Employee (พนักงานทั่วไป)</option>
+          <option value="admin">HR Admin (ฝ่ายบุคคล)</option>
+          <option value="manager">Manager (ผู้บริหาร)</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex justify-end gap-2 mt-6">
+      <button type="button" onclick="closeModal('modal-add-employee')" class="btn-secondary text-xs">ยกเลิก</button>
+      <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
+    </div>
+  </div>
+</div>
+ 
 <!-- Leave Modal -->
 <div id="modal-leave-request" class="modal-overlay hidden">
   <div class="modal-box">
-    <h3 class="text-lg font-bold text-slate-900 mb-4">📝 ยื่นคำขอลาพักผ่อน / ลากิจ / ลาป่วย</h3>
+    <h3 class="text-lg font-bold text-slate-900 mb-4">📝 ยื่นคำขอลา</h3>
     <div class="space-y-3">
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">ประเภทการลา</label>
-        <select id="form-leave-type" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
-          <option value="🏖️ ลาพักร้อน">🏖️ ลาพักร้อน</option>
-          <option value="📋 ลากิจ">📋 ลากิจ</option>
-          <option value="🏥 ลาป่วย">🏥 ลาป่วย</option>
-        </select>
-      </div>
+      <select id="form-leave-type" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
+        <option value="🏖️ ลาพักร้อน">🏖️ ลาพักร้อน</option>
+        <option value="📋 ลากิจ">📋 ลากิจ</option>
+        <option value="🏥 ลาป่วย">🏥 ลาป่วย</option>
+      </select>
       <div class="grid grid-cols-2 gap-2">
-          <input type="date" id="form-leave-start" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">ถึงวันที่</label>
-          <input type="date" id="form-leave-end" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-        </div>
+        <input type="date" id="form-leave-start" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
+        <input type="date" id="form-leave-end" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลการลา</label>
-        <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
-      </div>
-      <div class="flex justify-end gap-2 mt-4">
-        <button type="button" data-modal-id="modal-leave-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
+      <textarea id="form-leave-reason" rows="3" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="ระบุเหตุผล..."></textarea>
+      <div class="flex justify-end gap-2 mt-2">
+        <button type="button" onclick="closeModal('modal-leave-request')" class="btn-secondary text-xs">ยกเลิก</button>
         <button onclick="submitLeave()" class="btn-primary text-xs">ส่งคำขอลา</button>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <!-- Outside Request Modal -->
 <div id="modal-outside-request" class="modal-overlay hidden">
   <div class="modal-box">
@@ -667,56 +686,29 @@ table th { font-weight: 600; }
         <input type="date" id="form-out-date" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
       </div>
       <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">สถานที่จุดหมายปลายทาง</label>
-        <input type="text" id="form-out-target" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น บจก. พลังงานดี, สีลม">
+        <label class="block text-xs font-semibold text-slate-600 mb-1">สถานที่จุดหมาย</label>
+        <input type="text" id="form-out-target" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น บจก. พลังงานดี">
       </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">วัตถุประสงค์</label>
-        <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น เข้าประชุมงานประจำปี..."></textarea>
-      </div>
-      <div class="flex justify-end gap-2 mt-4">
-        <button type="button" data-modal-id="modal-outside-request" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
+      <textarea id="form-out-reason" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="วัตถุประสงค์..."></textarea>
+      <div class="flex justify-end gap-2 mt-2">
+        <button type="button" onclick="closeModal('modal-outside-request')" class="btn-secondary text-xs">ยกเลิก</button>
         <button onclick="submitOutsideWork()" class="btn-primary text-xs">ส่งคำขออนุมัติ</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Add Employee Modal -->
-<div id="modal-add-employee" class="modal-overlay hidden">
-  <div class="modal-box">
-    <h3 class="text-lg font-bold text-slate-900 mb-4">👤 เพิ่มข้อมูลพนักงานใหม่</h3>
-    <div class="space-y-3">
-      <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อ-นามสกุล</label>
-        <input type="text" id="form-emp-name" class="w-full px-3 py-2 border rounded-lg text-sm outline-none">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">แผนก / ตำแหน่ง</label>
-        <input type="text" id="form-emp-dept" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" placeholder="เช่น การตลาด">
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">สิทธิ์ระบบ</label>
-        <select id="form-emp-role" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
-            <option value="employee">Employee (พนักงานทั่วไป)</option>
-          <option value="admin">HR Admin (ฝ่ายบุคคล)</option>
-          <option value="manager">Manager (ผู้บริหาร)</option>
-        </select>
-        <button type="button" data-modal-id="modal-add-employee" class="btn-secondary text-xs btn-close-modal">ยกเลิก</button>
-        <button onclick="submitAddEmployee()" class="btn-primary text-xs">บันทึกข้อมูล</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== JAVASCRIPT SYSTEM ==================== -->
-let currentUser = { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" };
-
+ 
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// ===== STATE =====
+let currentUser = null;
+let videoStream = null;
 let attendanceLogs = [
   { time: "21/05/2569 08:24:12", name: "สมชาย ตั้งใจทำงาน", type: "เข้างาน", loc: "ในบริษัท", gps: "13.7367, 100.5231", img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา" },
   { time: "20/05/2569 17:35:01", name: "สมชาย ตั้งใจทำงาน", type: "ออกงาน", loc: "ในบริษัท", gps: "13.7365, 100.5234", img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา" }
 ];
 let employees = [
-  { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee", lineUserId: "USER_ID_1" }, // เปลี่ยน USER_ID_1 เป็น ID จริงเมื่อเก็บได้
+  { name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee", lineUserId: "USER_ID_1" },
   { name: "สมหญิง ขยันดี", dept: "บัญชี-การเงิน", role: "admin", lineUserId: "USER_ID_2" },
   { name: "ประสิทธิ์ มุ่งมั่น", dept: "ผู้จัดการทั่วไป", role: "manager", lineUserId: "USER_ID_3" }
 ];
@@ -730,51 +722,48 @@ let menuDefinitions = [
   { id: 'regulations', label: '📚 กฎระเบียบ', roles: ['employee', 'admin', 'manager'] },
   { id: 'cowork', label: '🤝 Cowork', roles: ['employee', 'admin', 'manager'] }
 ];
-
-// --- APP INIT ---
-document.addEventListener('DOMContentLoaded', async function() { // FIXED: Added async
+ 
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
   updateLiveClock();
   setInterval(updateLiveClock, 1000);
   getBrowserGPS();
-  
-  // Add event listeners for core functionalities
+ 
   document.getElementById('login-button').addEventListener('click', handleLogin);
   document.getElementById('btn-logout-mobile').addEventListener('click', handleLogout);
   document.getElementById('btn-logout-pc').addEventListener('click', handleLogout);
-  document.getElementById('btn-checkin').addEventListener('click', () => startEkycFlow('เข้างาน'));
-  document.getElementById('btn-checkout').addEventListener('click', () => startEkycFlow('ออกงาน'));
+  document.getElementById('btn-checkin').addEventListener('click', function() { startEkycFlow('เข้างาน'); });
+  document.getElementById('btn-checkout').addEventListener('click', function() { startEkycFlow('ออกงาน'); });
   document.getElementById('att-filter').addEventListener('change', renderAttendanceTable);
-  document.getElementById('btn-open-leave-modal').addEventListener('click', () => openModal('modal-leave-request'));
-  document.getElementById('btn-open-outside-modal').addEventListener('click', () => openModal('modal-outside-request'));
-  document.getElementById('btn-open-add-employee-modal').addEventListener('click', () => openModal('modal-add-employee'));
-  document.getElementById('btn-close-report-drawer').addEventListener('click', () => document.getElementById('report-drawer').classList.add('hidden'));
-  document.querySelectorAll('.btn-close-modal').forEach(button => button.addEventListener('click', (e) => closeModal(e.target.dataset.modalId)));
-
-  // Initial renders for dynamic content
-  renderAttendanceTable();
-  renderEmployeeCards();
+  document.getElementById('btn-open-leave-modal').addEventListener('click', function() { openModal('modal-leave-request'); });
+  document.getElementById('btn-open-outside-modal').addEventListener('click', function() { openModal('modal-outside-request'); });
+  document.getElementById('btn-open-add-employee-modal').addEventListener('click', function() { openModal('modal-add-employee'); });
+  document.getElementById('btn-close-report-drawer').addEventListener('click', function() { document.getElementById('report-drawer').classList.add('hidden'); });
 });
-
+ 
+// ===== CLOCK =====
 function updateLiveClock() {
-  const now = new Date();
-  const timeStr = now.toTimeString().split(' ')[0];
-  const dateStr = now.toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  
-  if(document.getElementById('live-time')) document.getElementById('live-time').innerText = timeStr;
-  if(document.getElementById('live-date')) document.getElementById('live-date').innerText = dateStr;
+  var now = new Date();
+  var timeStr = now.toTimeString().split(' ')[0];
+  var dateStr = now.toLocaleDateString('th-TH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  var lt = document.getElementById('live-time');
+  var ld = document.getElementById('live-date');
+  if (lt) lt.innerText = timeStr;
+  if (ld) ld.innerText = dateStr;
 }
-
+ 
+// ===== GPS =====
 function getBrowserGPS() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude.toFixed(4);
-        const lng = position.coords.longitude.toFixed(4);
+      function(position) {
+        var lat = position.coords.latitude.toFixed(4);
+        var lng = position.coords.longitude.toFixed(4);
         document.getElementById('gps-text').innerText = "📍 รับสัญญาณ GPS สำเร็จ (พิกัดจริง)";
         document.getElementById('gps-lat').innerText = "Lat: " + lat;
         document.getElementById('gps-lng').innerText = "Lng: " + lng;
       },
-      (error) => {
+      function() {
         document.getElementById('gps-text').innerText = "🏢 พิกัดสำนักงานใหญ่ (จำลอง)";
         document.getElementById('gps-lat').innerText = "Lat: 13.7563";
         document.getElementById('gps-lng').innerText = "Lng: 100.5018";
@@ -782,88 +771,72 @@ function getBrowserGPS() {
     );
   }
 }
-
-// --- AUTHENTICATION SYSTEM ---
-async function handleLogin() { // FIXED: Added async
-  const selectedRole = document.getElementById('login-role').value;
-  
-  // Setup User Identity mock profile according to selected role
-  if(selectedRole === 'employee') {
-    currentUser = { id: 1, name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" }; // FIXED: Added id for database reference
-  } else if(selectedRole === 'admin') {
-    currentUser = { id: 2, name: "สมหญิง ขยันดี (HR)", dept: "ทรัพยากรบุคคล", role: "admin" }; // FIXED: Added id
+ 
+// ===== AUTH =====
+function handleLogin() {
+  var selectedRole = document.getElementById('login-role').value;
+  if (selectedRole === 'employee') {
+    currentUser = { id: 1, name: "สมชาย ตั้งใจทำงาน", dept: "พัฒนาซอฟต์แวร์", role: "employee" };
+  } else if (selectedRole === 'admin') {
+    currentUser = { id: 2, name: "สมหญิง ขยันดี (HR)", dept: "ทรัพยากรบุคคล", role: "admin" };
   } else {
-    currentUser = { id: 3, name: "คุณประสิทธิ์ มุ่งมั่น", dept: "ผู้บริหารระดับสูง", role: "manager" }; // FIXED: Added id
+    currentUser = { id: 3, name: "คุณประสิทธิ์ มุ่งมั่น", dept: "ผู้บริหารระดับสูง", role: "manager" };
   }
-
-  // FIXED: Store currentUser in sessionStorage for persistence
-  sessionStorage.setItem('hr_user', JSON.stringify(currentUser));
-  
-  // Render User Context Profile in Sidebars
+ 
   document.getElementById('pc-user-name').innerText = currentUser.name;
   document.getElementById('pc-user-dept').innerText = currentUser.dept;
   document.getElementById('mb-user-name').innerText = currentUser.name;
-  
-  const roleBadge = document.getElementById('pc-role-badge');
-  roleBadge.innerText = selectedRole === 'employee' ? 'พนักงานทั่วไป' : selectedRole === 'admin' ? 'HR / แอดมิน' : 'ผู้จัดการ'; // FIXED: Corrected typo in class
-  
-  // Generate Navigation Links Dynamic with roles
+ 
+  var roleBadge = document.getElementById('pc-role-badge');
+  roleBadge.innerText = selectedRole === 'employee' ? 'พนักงานทั่วไป' : selectedRole === 'admin' ? 'HR / แอดมิน' : 'ผู้จัดการ';
+  roleBadge.classList.remove('hidden');
+ 
   buildNavigationMenu(selectedRole);
-  
-  // View Switch Screen
+ 
   document.getElementById('page-login').classList.add('hidden');
   document.getElementById('page-main').classList.remove('hidden');
-  
-  // Set default active tab
+ 
   switchTab('attendance');
-  await renderAttendanceTable(); // FIXED: Await render functions
-  await renderEmployeeCards(); // FIXED: Await render functions
-  await renderSocialSecurityTable(); // FIXED: Render social security table on login
+  renderAttendanceTable();
+  renderEmployeeCards();
+  renderAttendanceChart();
 }
-
-function toggleReportDrawer() {
-  document.getElementById('report-drawer').classList.toggle('hidden');
-}
-
+ 
 function handleLogout() {
+  currentUser = null;
   document.getElementById('page-main').classList.add('hidden');
   document.getElementById('page-login').classList.remove('hidden');
-  // FIXED: Clear current user and session storage on logout
-  currentUser = null;
-  sessionStorage.removeItem('hr_user');
-  // Reload to ensure clean state
-  location.reload();
+  document.getElementById('pc-nav').innerHTML = '';
+  document.getElementById('mobile-nav').innerHTML = '';
 }
-
-// --- NAVIGATION GENERATOR & NAVIGATION TABS ---
+ 
+// ===== NAVIGATION =====
 function buildNavigationMenu(role) {
-  const pcNav = document.getElementById('pc-nav');
-  const mbNav = document.getElementById('mobile-nav');
+  var pcNav = document.getElementById('pc-nav');
+  var mbNav = document.getElementById('mobile-nav');
   pcNav.innerHTML = '';
   mbNav.innerHTML = '';
-  
-  menuDefinitions.forEach(menu => {
-    if(menu.roles.includes(role)) {
-      // Build PC Sidebar UI link
-      const pcLink = document.createElement('button');
-      pcLink.id = `nav-pc-${menu.id}`;
-      pcLink.className = "w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition active-nav-style";
-      pcLink.innerText = menu.label;
-      pcLink.onclick = () => switchTab(menu.id);
-      pcNav.appendChild(pcLink);
-      
-      // Build Mobile Menu link
-      const mbLink = document.createElement('button');
-      mbLink.id = `nav-mb-${menu.id}`;
-      mbLink.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 shrink-0";
-      mbLink.innerText = menu.label.split(' ')[0] + " " + menu.label.substring(2);
-      mbLink.onclick = () => switchTab(menu.id);
-      mbNav.appendChild(mbLink); // FIXED: Added missing appendChild for mobile nav
+ 
+  menuDefinitions.forEach(function(menu) {
+    if (menu.roles.indexOf(role) === -1) return;
+ 
+    var pcLink = document.createElement('button');
+    pcLink.id = 'nav-pc-' + menu.id;
+    pcLink.className = "w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-slate-200";
+    pcLink.innerText = menu.label;
+    pcLink.onclick = (function(id) { return function() { switchTab(id); }; })(menu.id);
+    pcNav.appendChild(pcLink);
+ 
+    var mbLink = document.createElement('button');
+    mbLink.id = 'nav-mb-' + menu.id;
+    mbLink.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 bg-slate-800/50 shrink-0";
+    mbLink.innerText = menu.label;
+    mbLink.onclick = (function(id) { return function() { switchTab(id); }; })(menu.id);
+    mbNav.appendChild(mbLink);
   });
-
-  // Toggle dynamic display elements tailored specifically for managers/admins
-  const adminElements = document.querySelectorAll('.admin-only');
-  adminElements.forEach(el => {
+ 
+  var adminElements = document.querySelectorAll('.admin-only');
+  adminElements.forEach(function(el) {
     if (role === 'employee') {
       el.classList.add('hidden');
     } else {
@@ -871,118 +844,106 @@ function buildNavigationMenu(role) {
     }
   });
 }
-
+ 
 function switchTab(tabId) {
-  // Toggle Visibility Content DOM elements
-  const tabs = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => tab.classList.toggle('active', tab.id === `tab-${tabId}`));
-  
-  // Reset navigation selection state highlights
-  menuDefinitions.forEach(menu => {
-    const pcBtn = document.getElementById(`nav-pc-${menu.id}`);
-    const mbBtn = document.getElementById(`nav-mb-${menu.id}`);
-    const isActive = menu.id === tabId;
-
-    if(pcBtn) {
-      pcBtn.className = `w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition ${isActive ? "bg-blue-600 text-white shadow-md font-semibold" : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"}`;
+  document.querySelectorAll('.tab-content').forEach(function(tab) {
+    tab.classList.toggle('active', tab.id === 'tab-' + tabId);
+  });
+ 
+  menuDefinitions.forEach(function(menu) {
+    var pcBtn = document.getElementById('nav-pc-' + menu.id);
+    var mbBtn = document.getElementById('nav-mb-' + menu.id);
+    var isActive = menu.id === tabId;
+ 
+    if (pcBtn) {
+      pcBtn.className = "w-full text-left flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition " +
+        (isActive ? "bg-blue-600 text-white shadow-md font-semibold" : "text-slate-400 hover:bg-slate-800 hover:text-slate-200");
     }
-    if(mbBtn) {
-      mbBtn.className = `whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 ${isActive ? "bg-blue-600 text-white font-bold" : "text-slate-400 bg-slate-800/50"}`;
+    if (mbBtn) {
+      mbBtn.className = "whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 " +
+        (isActive ? "bg-blue-600 text-white font-bold" : "text-slate-400 bg-slate-800/50");
     }
   });
 }
-
-// --- E-KYC FACE SCAN & ATTENDANCE OPERATION SYSTEM ---
-let videoStream = null;
-async function startEkycFlow(type) { // FIXED: Added async
-  const webcamEl = document.getElementById('webcam');
-  const laserLine = document.getElementById('laser-line');
-  const statusText = document.getElementById('ekyc-status');
-  const iconFace = document.getElementById('face-icon');
-  
-  if (!currentUser || !currentUser.id) { // FIXED: Check if user is logged in
-    alert('กรุณาเข้าสู่ระบบก่อนลงเวลา');
-    return;
-  }
-
+ 
+// ===== EKYC / ATTENDANCE =====
+function startEkycFlow(type) {
+  if (!currentUser) { alert('กรุณาเข้าสู่ระบบก่อนลงเวลา'); return; }
+ 
+  var webcamEl = document.getElementById('webcam');
+  var laserLine = document.getElementById('laser-line');
+  var statusText = document.getElementById('ekyc-status');
+  var faceRim = document.getElementById('face-rim');
+  var iconFace = document.getElementById('face-icon');
+ 
   statusText.innerText = "🔄 กำลังเปิดกล้องและตรวจจับใบหน้า...";
   statusText.className = "bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
   webcamEl.classList.remove('hidden');
   laserLine.classList.remove('hidden');
   iconFace.classList.add('hidden');
-
-  // FIXED: Ensure previous stream is stopped before starting a new one
-  if (videoStream) {
-    stopWebcamStream();
-  }
-
-  // Request Access Native WebCam Stream Hardware Layer API
+ 
+  if (videoStream) stopWebcamStream();
+ 
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-    .then(stream => {
+    .then(function(stream) {
       videoStream = stream;
       webcamEl.srcObject = stream;
-      
-      // Play video to show camera feed
       webcamEl.play();
-
-      // Phase 1: Front Face
-      setTimeout(() => {
+ 
+      setTimeout(function() {
         statusText.innerText = "⚡ สแกนหน้าตรง... กรุณารอ";
         statusText.className = "bg-amber-500 text-white text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
-        // FIXED: Capture image for face scan status
-        // const imgData = captureImage(webcamEl); // In a real app, send this to backend for face recognition
-        // console.log('Captured front face image data:', imgData);
       }, 1500);
-
-      // Phase 2: Left Face (Point 1)
-      setTimeout(() => {
+ 
+      setTimeout(function() {
         statusText.innerText = "👈 หันหน้าไปทางซ้าย...";
-        document.getElementById('face-rim').style.transform = "rotate(-20deg)";
+        faceRim.style.transform = "rotate(-20deg)";
       }, 3000);
-
-      // Phase 3: Right Face (Poin //t 1)
-      setTimeout(() => {
+ 
+      setTimeout(function() {
         statusText.innerText = "👉 หันหน้าไปทางขวา...";
-        document.getElementById('face-rim').style.transform = "rotate(20deg)";
-        // const imgData = captureImage(webcamEl); // In a real app, send this to backend for face recognition
-        // console.log('Captured right face image data:', imgData);
+        faceRim.style.transform = "rotate(20deg)";
       }, 4500);
-
-      setTimeout(() => {
+ 
+      setTimeout(function() {
         statusText.innerText = "🎉 ยืนยัน 3 ทิศทางสำเร็จ! กำลังบันทึก...";
-        document.getElementById('face-rim').style.transform = "rotate(0deg)";
+        faceRim.style.transform = "rotate(0deg)";
         statusText.className = "bg-emerald-600 text-white text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
-        executeLogAttendance(type); // Call this after successful eKYC and database save
-        stopWebcamStream(); // Stop camera after successful scan
-      }, 6000); // FIXED: Corrected timeout closure
-    })
-    .catch(err => {
-      console.warn("Camera hardware access rejected or missing: ", err);
-      setTimeout(() => {
         executeLogAttendance(type);
         stopWebcamStream();
-      }, 1500); // FIXED: Corrected timeout closure
+      }, 6000);
+    })
+    .catch(function(err) {
+      console.warn("Camera access rejected:", err);
+      statusText.innerText = "📷 จำลองการสแกน (ไม่มีกล้อง)";
+      setTimeout(function() {
+        executeLogAttendance(type);
+        stopWebcamStream();
+      }, 1500);
     });
 }
-
+ 
 function stopWebcamStream() {
   if (videoStream) {
-    videoStream.getTracks().forEach(track => track.stop());
+    videoStream.getTracks().forEach(function(track) { track.stop(); });
+    videoStream = null;
   }
-  document.getElementById('webcam').classList.add('hidden');
-  document.getElementById('laser-line').classList.add('hidden');
-  document.getElementById('face-icon').classList.remove('hidden');
+  var webcamEl = document.getElementById('webcam');
+  var laserLine = document.getElementById('laser-line');
+  var iconFace = document.getElementById('face-icon');
+  if (webcamEl) webcamEl.classList.add('hidden');
+  if (laserLine) laserLine.classList.add('hidden');
+  if (iconFace) iconFace.classList.remove('hidden');
 }
-
+ 
 function executeLogAttendance(type) {
-  const now = new Date();
-  const timestamp = now.toLocaleDateString('th-TH') + " " + now.toTimeString().split(' ')[0];
-  const location = document.getElementById('attendance-location').value;
-  const latText = document.getElementById('gps-lat').innerText.replace('Lat: ', '');
-  const lngText = document.getElementById('gps-lng').innerText.replace('Lng: ', '');
-  const finalCoordinates = (latText === '--') ? "13.7563, 100.5018" : `${latText}, ${lngText}`;
-
-  // Prepend entry object inside local data context collection array
+  var now = new Date();
+  var timestamp = now.toLocaleDateString('th-TH') + " " + now.toTimeString().split(' ')[0];
+  var location = document.getElementById('attendance-location').value;
+  var latText = document.getElementById('gps-lat').innerText.replace('Lat: ', '');
+  var lngText = document.getElementById('gps-lng').innerText.replace('Lng: ', '');
+  var finalCoordinates = (latText === '--') ? "13.7563, 100.5018" : latText + ", " + lngText;
+ 
   attendanceLogs.unshift({
     time: timestamp,
     name: currentUser.name,
@@ -991,195 +952,213 @@ function executeLogAttendance(type) {
     gps: finalCoordinates,
     img: "✅ ตรง, ✅ ซ้าย, ✅ ขวา"
   });
+ 
   renderAttendanceTable();
-  document.getElementById('ekyc-status').innerText = `✅ บันทึกเวลา "${type}" สำเร็จเรียบร้อยแล้ว!`;
-  document.getElementById('ekyc-status').className = "bg-emerald-100 text-emerald-800 text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
+ 
+  var statusText = document.getElementById('ekyc-status');
+  statusText.innerText = '✅ บันทึกเวลา "' + type + '" สำเร็จเรียบร้อยแล้ว!';
+  statusText.className = "bg-emerald-100 text-emerald-800 text-xs px-3 py-1.5 rounded-lg inline-block font-medium";
 }
-
+ 
 function renderAttendanceTable() {
-  const filterVal = document.getElementById('att-filter').value; // Retrieve filter value inside the function
-  const tbody = document.getElementById('att-tbody');
+  var filterVal = document.getElementById('att-filter').value;
+  var tbody = document.getElementById('att-tbody');
   tbody.innerHTML = '';
-
-  attendanceLogs.forEach(log => {
-    if(filterVal !== 'all' && log.type !== filterVal) return;
-
-    const row = document.createElement('tr');
+ 
+  attendanceLogs.forEach(function(log) {
+    if (filterVal !== 'all' && log.type !== filterVal) return;
+    var row = document.createElement('tr');
     row.className = "border-b border-slate-100 hover:bg-slate-50";
-    row.innerHTML = `
-      <td class="px-3 py-3 font-medium text-slate-900">${log.time}</td>
-      <td class="px-3 py-3">${log.name}</td>
-      <td class="px-3 py-3"><span class="badge ${log.type === 'เข้างาน' ? 'badge-green' : 'badge-red'}">${log.type}</span></td>
-      <td class="px-3 py-3">${log.loc}</td>
-      <td class="px-3 py-3 font-mono text-[10px] text-slate-400">${log.gps}</td>
-      <td class="px-3 py-3 text-emerald-600 font-medium">${log.img}</td>
-    `;
+    row.innerHTML =
+      '<td class="px-3 py-3 font-medium text-slate-900">' + log.time + '</td>' +
+      '<td class="px-3 py-3">' + log.name + '</td>' +
+      '<td class="px-3 py-3"><span class="badge ' + (log.type === 'เข้างาน' ? 'badge-green' : 'badge-red') + '">' + log.type + '</span></td>' +
+      '<td class="px-3 py-3">' + log.loc + '</td>' +
+      '<td class="px-3 py-3 font-mono text-[10px] text-slate-400">' + log.gps + '</td>' +
+      '<td class="px-3 py-3 text-emerald-600 font-medium">' + log.img + '</td>';
     tbody.appendChild(row);
   });
 }
-
-async function sendLineWarning(name) {
-   const emp = employees.find(e => e.name === name);
-   if (!emp || !emp.lineUserId) return alert('ไม่พบข้อมูล LINE User ID ของพนักงานท่านนี้');
-
-   try {
-      const response = await fetch('/api/line/send-warning', { 
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            userId: emp.lineUserId,
-            message: `⚠️ เรียนคุณ ${name}, ระบบได้ออกใบเตือนเรื่องระเบียบวินัย กรุณาตรวจสอบในระบบ HR`
-         })
-      });
-      if (response.ok) alert(`ส่งใบเตือนเข้า LINE คุณ ${name} เรียบร้อยแล้ว`);
-   } catch (err) {
-      alert('ไม่สามารถเชื่อมต่อ Server ได้: ' + err.message);
-   }
+ 
+function renderAttendanceChart() {
+  var ctx = document.getElementById('attendanceChart');
+  if (!ctx) return;
+  var days = Array.from({ length: 20 }, function(_, i) { return i + 1; });
+  var attendanceData = days.map(function() { return Math.floor(Math.random() * 15) + 30; });
+ 
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: days.map(function(d) { return d + ' พ.ค.'; }),
+      datasets: [{
+        label: 'จำนวนคนเข้างาน',
+        data: attendanceData,
+        backgroundColor: '#3b82f6',
+        borderRadius: 4,
+        hoverBackgroundColor: '#2563eb'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+      }
+    }
+  });
 }
-
-// --- MODAL UTILITY TRIGGERS ---
+ 
+// ===== MODALS =====
 function openModal(id) {
-  const modal = document.getElementById(id);
-  if(modal) modal.classList.remove('hidden');
+  var modal = document.getElementById(id);
+  if (modal) modal.classList.remove('hidden');
 }
-
+ 
 function closeModal(id) {
-  const modal = document.getElementById(id);
-  if(modal) modal.classList.add('hidden');
+  var modal = document.getElementById(id);
+  if (modal) modal.classList.add('hidden');
 }
-
-// --- CORE SYSTEM FORMS & TRANSACTION SUBMITS data-action-buttons ---
+ 
+// ===== LEAVE =====
 function submitLeave() {
-  const type = document.getElementById('form-leave-type').value;
-  const start = document.getElementById('form-leave-start').value;
-  const end = document.getElementById('form-leave-end').value;
-  const reason = document.getElementById('form-leave-reason').value;
-
-  if(!start || !end) { // FIXED: Corrected alert message
-    alert('กรุณากรอกกำหนดช่วงเวลาวันที่ให้ถูกต้องครับ');
-    return;
-  }
-
-  const tbody = document.getElementById('leave-tbody');
-  const row = document.createElement('tr');
+  var type = document.getElementById('form-leave-type').value;
+  var start = document.getElementById('form-leave-start').value;
+  var end = document.getElementById('form-leave-end').value;
+  var reason = document.getElementById('form-leave-reason').value;
+ 
+  if (!start || !end) { alert('กรุณากรอกช่วงวันที่ให้ครบถ้วน'); return; }
+ 
+  var tbody = document.getElementById('leave-tbody');
+  var row = document.createElement('tr');
   row.className = "border-b border-slate-100 hover:bg-slate-50";
-  
-  // Conver Date strings format representation context
-  const fmtStart = start.split('-').reverse().join('/');
-  const fmtEnd = end.split('-').reverse().join('/');
-
-  row.innerHTML = `
-    <td class="px-3 py-3">วันนี้</td>
-    <td class="px-3 py-3">${type}</td>
-    <td class="px-3 py-3">${fmtStart} – ${fmtEnd}</td>
-    <td class="px-3 py-3 font-bold text-yellow-600">คำนวณวัน</td>
-    <td class="px-3 py-3 text-slate-400">${reason || '-'}</td>
-    <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>
-  `; // FIXED: Corrected template string closure
-  closeModal('modal-leave-request'); // Close modal after submission
+  var fmtStart = start.split('-').reverse().join('/');
+  var fmtEnd = end.split('-').reverse().join('/');
+ 
+  row.innerHTML =
+    '<td class="px-3 py-3">วันนี้</td>' +
+    '<td class="px-3 py-3">' + type + '</td>' +
+    '<td class="px-3 py-3">' + fmtStart + ' – ' + fmtEnd + '</td>' +
+    '<td class="px-3 py-3 font-bold text-yellow-600">คำนวณวัน</td>' +
+    '<td class="px-3 py-3 text-slate-400">' + (reason || '-') + '</td>' +
+    '<td class="px-3 py-3"><span class="badge badge-yellow">⏳ รออนุมัติ</span></td>';
+ 
   tbody.insertBefore(row, tbody.firstChild);
-  alert('ระบบส่งคำขอใบลาไปยังกล่องข้อความผู้จัดการของคุณเรียบร้อยแล้ว');
+  closeModal('modal-leave-request');
+  alert('ส่งคำขอลาเรียบร้อยแล้ว');
 }
-
+ 
+// ===== OUTSIDE WORK =====
 function submitOutsideWork() {
-  const date = document.getElementById('form-out-date').value;
-  const target = document.getElementById('form-out-target').value;
-  const reason = document.getElementById('form-out-reason').value;
-
-  if(!date || !target) { // FIXED: Corrected alert message
-    alert('กรุณากรอกข้อมูลวันที่และสถานที่ให้ถูกต้องครับ'); // Corrected alert message
-    return;
-  }
-
-  const tbody = document.getElementById('outside-tbody');
-  const row = document.createElement('tr');
+  var date = document.getElementById('form-out-date').value;
+  var target = document.getElementById('form-out-target').value;
+  var reason = document.getElementById('form-out-reason').value;
+ 
+  if (!date || !target) { alert('กรุณากรอกวันที่และสถานที่'); return; }
+ 
+  var tbody = document.getElementById('outside-tbody');
+  var row = document.createElement('tr');
   row.className = "border-b border-slate-100 hover:bg-slate-50";
-  const fmtDate = date.split('-').reverse().join('/');
-
-  row.innerHTML = `
-    <td class="px-3 py-3 font-semibold text-slate-800">${currentUser.name}</td>
-    <td class="px-3 py-3">${fmtDate}</td>
-    <td class="px-3 py-3">${target}</td>
-    <td class="px-3 py-3 text-slate-500">${reason || '-'}</td>
-    <td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7563, 100.5018</td>
-    <td class="px-3 py-3"><span class="badge badge-yellow">⏳ รอ Admin Product ตรวจ</span></td>
-    <td class="px-3 py-3 admin-only">
-      <div class="flex gap-1 btn-approve-area" data-action-buttons>
-        <button onclick="approveOutside(this, 'อนุมัติ')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ ตรวจกฎ (Admin)</button>
-        <button onclick="approveOutside(this, 'ไม่อนุมัติ')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>
-      </div>
-    </td>
-  `;
-
+  var fmtDate = date.split('-').reverse().join('/');
+  var isAdmin = currentUser && currentUser.role !== 'employee';
+ 
+  row.innerHTML =
+    '<td class="px-3 py-3 font-semibold text-slate-800">' + (currentUser ? currentUser.name : '-') + '</td>' +
+    '<td class="px-3 py-3">' + fmtDate + '</td>' +
+    '<td class="px-3 py-3">' + target + '</td>' +
+    '<td class="px-3 py-3 text-slate-500">' + (reason || '-') + '</td>' +
+    '<td class="px-3 py-3 font-mono text-[10px] text-slate-400">13.7563, 100.5018</td>' +
+    '<td class="px-3 py-3"><span class="badge badge-yellow">⏳ รอ Admin ตรวจ</span></td>' +
+    '<td class="px-3 py-3 admin-only' + (isAdmin ? '' : ' hidden') + '">' +
+      '<div class="flex gap-1">' +
+        '<button onclick="approveOutside(this, \'อนุมัติ\')" class="text-[11px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold hover:bg-green-200">✅ อนุมัติ</button>' +
+        '<button onclick="approveOutside(this, \'ไม่อนุมัติ\')" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-bold hover:bg-red-200">❌ ไม่อนุมัติ</button>' +
+      '</div>' +
+    '</td>';
+ 
   tbody.insertBefore(row, tbody.firstChild);
   closeModal('modal-outside-request');
-
-  // Re-run visibility filter checking
-  buildNavigationMenu(currentUser.role);
-  alert('ยื่นเรื่องขอออกปฏิบัติงานนอกสถานที่เข้าสู่ระบบเรียบร้อย');
+  alert('ยื่นเรื่องขอออกปฏิบัติงานนอกสถานที่เรียบร้อย');
 }
-
+ 
 function approveOutside(btn, status) {
-  const tdCell = btn.parentElement.parentElement;
-  const trRow = tdCell.parentElement;
-  
-  // Update status badge UI in specific column index inside layout row target
-  const statusBadgeTd = trRow.cells[5];
-  if(status === 'อนุมัติ') {
-    statusBadgeTd.innerHTML = '<span class="badge badge-green">✅ อนุมัติแล้ว (แจ้งเข้า Line)</span>';
-    alert('อนุมัติสำเร็จ! ระบบเด้งแจ้งเตือนเข้า LINE พนักงานเรียบร้อย (ข้อ 8)');
+  var tdCell = btn.parentElement.parentElement;
+  var trRow = tdCell.parentElement;
+  var statusBadgeTd = trRow.cells[5];
+ 
+  if (status === 'อนุมัติ') {
+    statusBadgeTd.innerHTML = '<span class="badge badge-green">✅ อนุมัติแล้ว</span>';
+    alert('อนุมัติสำเร็จ! ระบบแจ้งเตือนเข้า LINE พนักงานเรียบร้อย');
   } else {
     statusBadgeTd.innerHTML = '<span class="badge badge-red">❌ ไม่อนุมัติ</span>';
   }
-  
   tdCell.className = "px-3 py-3 text-slate-400 text-[11px]";
   tdCell.innerText = "ดำเนินการแล้ว";
 }
-
+ 
+// ===== EMPLOYEE MANAGEMENT =====
 function submitAddEmployee() {
-  const name = document.getElementById('form-emp-name').value;
-  const dept = document.getElementById('form-emp-dept').value;
-  const role = document.getElementById('form-emp-role').value;
-
-  if(!name || !dept || !role) { // Added role validation
-    return;
-  }
-
-  employees.push({ name, dept, role });
+  var name = document.getElementById('form-emp-name').value;
+  var dept = document.getElementById('form-emp-dept').value;
+  var role = document.getElementById('form-emp-role').value;
+ 
+  if (!name || !dept) { alert('กรุณากรอกข้อมูลให้ครบถ้วน'); return; }
+ 
+  employees.push({ name: name, dept: dept, role: role, lineUserId: '' });
   renderEmployeeCards();
   closeModal('modal-add-employee');
-  alert(`เพิ่มคุณ ${name} เข้าสู่ฐานข้อมูลพนักงานเรียบร้อย`); // Corrected alert message
+  document.getElementById('form-emp-name').value = '';
+  document.getElementById('form-emp-dept').value = '';
+  alert('เพิ่มคุณ ' + name + ' เข้าสู่ระบบเรียบร้อย');
 }
-
+ 
 function renderEmployeeCards() {
-  const container = document.getElementById('employee-cards');
-  if(!container) return;
+  var container = document.getElementById('employee-cards');
+  if (!container) return;
   container.innerHTML = '';
-
-  employees.forEach(emp => {
-    const card = document.createElement('div');
+ 
+  employees.forEach(function(emp) {
+    var card = document.createElement('div');
     card.className = "card border flex flex-col justify-between p-4 bg-white";
-    card.innerHTML = `
-      <div>
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-lg">👤</div>
-          <div>
-            <h4 class="font-bold text-sm text-slate-900">${emp.name}</h4>
-            <p class="text-xs text-slate-400">${emp.dept}</p>
-          </div>
-        </div>
-        <span class="badge badge-gray">สิทธิ์: ${emp.role}</span>
-      </div>
-      <div class="flex gap-1 mt-4 pt-2 border-t border-slate-100">
-        <button onclick="alert('ฟังก์ชันแก้ไขข้อมูลพนักงาน')" class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md font-medium hover:bg-blue-100">📝 แก้ไข</button>
-        <button data-employee-name="${emp.name}" class="text-xs text-red-600 bg-red-50 px-2.5 py-1 rounded-md font-medium hover:bg-red-100 btn-send-warning">⚠️ ส่งใบเตือน</button>
-        <button onclick="toggleReportDrawer()" class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md font-medium hover:bg-slate-200">📊 รีพอร์ท</button>
-      </div>
-    `;
+    card.innerHTML =
+      '<div>' +
+        '<div class="flex items-center gap-3 mb-2">' +
+          '<div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-lg">👤</div>' +
+          '<div>' +
+            '<h4 class="font-bold text-sm text-slate-900">' + emp.name + '</h4>' +
+            '<p class="text-xs text-slate-400">' + emp.dept + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<span class="badge badge-gray">สิทธิ์: ' + emp.role + '</span>' +
+      '</div>' +
+      '<div class="flex gap-1 mt-4 pt-2 border-t border-slate-100">' +
+        '<button onclick="alert(\'ฟังก์ชันแก้ไขข้อมูลพนักงาน\')" class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md font-medium hover:bg-blue-100">📝 แก้ไข</button>' +
+        '<button onclick="sendLineWarning(\'' + emp.name + '\')" class="text-xs text-red-600 bg-red-50 px-2.5 py-1 rounded-md font-medium hover:bg-red-100">⚠️ ส่งใบเตือน</button>' +
+        '<button onclick="toggleReportDrawer()" class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md font-medium hover:bg-slate-200">📊 รีพอร์ท</button>' +
+      '</div>';
     container.appendChild(card);
   });
 }
-</s>
+ 
+// ===== PAYROLL =====
+function sendPayroll(name, amount) {
+  alert('ส่งสลิปเงินเดือนให้คุณ ' + name + ' (฿' + amount.toLocaleString() + ') ทาง LINE เรียบร้อยแล้ว\n(ต้องเชื่อมต่อ LINE API จริงในระบบ Production)');
+}
+ 
+function sendAllPayroll() {
+  alert('ส่งสลิปเงินเดือนให้พนักงานทุกคนทาง LINE เรียบร้อยแล้ว\n(ต้องเชื่อมต่อ LINE API จริงในระบบ Production)');
+}
+ 
+function sendLineWarning(name) {
+  alert('ส่งใบเตือนให้คุณ ' + name + ' ทาง LINE เรียบร้อยแล้ว\n(ต้องเชื่อมต่อ LINE API จริงในระบบ Production)');
+}
+ 
+// ===== REPORT DRAWER =====
+function toggleReportDrawer() {
+  document.getElementById('report-drawer').classList.toggle('hidden');
+}
 </script>
 </body>
 </html>
+ 

@@ -1,7 +1,6 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
 const cors = require('cors');
-const { Pool } = require('pg'); // FIXED: Added pg Pool import
 
 const app = express();
 app.use(cors());
@@ -11,10 +10,12 @@ app.use(express.json());
 // นำ Token จาก LINE Developers Console มาใส่ที่นี่
 const config = {
   channelAccessToken: 'vX6EeJA8+f33abIOjJ/YycLUmoCf2Wbb90K25I4q37obHKltGwycWPWIuzwJGxmuxqCd7WdOQ39uFgUhVT1Zxo/hgkVfRGjM3H+VPPW5GlM939FS1oGmhLaeDc7hZecxIPIeS+w1c8wOZqiUuwnhPwdB04t89/1O/w1cDnyilFU=',
-  channelSecret: 'YOUR_CHANNEL_SECRET' // REMINDER: กรุณาใส่ Channel Secret จาก LINE Console เพื่อเริ่มใช้งาน
+  channelSecret: '0688a442750e50f380064560d968b696' // ใส่ Secret ของคุณ (ถ้ามี)
 };
 
-const client = new line.MessagingApiClient(config);
+// ใช้ MessagingApiClient ให้ถูกต้องตาม version
+const { MessagingApiClient } = require('@line/bot-sdk').messagingApi;
+const client = new MessagingApiClient(config);
 
 // Endpoint สำหรับส่ง "ใบเตือน"
 app.post('/api/line/send-warning', async (req, res) => {
