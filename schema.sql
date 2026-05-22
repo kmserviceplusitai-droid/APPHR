@@ -1,5 +1,4 @@
 -- Database Schema for KM Service Plus
-// ... (Content follows schema.sql context)
 
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
